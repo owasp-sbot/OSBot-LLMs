@@ -1,6 +1,8 @@
+# for OSBot
 git+https://github.com/owasp-sbot/OSBot-Utils.git@dev
 git+https://github.com/owasp-sbot/OSBot-AWS.git@dev
 python-dotenv
+boto3
 
 # for openai
 openai
