@@ -65,7 +65,7 @@ class test_lambda_open_ai(TestCase):
         response     = requests.get(function_url, stream=True)
 
         #obj_info(response)
-        pprint(dict(response.headers))
+        #pprint(dict(response.headers))
         streamed_responses = []
 
         for line in response.iter_lines():
