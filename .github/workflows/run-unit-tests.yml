@@ -15,4 +15,4 @@ jobs:
         with:
           codecov_token         : ${{ secrets.CODECOV_TOKEN         }}
           package_name          : ${{ secrets.PACKAGE_NAME          }}
-
+          open_api__api_key     : ${{ secrets.OPEN_AI__API_KEY      }}

@@ -1,6 +1,9 @@
 git+https://github.com/owasp-sbot/OSBot-Utils.git@dev
 python-dotenv
 
+# for openai
+openai
+
 # for testing
 pytest
 coverage
