@@ -17,9 +17,9 @@ from osbot_aws.deploy.Deploy_Lambda                 import Deploy_Lambda
 
 class test_lambda_open_ai(TestCase):
 
-    @classmethod
-    def tearDownClass(cls) -> None:
-        assert Deploy_Lambda(run).delete() is True
+    # @classmethod
+    # def tearDownClass(cls) -> None:
+    #     assert Deploy_Lambda(run).delete() is True
 
     def setUp(self) -> None:
         load_dotenv()
@@ -59,6 +59,8 @@ class test_lambda_open_ai(TestCase):
 
     def test_function_url_stream(self):
         function_url = self.deploy_lambda.function_url()
+        assert function_url is not None
+        assert function_url.startswith('https://')
         #print()
         #print(f'using function url: {function_url}')
 
