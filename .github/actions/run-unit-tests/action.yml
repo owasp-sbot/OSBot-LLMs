@@ -19,6 +19,8 @@ runs:
         shell: bash
         run: |
           coverage run --source=${{ inputs.package_name }} -m pytest -v -s --durations=0 --ignore=tests_* tests
+        env:
+          OPEN_AI__API_KEY: ${{ inputs.open_api__api_key     }}
       - name: Print coverage report
         shell: bash
         run: |
