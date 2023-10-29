@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from osbot_llms.open_ai.API_Open_AI import API_Open_AI
+from osbot_llms.apis.open_ai.API_Open_AI import API_Open_AI
 from osbot_utils.utils.Dev import pprint
 
 
