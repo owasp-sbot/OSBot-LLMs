@@ -22,10 +22,10 @@ class GPT_Prompt_Simple(BaseModel):
     user_prompt : str         = DEFAULT_USER_PROMPT
 
 class GPT_Prompt_With_System(GPT_Prompt_Simple):
-    system_prompt: list[str]
+    system_prompts: list[str]
 
 class GPT_Prompt_With_System_And_History(GPT_Prompt_With_System):
-    history      : list[GPT_History]
+    histories      : list[GPT_History]
 
 
 class GPT_Answer(BaseModel):

@@ -64,6 +64,22 @@ class API_Open_AI:
             full_answer += item
         return full_answer
 
+    def ask_using_system_prompts(self, user_prompt, system_prompts=None, user_history=None):
+        messages = []
+        if system_prompts:
+            for system_prompt in system_prompts:
+                messages.append({"role": "system", "content": system_prompt})
+        if user_history:
+            for item in user_history:
+                question = item.get('question')
+                answer   = item.get('answer')
+                messages.append({"role": "user"     , "content": question})
+                messages.append({"role": "assistant", "content": answer})
+        messages.append({"role": "user", "content": user_prompt})
+
+        #pprint(messages)
+        return self.ask_using_messages(messages)
+
     def ask_question_with_user_data_and_prompt(self,user_question, user_data, system_prompt, user_history):
         messages = [{"role": "system", "content": system_prompt},
                     {"role": "system", "content": user_data    }]

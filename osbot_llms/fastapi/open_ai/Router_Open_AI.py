@@ -18,18 +18,21 @@ class Router_Open_AI(FastAPI_Router):
     async def prompt_simple(self, gpt_prompt_simple: GPT_Prompt_Simple = Depends()) -> GPT_Answer :
         question = gpt_prompt_simple.user_prompt
         model    = gpt_prompt_simple.model
-        answer   = await self.ask_one_question_no_history(question, model)
+        answer   = self.api_open_ai.ask_one_question_no_history(question, model)
+        #answer   = await self.ask_one_question_no_history(question, model)
         return GPT_Answer(answer=answer)
 
     async def prompt_with_system(self,gpt_prompt_with_system: GPT_Prompt_With_System = Depends()):
-        return gpt_prompt_with_system
+        user_prompt    = gpt_prompt_with_system.user_prompt
+        system_prompts = gpt_prompt_with_system.system_prompts
+        #model          = gpt_prompt_with_system.model
+        answer         = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt, system_prompts=system_prompts)
+        return GPT_Answer(answer=answer)
 
-    async def ask_one_question_no_history(self,question, model):
-        return self.api_open_ai.ask_one_question_no_history(question, model)
 
     def setup_routes(self):
         self.router.post("/prompt_simple"              )(self.prompt_simple)
         self.router.post("/prompt_with_system"         )(self.prompt_with_system)
-        self.router.post("/ask_one_question_no_history")(self.ask_one_question_no_history)
+        #self.router.post("/ask_one_question_no_history")(self.ask_one_question_no_history)
 
 
