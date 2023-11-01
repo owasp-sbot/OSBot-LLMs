@@ -9,4 +9,6 @@ openai
 
 # for testing
 pytest
+pytest-asyncio
+httpx
 coverage

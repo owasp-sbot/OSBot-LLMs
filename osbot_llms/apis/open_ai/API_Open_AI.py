@@ -9,6 +9,8 @@ from osbot_utils.utils.Dev import pprint
 
 OPEN_AI__API_KEY = 'OPEN_AI__API_KEY'
 
+
+
 class API_Open_AI:
 
     def __init__(self):
@@ -21,12 +23,14 @@ class API_Open_AI:
         load_dotenv()
         return getenv(OPEN_AI__API_KEY)
 
-    def create(self, messages):
+    def create(self, messages, model=None):
         openai.api_key = self.api_key()
-        response = ChatCompletion.create(model       = self.model           ,
-                                         messages    = messages             ,
-                                         temperature = self.temperature     ,
-                                         stream      = self.stream          )
+        kwargs = dict(model       = model or self.model  ,
+                      messages    = messages             ,
+                      temperature = self.temperature     ,
+                      stream      = self.stream          )
+        pprint(kwargs)
+        response = ChatCompletion.create(**kwargs)
 
         return self.parse_response(response)
 
@@ -46,18 +50,17 @@ class API_Open_AI:
         openai.api_key = self.api_key()
         return self
 
-    def ask_one_question_no_history(self,question):
+    def ask_one_question_no_history(self,question, model=None):
         messages    = [{"role": "user", "content": question}]
-        return self.ask_using_messages(messages)
+        return self.ask_using_messages(messages, model=model)
 
-    def ask_using_messages(self, messages):
-        response    = self.create(messages)
+    def ask_using_messages(self, messages, model=None):
+        response    = self.create(messages, model=model)
         full_answer = ""
 
         for item in response:
             full_answer += item
         return full_answer
-
 
     def ask_question_with_user_data_and_prompt(self,user_question, user_data, system_prompt, user_history):
         messages = [{"role": "system", "content": system_prompt},
