@@ -12,7 +12,7 @@ class Router_Open_AI(FastAPI_Router):
         super().__init__(app, name='Open AI')
         self.setup_routes()
         super().setup()
-        #self.api_open_ai = API_Open_AI().setup()
+        self.api_open_ai = API_Open_AI().setup()
         #self.api_open_ai = Mock_API_Open_AI()
 
     async def prompt_simple(self, gpt_prompt_simple: GPT_Prompt_Simple = Depends()) -> GPT_Answer :

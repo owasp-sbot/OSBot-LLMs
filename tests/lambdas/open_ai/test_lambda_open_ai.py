@@ -31,7 +31,9 @@ class test_lambda_open_ai(TestCase):
         self.aws_lambda     = self.deploy_lambda.lambda_function()
 
     def test_create__lambda_function(self):
-        self.deploy_lambda.delete()
+        if self.deploy_lambda.exists():         # for now, don't recreate the lambda function since it takes a little while and it is not adding a lot of value
+            return
+        #self.deploy_lambda.delete()
         api_key              = API_Open_AI().api_key()
         handler              = 'osbot_llms/lambdas/open_ai/run.sh'
         arn_layer__lwa       = f"arn:aws:lambda:{self.aws_region}:753240598075:layer:LambdaAdapterLayerX86:17"
@@ -61,7 +63,7 @@ class test_lambda_open_ai(TestCase):
 
     def test_function_url(self):
         function_url = self.deploy_lambda.lambda_function().function_url()
-        #pprint(f'function_url: {function_url}')
+        pprint(f'function_url: {function_url}')
         response = requests.get(function_url + 'open_ai/prompt')
         pprint(response.text)
     # def test_update__lambda_function(self):
