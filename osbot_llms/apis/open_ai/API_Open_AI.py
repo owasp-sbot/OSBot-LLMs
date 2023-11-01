@@ -14,9 +14,10 @@ OPEN_AI__API_KEY = 'OPEN_AI__API_KEY'
 class API_Open_AI:
 
     def __init__(self):
-        self.stream = True
-        self.temperature = 1.0
-        self.model = 'gpt-3.5-turbo' #'gpt-4' #
+        self.stream              = True
+        self.temperature         = 1.0
+        self.model               = 'gpt-3.5-turbo' #'gpt-4' #
+        self.print_create_kwargs = False
 
     @cache_on_self
     def api_key(self):
@@ -29,7 +30,8 @@ class API_Open_AI:
                       messages    = messages             ,
                       temperature = self.temperature     ,
                       stream      = self.stream          )
-        pprint(kwargs)
+        if self.print_create_kwargs:                            # todo : remove
+            pprint(kwargs)
         response = ChatCompletion.create(**kwargs)
 
         return self.parse_response(response)

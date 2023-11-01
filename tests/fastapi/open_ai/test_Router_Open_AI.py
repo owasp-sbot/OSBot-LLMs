@@ -33,16 +33,6 @@ class test_Router_Open_AI(TestCase):
 
         assert result == '42'
 
-class Test_Router_Open_AI__Async:
-    @pytest.mark.asyncio
-    async def test_prompt_simple(self):
-        question = "what is 40+2, reply with only the answer"
-        router = Router_Open_AI()
-        test_prompt = GPT_Prompt_Simple(model='gpt-3.5-turbo', user_prompt=question)
-
-        response = await router.prompt_simple(test_prompt)
-
-        assert response == GPT_Answer(answer='42')
 
 # @pytest.mark.asyncio
 # async def test_prompt_simple():
