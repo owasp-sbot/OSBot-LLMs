@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+from starlette.responses import RedirectResponse
 
 from osbot_llms.fastapi.FastAPI_Utils import fastapi_routes
 from osbot_llms.fastapi.open_ai.Router_Open_AI import Router_Open_AI
@@ -22,12 +23,19 @@ class FastAPI_LLMs:
     def routes(self, include_default=False):
         return fastapi_routes(self.app(),include_default=include_default)
 
+    def router(self):
+        return self.app().router
+
     def routes_paths(self):
         return list_set(self.routes(index_by='http_path'))
 
     def setup(self):
+        self.setup_default_routes()
         self.setup_routes()
         return self
+
+    def setup_default_routes(self):
+        self.router().get("/")(self.redirect_to_docs)
 
     def setup_routes(self):
         Router_Open_AI(self.app())
@@ -41,3 +49,7 @@ class FastAPI_LLMs:
                       host = lambda_host,
                       port = lambda_port)
         uvicorn.run(**kwargs)
+
+    # defaut routes
+    async def redirect_to_docs(self):
+        return RedirectResponse(url="/docs")

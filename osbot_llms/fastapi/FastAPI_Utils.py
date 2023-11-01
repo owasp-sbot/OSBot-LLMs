@@ -3,6 +3,7 @@ FAST_API_DEFAULT_ROUTES         = [ { 'http_methods': ['GET','HEAD'], 'http_path
                                     { 'http_methods': ['GET','HEAD'], 'http_path': '/docs'                 , 'method_name': 'swagger_ui_html'      },
                                     { 'http_methods': ['GET','HEAD'], 'http_path': '/docs/oauth2-redirect' , 'method_name': 'swagger_ui_redirect'  },
                                     { 'http_methods': ['GET','HEAD'], 'http_path': '/redoc'                , 'method_name': 'redoc_html'           }]
+FAST_API_LLMS_DEFAULT_ROUTES    = [ { 'http_methods': ['GET'       ], 'http_path': '/'                     , 'method_name': 'redirect_to_docs'     }]
 
 def fastapi_routes(router, include_default=False):
     routes = []
