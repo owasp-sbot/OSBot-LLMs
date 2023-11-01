@@ -4,6 +4,10 @@ git+https://github.com/owasp-sbot/OSBot-AWS.git@dev
 python-dotenv
 boto3
 
+#for fastapi
+fastapi
+uvicorn
+
 # for openai
 openai
 

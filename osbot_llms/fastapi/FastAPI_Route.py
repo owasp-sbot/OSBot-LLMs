@@ -1,4 +1,6 @@
 from fastapi import APIRouter
+from osbot_utils.decorators.lists.index_by import index_by
+
 from osbot_utils.utils.Misc import lower
 
 from osbot_utils.utils.Str import str_safe
@@ -17,6 +19,7 @@ class FastAPI_Router:
         self.tag    = name
         self.setup()
 
+    @index_by
     def routes(self, include_prefix=False):
         if include_prefix is False:
             return fastapi_routes(self.router)
@@ -26,6 +29,8 @@ class FastAPI_Router:
             routes.append(route)
         return routes
 
+    def routes_paths(self):
+        return list(self.routes(index_by='http_path'))
 
     def setup(self):
         if self.app:
