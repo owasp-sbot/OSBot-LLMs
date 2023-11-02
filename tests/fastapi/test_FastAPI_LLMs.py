@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 import pytest
+import requests
 from fastapi import FastAPI, APIRouter
 
 from osbot_llms.fastapi.FastAPI_Utils import FAST_API_DEFAULT_ROUTES, FAST_API_LLMS_DEFAULT_ROUTES
@@ -59,6 +60,48 @@ class test_FastAPI_LLMs(TestCase):
 
         assert response.status_code == expected_status
         assert response.json()      == expected_answer
+
+    def test_prompt_with_system(self):
+        system_prompts = [ 'act like a counter, only reply with the numbers, without any spaces or commands, like this 12']
+        question = 'count to 10'
+        data = { 'model'         : 'gpt-3.5-turbo',
+                 'user_prompt'   : question       ,
+                 'system_prompts': system_prompts }
+
+        pprint(data)
+
+        response = self.test_client.post("/open_ai/prompt_with_system", json=data)
+        assert response.status_code == 200
+        assert response.json()      == {"model":None,"answer":"12345678910"}
+
+    def test_prompt_with_system__stream(self):
+        system_prompts = [ 'act like a counter, only reply with the numbers, without any spaces or commands, like this 12']
+        question = 'count to 10'
+        data = { 'model'         : 'gpt-3.5-turbo',
+                 'user_prompt'   : question       ,
+                 'system_prompts': system_prompts }
+
+        pprint(data)
+
+        url = "http://localhost:8000" + "/open_ai/prompt_with_system__stream"
+        #response = self.test_client.post("/open_ai/prompt_with_system__stream", json=data, stream=True)
+        response = requests.post(url, json=data, stream=True)
+        assert response.status_code == 200
+        pprint(dict(response.headers))
+        streamed_responses = []
+
+        for line in response.iter_lines():
+            if line:
+                decoded_line = line.decode('utf-8')
+                streamed_responses.append(decoded_line)
+
+        assert streamed_responses == ['123', '456', '789', '10']
+        #assert response.json()      == {"model":None,"answer":"12345678910"}
+
+
+    # def test_prompt_with_system__stream(self):
+    #     system_prompts     = ['act like a counter, only reply with the numbers, without any spaces or commands, like this 12']
+    #     question           = 'count to 10'
 
 
 

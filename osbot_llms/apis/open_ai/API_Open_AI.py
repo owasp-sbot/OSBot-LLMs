@@ -52,19 +52,21 @@ class API_Open_AI:
         openai.api_key = self.api_key()
         return self
 
-    def ask_one_question_no_history(self,question, model=None):
+    def ask_one_question_no_history(self,question, model=None, async_mode=False):
         messages    = [{"role": "user", "content": question}]
-        return self.ask_using_messages(messages, model=model)
+        return self.ask_using_messages(messages, model=model, async_mode=async_mode)
 
-    def ask_using_messages(self, messages, model=None):
-        response    = self.create(messages, model=model)
+    def ask_using_messages(self, messages, model=None, async_mode=False):
+        generator    = self.create(messages, model=model)
+        if async_mode:
+            return generator
         full_answer = ""
 
-        for item in response:
+        for item in generator:
             full_answer += item
         return full_answer
 
-    def ask_using_system_prompts(self, user_prompt, system_prompts=None, user_history=None):
+    def ask_using_system_prompts(self, user_prompt, system_prompts=None, user_history=None, async_mode=False):
         messages = []
         if system_prompts:
             for system_prompt in system_prompts:
@@ -78,7 +80,7 @@ class API_Open_AI:
         messages.append({"role": "user", "content": user_prompt})
 
         #pprint(messages)
-        return self.ask_using_messages(messages)
+        return self.ask_using_messages(messages, async_mode=async_mode)
 
     def ask_question_with_user_data_and_prompt(self,user_question, user_data, system_prompt, user_history):
         messages = [{"role": "system", "content": system_prompt},

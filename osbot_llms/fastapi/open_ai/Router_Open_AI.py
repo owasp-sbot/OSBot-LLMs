@@ -1,4 +1,6 @@
 from fastapi import Depends
+from starlette.responses import StreamingResponse
+
 from osbot_llms.apis.open_ai.API_Open_AI import API_Open_AI
 from osbot_llms.apis.open_ai.Mock_API_Open_AI import Mock_API_Open_AI
 from osbot_llms.fastapi.FastAPI_Route import FastAPI_Router
@@ -22,17 +24,32 @@ class Router_Open_AI(FastAPI_Router):
         #answer   = await self.ask_one_question_no_history(question, model)
         return GPT_Answer(answer=answer)
 
-    async def prompt_with_system(self,gpt_prompt_with_system: GPT_Prompt_With_System = Depends()):
+    async def prompt_with_system(self,gpt_prompt_with_system: GPT_Prompt_With_System):# = Depends()):
         user_prompt    = gpt_prompt_with_system.user_prompt
         system_prompts = gpt_prompt_with_system.system_prompts
         #model          = gpt_prompt_with_system.model
         answer         = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt, system_prompts=system_prompts)
         return GPT_Answer(answer=answer)
 
+    async def prompt_with_system__stream(self,gpt_prompt_with_system: GPT_Prompt_With_System):# = Depends()):
+        from osbot_utils.utils.Misc import str_to_bytes
+        async def streamer():
+            #yield str_to_bytes(f"[#{i}] This is streaming from Lambda \n")
+            user_prompt    = gpt_prompt_with_system.user_prompt
+            system_prompts = gpt_prompt_with_system.system_prompts
+            async_mode     = True
+            #model          = gpt_prompt_with_system.model
+            generator      = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt, system_prompts=system_prompts, async_mode=async_mode)
+            for answer in generator:
+                yield str_to_bytes(f"{answer}\n")
+
+        return StreamingResponse(streamer(), media_type="text/plain; charset=utf-8")
+        #return StreamingResponse(generator, media_type="text/plain; charset=utf-8")
 
     def setup_routes(self):
         self.router.post("/prompt_simple"              )(self.prompt_simple)
         self.router.post("/prompt_with_system"         )(self.prompt_with_system)
+        self.router.post("/prompt_with_system__stream" )(self.prompt_with_system__stream)
         #self.router.post("/ask_one_question_no_history")(self.ask_one_question_no_history)
 
 
