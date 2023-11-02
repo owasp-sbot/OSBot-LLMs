@@ -17,7 +17,7 @@ class Router_Open_AI(FastAPI_Router):
         self.api_open_ai = API_Open_AI().setup()
         #self.api_open_ai = Mock_API_Open_AI()
 
-    async def prompt_simple(self, gpt_prompt_simple: GPT_Prompt_Simple = Depends()) -> GPT_Answer :
+    async def prompt_simple(self, gpt_prompt_simple: GPT_Prompt_Simple)-> GPT_Answer : # = Depends())
         question = gpt_prompt_simple.user_prompt
         model    = gpt_prompt_simple.model
         answer   = self.api_open_ai.ask_one_question_no_history(question, model)
@@ -41,7 +41,8 @@ class Router_Open_AI(FastAPI_Router):
             #model          = gpt_prompt_with_system.model
             generator      = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt, system_prompts=system_prompts, async_mode=async_mode)
             for answer in generator:
-                yield str_to_bytes(f"{answer}\n")
+                if answer:
+                    yield f"{answer}\n"
 
         return StreamingResponse(streamer(), media_type="text/plain; charset=utf-8")
         #return StreamingResponse(generator, media_type="text/plain; charset=utf-8")

@@ -53,7 +53,7 @@ class Test_Router_Open_AI__Async:
         answers = []
         async for answer in streaming_response.body_iterator:
             answers.append(answer)
-        assert answers == ['', '123', '456', '789', '10']
+        assert answers == ['123\n', '456\n', '789\n', '10\n']
 
 
 
