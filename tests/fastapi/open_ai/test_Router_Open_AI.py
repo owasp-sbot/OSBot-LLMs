@@ -31,7 +31,8 @@ class test_Router_Open_AI(TestCase):
         question = 'answer 40+2, reply with just the answer'
         result = self.api_open_ai.ask_one_question_no_history(question)
 
-        assert result == '42'
+        #assert result == '42' # not 100% reliable
+        assert '42' in result
 
 # @pytest.mark.asyncio
 # async def test_prompt_simple():

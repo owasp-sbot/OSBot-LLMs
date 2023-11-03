@@ -73,11 +73,11 @@ class test_FastAPI_LLMs(TestCase):
         assert expected_answer.get('model' ) == response_data.get('model')
 
     def test_prompt_with_system(self):
-        system_prompts = [ 'act like a counter, only reply with the numbers, without any spaces or commands, like this 12']
-        question = 'count to 10'
-        data = { 'model'         : 'gpt-3.5-turbo',
-                 'user_prompt'   : question       ,
-                 'system_prompts': system_prompts }
+        system_prompts  = [ 'act like a counter, only reply with the numbers, without any spaces or commands, like this 12']
+        question        = 'count to 10'
+        data            = { 'model'         : 'gpt-3.5-turbo',
+                            'user_prompt'   : question       ,
+                            'system_prompts': system_prompts }
 
         pprint(data)
 
