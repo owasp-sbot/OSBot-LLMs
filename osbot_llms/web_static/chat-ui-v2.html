@@ -1,0 +1,214 @@
+<html>
+<title>CHATGPT</title>
+<head>
+<style>
+
+*{
+ color:white;
+}
+body{
+ margin:0;
+ padding:0;
+ background-color: #343541;
+ display:flex;
+
+}
+
+h3{
+ font-size:33px;
+ font-weight:600;
+ padding:200px 0;
+  }
+
+.sidebar{
+ background-color:#202123;
+ width:244px;
+ height:100vh;
+ display :flex;
+ flex-direction:column;
+ justify-content : space-between;
+
+ }
+
+.main{
+ display :flex;
+ flex-direction:column;
+ margin-left: 3px;
+ text-align:center;
+ height:100vh;
+ width:100%;
+     }
+
+.bottom-section{
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  height:100vh;
+  }
+
+.info{
+ color:rgba(255,255,255,0.5);
+ font-size :16px;
+     }
+
+input{
+ border :none;
+ background-color:rgba(255,255,255,0.5);
+ width:79%;
+ font-size:20px;
+ padding:20px 30px;
+
+ border-radius:10px;
+
+     }
+
+input:focus{
+     outline: none;   /*it remove the outline of input bordebox*/
+     }
+
+.input-container{
+    position :realtive;
+
+  }
+
+button {
+   border : solid 0.5px rgba(255,255,255,0.6);
+   background-color:transparent;
+   border-radius:5px;
+   padding :10px;
+   margin: 12px;
+   cursor : pointer;
+ }
+
+button:hover {
+  background-color: #555;
+}
+
+.nav{
+ border-top: solid 0.2px rgba(255,255,255,0.5) /*it give a borderline above the promt*/
+
+    }
+
+ p {
+      cursor :pointer;
+      margin-left:6px;
+       padding :10px;
+       margin: 12px;
+    }
+
+.history{
+  padding :10px;
+  margin :10px;
+  display:flex;
+  flex-direction :column;
+ }
+
+#submit {
+
+  width: 45px;
+  border-radius: 6px;
+position : relative;
+     margin-left : 86%;
+     bottom :50px;  /*give a submit arrow inputbox*/
+     cursor:pointer;
+     color : black;
+     font-size: 30px;
+
+}
+
+#submit:hover {
+  background-color: #555;
+}
+
+</style>
+</head>
+<body>
+
+<section class ="sidebar">
+<button> new chat</button>
+
+<div class = "history"></div>
+
+<div class = "nav">
+<p> CHATGPT</p>
+</div>
+
+</section>
+<section class ="main">
+<h3> ChatGPT</h3>
+<p id = "output"> </p>
+
+<div class = "bottom-section">
+ <div class ="input-container">
+ <input placeholder = "enter text "/>
+ <div id = "submit">➢</div>
+ </div>
+</div>
+
+</section>
+
+<script>
+
+const API_KEY = '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';
+
+const submitbutton = document.querySelector('#submit')
+const outputelement = document.querySelector('#output')
+const inputElement = document.querySelector('input')
+const historyelement = document.querySelector('.history')
+const buttonElement = document.querySelector('button')
+
+function changeInput(value){
+  const inputElement = document.querySelector('input')
+   inputElement.value = value
+      }
+async function getMessage() {
+  console.log('clicked');  // when we click a submitbutton than it show a clicked in console
+
+  const options = {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: inputElement.value}],
+      max_tokens: 25
+    })
+  }
+
+  try {
+    const response =  await fetch('https://api.openai.com/v1/chat/completions', options)
+      const data = await response.json()
+ console.log(data)
+ outputelement.textContent = data.choices[0].message.content
+
+   if (data.choices[0].message.content && inputElement.value){
+  const pElement=document.createElement('p')
+  pElement.textContent = inputElement.value
+  pElement.addEventListener('click',() => changeInput(pElement.textContent))
+  historyelement.append(pElement)
+ //for input value we entered to save in history
+  }
+
+      } catch (error) {
+     console.error(error)
+          }
+
+}
+
+submitbutton.addEventListener('click', getMessage)
+
+function clearInput(){
+
+ inputElement.value = ''
+       }
+
+buttonElement.addEventListener('click',clearInput)
+
+</script>
+
+</body>
+</html>

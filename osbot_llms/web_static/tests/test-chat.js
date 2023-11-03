@@ -46,7 +46,7 @@ QUnit.module('chat.js - loading UI', function(hooks) {
                 assert.ok(true, "...Load was performed successfully.");
 
                 $html = $('#chat-ui')
-                console.log($html.html())
+                assert.equal('ChatGPT UI - Simple (refactored)', $html.find('h3').html())
 
 
                 done(); // Resolve the async operation
