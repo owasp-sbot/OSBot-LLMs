@@ -1,4 +1,4 @@
-$(document).ready(function() {
+function config_ui() {
         // Send the form on enter keypress and avoid if shift is pressed
         $('#prompt').keypress(function(event) {
             if (event.keyCode === 13 && !event.shiftKey) {
@@ -28,7 +28,7 @@ $(document).ready(function() {
         });
 
         // ... rest of your existing setup ...
-    });
+    };
 
     //async code
 
@@ -88,4 +88,18 @@ async function fetchStream(user_prompt) {
     }
     return response
 
+}
+
+function load_ui(target_div, url_ui) {
+    return new Promise((resolve, reject) => {
+        $(target_div).load(url_ui, function(response, status, xhr) {
+            if (status === "error") {
+                var msg = "Sorry but there was an error: ";
+                console.error(msg + xhr.status + " " + xhr.statusText);
+                reject(new Error(msg + xhr.status + " " + xhr.statusText));
+            } else {
+                resolve();
+            }
+        });
+    });
 }

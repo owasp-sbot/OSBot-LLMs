@@ -1,7 +1,6 @@
-<!-- query.html -->
 <html lang="en">
     <head>
-        <title>ChatGPT UI - Simple</title>
+        <title>ChatGPT UI - Simple </title>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css"     rel="stylesheet">
@@ -11,36 +10,14 @@
         </script>
     </head>
     <body>
-        <div class="container p-3">
-            <h3>ChatGPT UI - Simple</h3>
-
-            <div class="mb-3">
-                <label for="prompt" class="form-label"><strong>Sample Questions: </strong></label>
-                <select id="questionDropdown" class="form-select" aria-label="Question dropdown">
-                    <option value="Hi">Hi</option>
-                    <option value="What is GPT">What is GPT?</option>
-                    <option value="What is the meaning of life?">What is the meaning of life?</option>
-
-                </select>
-                <form method="post">
-
-                    <label for="prompt" class="form-label"><strong>Prompt: </strong></label>
-                    <textarea class="form-control" type="textarea" id="prompt" name="prompt" rows="3">Hi</textarea>
-                    <br>
-                    <div class="d-flex align-items-center">
-                        <button class="btn btn-primary" type="submit">Submit</button>
-                        <div id="loadingIndicator" class="spinner-border text-primary" role="status" style="display:none; width: 1.5rem; height: 1.5rem; margin-left: 10px;">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <br>
-            <div class="mb-3">
-                <h6>Response:</h6>
-                <div class="container border overflow-auto h-50" id="response"></div>
-            </div>
-        </div>
+        <div id="chat-ui"></div>
         <script src="chat.js"></script>
+        <script>
+            target_div = '#chat-ui'
+            url_ui     = '/static/chat.html'
+            load_ui(target_div,url_ui).then(() => {
+                config_ui()
+            })
+        </script>
     </body>
 </html>

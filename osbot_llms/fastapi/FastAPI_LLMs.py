@@ -41,7 +41,7 @@ class FastAPI_LLMs:
 
     def setup(self):
         self.setup_default_routes()
-        #self.setup_middleware()        # todo: add support for only adding this when running in Localhost
+        self.setup_middleware()        # todo: add support for only adding this when running in Localhost
         self.setup_static_routes()
         self.setup_routes()
         return self
