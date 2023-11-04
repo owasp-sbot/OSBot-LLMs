@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.20.0.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/qunit/qunit-2.20.0.js"></script>
+
+</head>
+<body>
+    <!-- QUnit's test results will display here -->
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+        <!-- chatbot.html content will load here -->
+    </div>
+
+    <script src="./chatbot.qunit.js"></script>
+    <script>
+        QUnit.module('chat.js - loading UI', function(hooks) {
+
+            let $chatbot_div = null
+            hooks.beforeEach(function(assert) {
+                $chatbot_div  = $('<div id=chatbot_div>').load('chatbot.html').appendTo('body')
+                #$chatbot_div = $('#chatbot_div')
+                $('#chatbot_div').hide()
+            });
+
+
+            QUnit.test('Load chat UI', function (assert) {
+                assert.ok(true, 'test 123')
+                window.aaaa = $('#chatbot_div')
+
+                console.log($chatbot_div)
+            })
+        });
+
+    </script>
+    <div>
+
+    </div>
+</body>
+</html>

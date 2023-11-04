@@ -1,0 +1,1 @@
+console.log('in chatbot.qunit.js')
