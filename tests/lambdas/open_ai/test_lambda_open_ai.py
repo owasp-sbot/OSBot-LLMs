@@ -63,12 +63,15 @@ class test_lambda_open_ai(TestCase):
 
     def test_function_url(self):
         function_url = self.deploy_lambda.lambda_function().function_url()
-        #pprint(f'function_url: {function_url}')
+        pprint(f'function_url: {function_url}')
+        return
         response = requests.get(function_url, allow_redirects=False)
         assert response.headers.get('Location') == '/docs'
         assert response.status_code == 307
 
-    # def test_update__lambda_function(self):
-    #     assert self.deploy_lambda.update() == 'Successful'
-    #     self.test_function_url_stream()
+    def test_invoke_lambda_function(self):
+        #response = self.aws_lambda.invoke()
+        response = self.aws_lambda.invoke_return_logs()
+        pprint(response)
+
 

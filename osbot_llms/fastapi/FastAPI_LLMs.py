@@ -29,6 +29,9 @@ class FastAPI_LLMs:
     def path_static_folder(self):
         return path_combine(osbot_llms.path, 'web_static')
 
+    def path_static_tests_folder(self):
+        return path_combine(osbot_llms.path, '../tests/web_static')
+
     @index_by
     def routes(self, include_default=False):
         return fastapi_routes(self.app(),include_default=include_default)
@@ -62,6 +65,11 @@ class FastAPI_LLMs:
         path_static_folder = self.path_static_folder()
         path_name          = "static"
         self.app().mount(path_static, StaticFiles(directory=path_static_folder), name=path_name)
+
+        path_tests_static        = "/static-tests"
+        path_tests_static_folder = self.path_static_tests_folder()
+        path_tests_name          = "static_tests"
+        self.app().mount(path_tests_static, StaticFiles(directory=path_tests_static_folder), name=path_tests_name)
 
     def setup_routes(self):
         Router_Open_AI(self.app())

@@ -2,7 +2,6 @@
   "name": "owasp-llms",
   "version": "v0.1.8",
   "devDependencies": {
-    "jest": "*",
     "jquery": "*"
   }
 }
