@@ -1,4 +1,4 @@
-QUnit.module('sample test', function(hooks) {
+QUnit.module('Chatbot control tests', function(hooks) {
 
     hooks.before(function(assert) {
         //console.log('before test execution')
@@ -10,23 +10,47 @@ QUnit.module('sample test', function(hooks) {
         this.div_id    = 'chatbot_div'
         this.$chatbot_div  = $(`<div id='${this.div_id}'>`)
         this.$chatbot_div.appendTo('body')
-        //assert.ok($(`#${div_id}`).is( this.$chatbot_div))
 
         this.$chatbot_div.load(page_path, function(response, status, xhr) {
             this_closure.response     = response
             this_closure.status       = status
             this_closure.xhr          = xhr
 
-            console.log(`[hooks.before]: page loaded ok ${page_path}`)
-            done()
+            // we need to wait for this event due to the multiple different ways the execution happens (between Wallaby and Browser based tests)
+            document.addEventListener('chatbot-module-loaded', function() {
+                done()
+            });
         })
+
 
      })
 
     hooks.after(function(assert) {
-         console.log('[hooks.after]: before after test execution')
+         //console.log('[hooks.after]: before after test execution')
      })
 
+    QUnit.test('check chatbot.html was loaded ok',  function (assert) {
+        assert.equal   (this.xhr.status         , 200 , "xhr.status is 200"            )
+        assert.equal   (this.xhr.statusText     , 'OK', 'xhr.statusText is OK'         )
+        assert.notEqual(this.$chatbot_div.html(), ''  , 'chatbot_div.html is not empty')
+        assert.ok($(`#${this.div_id}`).is( this.$chatbot_div), `div_id ${this.div_id} is in the DOM`)
+
+        const script_js_vars = window.get_script_js_vars()
+        expected_script_js_vars = { chatbox         : {}     ,
+                                    chatInput       : {}     ,
+                                    sendChatBtn     : {}     ,
+                                    userMessage     : null   ,
+                                    API_KEY         : '.....',
+                                    inputInitHeight : script_js_vars.inputInitHeight }
+        assert.propEqual(script_js_vars, expected_script_js_vars)
+    })
+
+    QUnit.skip('check chatbot.js file', function(assert) {
+        assert.ok(typeof Chatbot === 'function', 'Chatbot is a function'); // Classes are functions behind the scenes.
+        assert.ok(Chatbot.prototype, 'Chatbot has a prototype'); // Classes should have a prototype.
+        assert.ok(Chatbot.prototype.constructor === Chatbot, 'Chatbot prototype constructor is Chatbot itself'); // The constructor should be the class itself.
+
+    })
     QUnit.test('check text contents and attributes', function(assert) {
         var $chatbotDiv = this.$chatbot_div;
 
@@ -120,20 +144,6 @@ QUnit.module('sample test', function(hooks) {
 
     })
 
-    QUnit.test('check chatbot.html was loaded ok',  function (assert) {
-        assert.equal   (this.xhr.status         , 200 , "xhr.status is 200"            )
-        assert.equal   (this.xhr.statusText     , 'OK', 'xhr.statusText is OK'         )
-        assert.notEqual(this.$chatbot_div.html(), ''  , 'chatbot_div.html is not empty')
-        assert.ok($(`#${this.div_id}`).is( this.$chatbot_div), `div_id ${this.div_id} is in the DOM`)
-
-        expected_script_js_vars = { chatbox         : {}     ,
-                                    chatInput       : {}     ,
-                                    sendChatBtn     : {}     ,
-                                    userMessage     : null   ,
-                                    API_KEY         : '.....',
-                                    inputInitHeight : window.script_js_vars.inputInitHeight }
-        assert.propEqual(window.script_js_vars, expected_script_js_vars)
-    })
 
     QUnit.test('test createChatLi ability to send messages',  function (assert)  {
         assert.expect(0)
@@ -150,10 +160,10 @@ QUnit.module('sample test', function(hooks) {
 })
 
 
-QUnit.done(function() {
-  console.log('[QUnit.done]: all tests are done, expanding all tests to show messages')
-  document.querySelectorAll('.qunit-assert-list').forEach(function(element) {
-    element.classList.remove('qunit-collapsed');
-
-  });
-});
+// QUnit.done(function() {
+//   console.log('[QUnit.done]: all tests are done, expanding all tests to show messages')
+//   document.querySelectorAll('.qunit-assert-list').forEach(function(element) {
+//     element.classList.remove('qunit-collapsed');
+//
+//   });
+//});

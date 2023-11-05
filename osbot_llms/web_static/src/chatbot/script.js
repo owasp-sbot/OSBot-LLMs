@@ -1,22 +1,24 @@
-var chatbotToggler = document.querySelector(".chatbot-toggler");
-var closeBtn       = document.querySelector(".close-btn");
-var chatbox        = document.querySelector(".chatbox");
-var chatInput      = document.querySelector(".chat-input textarea");
-var sendChatBtn    = document.querySelector(".chat-input span");
+var get_script_js_vars = () => {
+    var chatbotToggler = document.querySelector(".chatbot-toggler");
+    var closeBtn       = document.querySelector(".close-btn");
+    var chatbox        = document.querySelector(".chatbox");
+    var chatInput      = document.querySelector(".chat-input textarea");
+    var sendChatBtn    = document.querySelector(".chat-input span");
 
-var userMessage = null; // Variable to store user's message
-var API_KEY = "....."
-var inputInitHeight = chatInput?.scrollHeight;
+    var userMessage = null; // Variable to store user's message
+    var API_KEY = "....."
+    var inputInitHeight = chatInput?.scrollHeight;
 
 
-window.script_js_vars = {
-    chatbox         : chatbox        ,
-    chatInput       : chatInput      ,
-    sendChatBtn     : sendChatBtn    ,
-    userMessage     : userMessage    ,
-    API_KEY         : API_KEY        ,
-    inputInitHeight : inputInitHeight
+    return {
+        chatbox         : chatbox        ,
+        chatInput       : chatInput      ,
+        sendChatBtn     : sendChatBtn    ,
+        userMessage     : userMessage    ,
+        API_KEY         : API_KEY        ,
+        inputInitHeight : inputInitHeight
 
+    }
 }
 
 var createChatLi = (message, className) => {
@@ -76,21 +78,22 @@ var handleChat = () => {
     }, 600);
 }
 
-chatInput?.addEventListener("input", () => {
-    // Adjust the height of the input textarea based on its content
-    chatInput.style.height = `${inputInitHeight}px`;
-    chatInput.style.height = `${chatInput.scrollHeight}px`;
-});
-
-chatInput?.addEventListener("keydown", (e) => {
-    // If Enter key is pressed without Shift key and the window 
-    // width is greater than 800px, handle the chat
-    if(e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
-        e.preventDefault();
-        handleChat();
-    }
-});
-
-sendChatBtn?.addEventListener("click", handleChat);
+//todo: add back these inside the class
+// chatInput?.addEventListener("input", () => {
+//     // Adjust the height of the input textarea based on its content
+//     chatInput.style.height = `${inputInitHeight}px`;
+//     chatInput.style.height = `${chatInput.scrollHeight}px`;
+// });
+//
+// chatInput?.addEventListener("keydown", (e) => {
+//     // If Enter key is pressed without Shift key and the window
+//     // width is greater than 800px, handle the chat
+//     if(e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
+//         e.preventDefault();
+//         handleChat();
+//     }
+// });
+//
+// sendChatBtn?.addEventListener("click", handleChat);
 //closeBtn.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
 //chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
