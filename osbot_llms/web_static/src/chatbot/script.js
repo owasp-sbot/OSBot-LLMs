@@ -1,12 +1,12 @@
-const chatbotToggler = document.querySelector(".chatbot-toggler");
-const closeBtn       = document.querySelector(".close-btn");
-const chatbox        = document.querySelector(".chatbox");
-const chatInput      = document.querySelector(".chat-input textarea");
-const sendChatBtn    = document.querySelector(".chat-input span");
+var chatbotToggler = document.querySelector(".chatbot-toggler");
+var closeBtn       = document.querySelector(".close-btn");
+var chatbox        = document.querySelector(".chatbox");
+var chatInput      = document.querySelector(".chat-input textarea");
+var sendChatBtn    = document.querySelector(".chat-input span");
 
-let userMessage = null; // Variable to store user's message
-const API_KEY = "....."
-const inputInitHeight = chatInput?.scrollHeight;
+var userMessage = null; // Variable to store user's message
+var API_KEY = "....."
+var inputInitHeight = chatInput?.scrollHeight;
 
 
 window.script_js_vars = {
@@ -19,9 +19,7 @@ window.script_js_vars = {
 
 }
 
-document.aaa = 13
-
-const createChatLi = (message, className) => {
+var createChatLi = (message, className) => {
     // Create a chat <li> element with passed message and className
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", `${className}`);
@@ -31,7 +29,7 @@ const createChatLi = (message, className) => {
     return chatLi; // return chat <li> element
 }
 
-const generateResponse = (chatElement) => {
+var generateResponse = (chatElement) => {
     const API_URL = "https://api.openai.com/v1/chat/completions";
     const messageElement = chatElement.querySelector("p");
 
@@ -57,7 +55,7 @@ const generateResponse = (chatElement) => {
     }).finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
 }
 
-const handleChat = () => {
+var handleChat = () => {
     userMessage = chatInput.value.trim(); // Get user entered message and remove extra whitespace
     if(!userMessage) return;
 
