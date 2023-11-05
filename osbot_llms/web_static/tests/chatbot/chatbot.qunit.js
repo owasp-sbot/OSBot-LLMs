@@ -150,7 +150,7 @@ QUnit.module('Chatbot control tests', function(hooks) {
         chatbox        = document.querySelector(".chatbox");
         chatbox.append(createChatLi("!!this is a message from the test", "outgoing"))
         chatbox.append(createChatLi("this is a reply", "incoming"))
-        chatbox.append(createChatLi("....another user quesiton", "outgoing"))
+        chatbox.append(createChatLi("....another user question", "outgoing"))
     })
 
     QUnit.test('confirm jquery is loaded', function (assert) {
