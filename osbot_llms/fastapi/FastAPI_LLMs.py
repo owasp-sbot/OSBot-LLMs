@@ -66,11 +66,6 @@ class FastAPI_LLMs:
         path_name          = "static"
         self.app().mount(path_static, StaticFiles(directory=path_static_folder), name=path_name)
 
-        path_tests_static        = "/static-tests"
-        path_tests_static_folder = self.path_static_tests_folder()
-        path_tests_name          = "static_tests"
-        self.app().mount(path_tests_static, StaticFiles(directory=path_tests_static_folder), name=path_tests_name)
-
     def setup_routes(self):
         Router_Open_AI(self.app())
         return self

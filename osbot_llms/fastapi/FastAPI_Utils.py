@@ -9,8 +9,7 @@ FAST_API_DEFAULT_ROUTES         = [ { 'http_methods': ['GET','HEAD'], 'http_path
                                     { 'http_methods': ['GET','HEAD'], 'http_path': '/docs/oauth2-redirect' , 'method_name': 'swagger_ui_redirect'  },
                                     { 'http_methods': ['GET','HEAD'], 'http_path': '/redoc'                , 'method_name': 'redoc_html'           }]
 FAST_API_LLMS_DEFAULT_ROUTES    = [ { 'http_methods': ['GET'       ], 'http_path': '/'                     , 'method_name': 'redirect_to_docs'     }]
-FAST_API_LLMS_STATIC_ROUTES     = [ { 'http_methods': ['GET','HEAD'], 'http_path': '/static'               , 'method_name': 'static'               },
-                                    { 'http_methods': ['GET','HEAD'], 'http_path': '/static-tests'         , 'method_name': 'static_tests'         }]
+FAST_API_LLMS_STATIC_ROUTES     = [ { 'http_methods': ['GET','HEAD'], 'http_path': '/static'               , 'method_name': 'static'               }]
 
 def fastapi_routes(router, include_default=False):
     routes = []

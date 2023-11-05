@@ -2,7 +2,7 @@ QUnit.module('sample test', function(hooks) {
 
     QUnit.test('confirm that chatbot.html and script.js loads ok', function (assert) {
         var done = assert.async();
-        var virtual_path = "/static/chatbot"                          // this works in qunit in browser at http://localhost:8000/static-tests/chatbot/test-chatbot.html
+        var virtual_path = "/static/src/chatbot"                          // this works in qunit in browser at http://localhost:8000/static-tests/chatbot/test-chatbot.html
         var page_path = `${virtual_path}/chatbot.html`
         var div_id    = 'chatbot_div'
         $chatbot_div  = $(`<div id='${div_id}'>`)
@@ -56,12 +56,22 @@ QUnit.module('sample test', function(hooks) {
         assert.expect(0)
         chatbox.append(createChatLi("this is a message from the test", "outgoing"))
         chatbox.append(createChatLi("this is a reply", "incoming"))
-        chatbox.append(createChatLi("another user quesiton", "outgoing"))
+        chatbox.append(createChatLi("....another user quesiton", "outgoing"))
     })
 
-    QUnit.test('confirm jquery is loaded', function (assert) {
-        assert.equal($.fn.jquery, '3.7.1')
+    QUnit.test('confirm jquery is loaded',  function (assert) {
+        jquery_version = '3.7.1'
+        assert.equal($.fn.jquery, jquery_version,`confirmed that jQuery version is ${jquery_version}` )
         //console.log(document.location.href)
         //console.log('asdaaa')
     })
 })
+
+
+QUnit.done(function() {
+  console.log('all tests are done, expanding all tests to show messages')
+  document.querySelectorAll('.qunit-assert-list').forEach(function(element) {
+    element.classList.remove('qunit-collapsed');
+
+  });
+});

@@ -104,7 +104,7 @@ class test_FastAPI_LLMs(TestCase):
 
     def test_path_static_folder(self):
         path_static_folder = self.fastapi_llms.path_static_folder()
-        file_index_html    = path_combine(path_static_folder, 'index.html')
+        file_index_html    = path_combine(path_static_folder, 'src/simple/index.html')
         assert folder_exists(path_static_folder)
         assert file_exists  (file_index_html)
 
@@ -117,7 +117,7 @@ class test_FastAPI_LLMs(TestCase):
         #         print(route.app.get_response('/index.html', scope)) # todo: figure out how to get a scope object
         #         pprint(dir(route.app))
 
-        file_name = 'index.html'
+        file_name = 'src/simple/index.html'
         file_path = path_combine(self.fastapi_llms.path_static_folder(), file_name)
         response  = self.test_client.get(f'/static/{file_name}')
 
