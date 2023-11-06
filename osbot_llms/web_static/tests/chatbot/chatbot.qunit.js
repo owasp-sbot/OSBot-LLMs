@@ -14,6 +14,7 @@ QUnit.module('Chatbot control tests', function(hooks) {
         this.div_id    = 'chatbot_div'
         this.$chatbot_div  = $(`<div id='${this.div_id}'>`)
         this.$chatbot_div.appendTo('body')
+
         this.$chatbot_div.load(page_path, function(response, status, xhr) {
             this_closure.response     = response
             this_closure.status       = status
@@ -24,8 +25,6 @@ QUnit.module('Chatbot control tests', function(hooks) {
                 done()
             });
         })
-
-
      })
 
     hooks.after(function(assert) {
@@ -48,12 +47,13 @@ QUnit.module('Chatbot control tests', function(hooks) {
         assert.propEqual(script_js_vars, expected_script_js_vars)
     })
 
-    QUnit.skip('check chatbot.js file', function(assert) {
-        assert.ok(typeof Chatbot === 'function', 'Chatbot is a function'); // Classes are functions behind the scenes.
-        assert.ok(Chatbot.prototype, 'Chatbot has a prototype'); // Classes should have a prototype.
-        assert.ok(Chatbot.prototype.constructor === Chatbot, 'Chatbot prototype constructor is Chatbot itself'); // The constructor should be the class itself.
+    // QUnit.skip('check chatbot.js file', function(assert) {
+    //     assert.ok(typeof Chatbot === 'function', 'Chatbot is a function'); // Classes are functions behind the scenes.
+    //     assert.ok(Chatbot.prototype, 'Chatbot has a prototype'); // Classes should have a prototype.
+    //     assert.ok(Chatbot.prototype.constructor === Chatbot, 'Chatbot prototype constructor is Chatbot itself'); // The constructor should be the class itself.
+    //
+    // })
 
-    })
     QUnit.test('check text contents and attributes', function(assert) {
         var $chatbotDiv = this.$chatbot_div;
 

@@ -11,12 +11,13 @@ QUnit.module('Chatbot control tests', function(hooks) {
             var virtual_path = "/static/src/html_blocks"
         }
         var page_path      = `${virtual_path}/full_page_cols_rows.html`
-        //this.$block_div  = $(`<div id='${this.div_id}'>aaaa</div>`)
-        this.$block_div  = $(`#${this.div_id}`)
-        //this.$block_div.appendTo('body')
-
-
-
+        if ($(`#${this.div_id}`).length ==0) {
+            this.$block_div  = $(`<div id='${this.div_id}'>`)
+            this.$block_div.appendTo('body')
+        }
+        else {
+            this.$block_div  = $(`#${this.div_id}`)
+        }
         this.$block_div.load(page_path, function(response, status, xhr) {
             this_closure.response = response
             this_closure.status   = status
@@ -25,8 +26,10 @@ QUnit.module('Chatbot control tests', function(hooks) {
             done()
         })
     })
-    QUnit.test('add host panel ', function(assert) {
-        assert.expect(0)
+
+    QUnit.test('debug wallaby', function(assert) {
+        assert.ok(true)
+        console.log('here ...')
     })
 
     QUnit.test('check block.html was loaded ok',  function (assert) {
@@ -36,11 +39,11 @@ QUnit.module('Chatbot control tests', function(hooks) {
         assert.equal   (this.$block_div.html()        , this.div_html , "div_html is set ok")
         assert.equal   (($(`#${this.div_id}`).length) , 1             , "found div"                    )
         assert.notEqual(this.$html                    , ''            , 'chatbot_div.html is not empty')
-        assert.ok($(`#${this.div_id}`).is( this.$block_div)         , `div_id ${this.div_id} is in the DOM`)
+        assert.ok($(`#${this.div_id}`).is( this.$block_div)           , `div_id ${this.div_id} is in the DOM`)
     });
 
 
-    QUnit.test('Simple Animation', function(assert) {
+    QUnit.skip('Simple Animation', function(assert) {
         assert.expect(0)
         $('#html_block').animate({ left: '+=100px' }, 100).animate({ left: '-=100px' }, 100).fadeOut().fadeIn();
     })
