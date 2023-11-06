@@ -9,7 +9,7 @@
             margin: 0;
         }
         .container-fluid {
-            min-height: 100vh; /* Minimum height to fill the viewport */
+            min-height: 100%; /* Minimum height to fill the parent */
             display: flex; /* Enable flexbox */
             flex-direction: column; /* Stack children vertically */
             padding: 0;
@@ -108,13 +108,12 @@
             </div>
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $('<div>').load('chatbot.html').appendTo('body')
+    </script>
   </body>
 </html>
 
 
 
-<!--<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <script>
-            $('<div>').load('chatbot.html').appendTo('body')
-        </script> -->

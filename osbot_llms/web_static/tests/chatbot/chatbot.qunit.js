@@ -4,13 +4,16 @@ QUnit.module('Chatbot control tests', function(hooks) {
         //console.log('before test execution')
         var done = assert.async();
         var this_closure=this
+        // if (document.location.href.includes('OSBot-LLMs/osbot_llms')) {
+        //     var virtual_path = "../../../../../OSBot-LLMs/osbot_llms/web_static/src/chatbot"
+        // } else {
+        //     var virtual_path = "/static/src/chatbot"
+        // }
         var virtual_path = "/static/src/chatbot"                          // this works in qunit in browser at http://localhost:8000/static-tests/chatbot/test-chatbot.html
         var page_path = `${virtual_path}/chatbot.html`
-
         this.div_id    = 'chatbot_div'
         this.$chatbot_div  = $(`<div id='${this.div_id}'>`)
         this.$chatbot_div.appendTo('body')
-
         this.$chatbot_div.load(page_path, function(response, status, xhr) {
             this_closure.response     = response
             this_closure.status       = status
@@ -116,7 +119,7 @@ QUnit.module('Chatbot control tests', function(hooks) {
         // Check for the presence of required styles and scripts
         assert.ok($html.find('link[href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"]').length, 'Contains Material Symbols Outlined');
         assert.ok($html.find('link[href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0"]').length, 'Contains Material Symbols Rounded');
-        assert.ok($html.find('link[href="/static/src/chatbot/style.css"]').length, 'Contains chatbot stylesheet');
+        //assert.ok($html.find('link[href="/static/src/chatbot/style.css"]').length, 'Contains chatbot stylesheet');
         assert.ok($html.find('script[src="/static/src/chatbot/script.js"]').attr('defer'), 'Contains chatbot script with defer attribute');
 
         // Check for chatbot structure

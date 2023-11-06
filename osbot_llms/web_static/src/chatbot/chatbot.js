@@ -3,6 +3,7 @@ export default class Chatbot {
         $(targetDiv).load('/static/src/chatbot/chatbot-control.html', () => {
             const event = new Event('chatbot-module-loaded');
             document.dispatchEvent(event);
+            console.log(`dispatched Event: ${event.type}`)
         });
     }
 
@@ -15,7 +16,7 @@ export default class Chatbot {
         const $chatbox = document.querySelector(".chatbox");
         $chatbox.append(createChatLi(message,'outgoing'))
     }
-    send_test_messages(){
+    test_messages(){
         this.send_message_incoming('1st incomming message')
         this.send_message_outgoing('1st outgoing message')
         this.send_message_incoming('2nd incomming message')
