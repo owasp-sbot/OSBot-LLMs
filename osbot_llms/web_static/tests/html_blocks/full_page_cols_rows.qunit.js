@@ -1,4 +1,4 @@
-QUnit.module('Chatbot control tests', function(hooks) {
+QUnit.module('full_page_cols_rows.html', function(hooks) {
 
     hooks.before(function(assert) {
         var done         = assert.async();
