@@ -1,18 +1,12 @@
 import pytest
-from unittest                                       import TestCase
-
 import requests
-from dotenv                                         import load_dotenv
-from osbot_utils.utils.Misc import obj_info
-
-from osbot_llms.apis.open_ai.API_Open_AI import API_Open_AI
-from osbot_llms.lambdas.open_ai.handler import run
-from osbot_utils.utils.Http import GET, GET_json, current_host_online, current_host_offline
-from osbot_aws.helpers.Lambda_Layers_OSBot          import Lambda_Layers_OSBot
-from osbot_utils.utils.Dev                          import pprint
-from osbot_aws.apis.shell.Shell_Client              import Shell_Client
-from osbot_aws.apis.shell.Lambda_Shell              import Lambda_Shell
-from osbot_aws.deploy.Deploy_Lambda                 import Deploy_Lambda
+from unittest                                   import TestCase
+from dotenv                                     import load_dotenv
+from osbot_llms.apis.open_ai.API_Open_AI        import API_Open_AI
+from osbot_llms.lambdas.open_ai.handler         import run
+from osbot_utils.utils.Http                     import  current_host_offline
+from osbot_aws.helpers.Lambda_Layers_OSBot      import Lambda_Layers_OSBot
+from osbot_aws.deploy.Deploy_Lambda             import Deploy_Lambda
 
 
 class test_lambda_open_ai(TestCase):
@@ -32,7 +26,7 @@ class test_lambda_open_ai(TestCase):
 
     def test_create__lambda_function(self):
         if self.deploy_lambda.exists():         # for now, don't recreate the lambda function since it takes a little while and it is not adding a lot of value
-           return
+          return
         #self.deploy_lambda.delete()
         api_key              = API_Open_AI().api_key()
         handler              = 'osbot_llms/lambdas/open_ai/run.sh'
