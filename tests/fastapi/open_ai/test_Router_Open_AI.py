@@ -1,17 +1,9 @@
-from unittest import TestCase
-
-import pytest
-from fastapi import APIRouter
-from starlette.routing import Router
-
-from osbot_llms.apis.open_ai.Mock_API_Open_AI import Mock_API_Open_AI
-from osbot_llms.fastapi.FastAPI_Route import FastAPI_Router
-from osbot_llms.fastapi.open_ai.models.GPT_Prompt import GPT_Prompt_Simple, GPT_Answer, GPT_Prompt_With_System
-from osbot_utils.utils.Dev import pprint
-
-from osbot_llms.fastapi.open_ai.Router_Open_AI import Router_Open_AI
-from osbot_utils.testing.Duration import Duration
-from osbot_utils.utils.Objects import obj_base_classes_names, obj_base_classes
+from unittest                                   import TestCase
+from fastapi                                    import APIRouter
+from starlette.routing                          import Router
+from osbot_llms.fastapi.FastAPI_Route           import FastAPI_Router
+from osbot_llms.fastapi.open_ai.Router_Open_AI  import Router_Open_AI
+from osbot_utils.utils.Objects                  import  obj_base_classes
 
 
 class test_Router_Open_AI(TestCase):

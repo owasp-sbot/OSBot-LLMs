@@ -2,7 +2,10 @@ from os import getenv
 
 import openai
 from dotenv import load_dotenv
-from openai import ChatCompletion
+from openai import OpenAI
+from openai.types.chat import ChatCompletion
+
+#from openai import ChatCompletion
 
 from osbot_utils.decorators.methods.cache_on_self import cache_on_self
 from osbot_utils.utils.Dev import pprint
@@ -32,7 +35,8 @@ class API_Open_AI:
                       stream      = self.stream          )
         if self.print_create_kwargs:                            # todo : remove
             pprint(kwargs)
-        response = ChatCompletion.create(**kwargs)
+        client = OpenAI(api_key=self.api_key())
+        response = client.chat.completions.create(**kwargs)
 
         return self.parse_response(response)
 
@@ -40,13 +44,12 @@ class API_Open_AI:
         return [{"role": "user", "content": 'Hi'}]
 
     def parse_response(self, response):
-        partial_message = ""
         for chunk in response:
-            if len(chunk['choices'][0]['delta']) != 0:
-                new_content = chunk['choices'][0]['delta']['content']
-                yield new_content
-                #partial_message = partial_message + new_content
-                #yield partial_message
+            choices = chunk.choices
+            if len(choices) == 1:       # todo: add support for multiple choices
+                choice      = choices[0]
+                delta       = choice.delta
+                yield delta.content
 
     def setup(self):
         openai.api_key = self.api_key()
@@ -63,7 +66,8 @@ class API_Open_AI:
         full_answer = ""
 
         for item in generator:
-            full_answer += item
+            if item is not None:
+                full_answer += item
         return full_answer
 
     def ask_using_system_prompts(self, user_prompt, system_prompts=None, user_history=None, async_mode=False):

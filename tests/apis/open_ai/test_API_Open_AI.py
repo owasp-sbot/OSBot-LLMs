@@ -1,5 +1,7 @@
 from unittest import TestCase
 
+from osbot_utils.testing.Duration import Duration
+
 from osbot_llms.apis.open_ai.API_Open_AI import API_Open_AI
 from osbot_llms.apis.open_ai.Mock_API_Open_AI import Mock_API_Open_AI, mock_api_open_ai
 from osbot_utils.utils.Dev import pprint
@@ -38,4 +40,23 @@ class test_API_Open_AI(TestCase):
         answers = []
         for answer in generator:
             answers.append(answer)
-        assert answers == ['', '123', '456', '789', '10']
+        assert answers == ['', '123', '456', '789', '10', None]
+
+    def test__multiple_models(self):
+        def invoke_model(model):
+            with Duration(prefix=f'model: {model} took'):
+            #print(f"testing model: {model}")
+                api_open_ai = API_Open_AI()
+                api_open_ai.model = model
+                question = '2+2 only reply with the answer'
+                answer = api_open_ai.ask_one_question_no_history(question)
+                assert answer == '4'
+        print()
+        models = ['gpt-3.5-turbo', 'gpt-3.5-turbo-16k', 'gpt-4',
+                  'gpt-4-1106-preview', 'gpt-4-vision-preview']
+        #models = ['gpt-4-32k', 'gpt-4-32k-0613'] # DC in 6 Nov 2023, I'm getting the error: "does not exist or you do not have access to it"
+        # 'gpt-4-vision-preview'] # todo: add support for images
+        for model in models:
+            invoke_model(model)
+
+

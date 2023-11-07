@@ -32,7 +32,7 @@ class test_lambda_open_ai(TestCase):
 
     def test_create__lambda_function(self):
         if self.deploy_lambda.exists():         # for now, don't recreate the lambda function since it takes a little while and it is not adding a lot of value
-            return
+           return
         #self.deploy_lambda.delete()
         api_key              = API_Open_AI().api_key()
         handler              = 'osbot_llms/lambdas/open_ai/run.sh'
@@ -72,6 +72,9 @@ class test_lambda_open_ai(TestCase):
         #response = self.aws_lambda.invoke()
         response = self.aws_lambda.invoke_return_logs()
         execution_logs = response.get('execution_logs')
+        #pprint(self.aws_lambda.info())
+        #print()
+        #print(execution_logs)
         assert 'Temporary Redirect\n' in execution_logs
 
 
