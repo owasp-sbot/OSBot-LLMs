@@ -38,7 +38,7 @@ export default class Div {
                                 top             : null,
                                 width           : null,
                                 z_index         : null}}
-    inner_html(depth) {
+    inner_html(depth=0) {
         var html = ''
         for (const index in this.elements) {
             const element = this.elements[index]
@@ -67,7 +67,6 @@ export default class Div {
         // todo: Add other attributes
 
         // Close the opening tag, insert inner HTML, and close the tag
-        //html += `>${this.inner_html()}</${this.tag_name}>`;
         const indent = ' '.repeat(depth * 4)
         let html = ''
         html = indent + `<${this.tag_name} id="${this.id}"`;
@@ -76,9 +75,9 @@ export default class Div {
         }
         html += '>\n'
         html += this.inner_html(depth)
-        //html += '\n'
         html += indent + `</${this.tag_name}>`;
         html += '\n'
+        console.log(this.inner_html(depth))
         return html;
     }
 
