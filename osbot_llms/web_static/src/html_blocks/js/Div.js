@@ -1,14 +1,12 @@
-export default class Div {
-    constructor(id=null) {
-        this.styles     = this.default_styles()
-        this.tag_name   = 'div'
-        this.id         = id || this.generate_random_id();
-        this.elements   = []
-    }
+import Html_Tag from './Html_Tag.js'
 
-    generate_random_id() {
-        const random_part = Math.random().toString(36).substring(2, 7); // Generate a random string.
-        return `${this.tag_name.toLowerCase()}_${random_part}`;
+export default class Div extends Html_Tag {
+    constructor(id=null) {
+        super('div', id);
+        //this.styles     = this.default_styles()
+        //this.tag_name   = 'div'
+        //this.id         = id || this.generate_random_id();
+        //this.elements   = []
     }
 
     add_element(element) {
@@ -77,7 +75,6 @@ export default class Div {
         html += this.inner_html(depth)
         html += indent + `</${this.tag_name}>`;
         html += '\n'
-        console.log(this.inner_html(depth))
         return html;
     }
 

@@ -1,13 +1,21 @@
 import Div, {div_create_box} from '../../../src/html_blocks/js/Div.js';
+import Html_Tag from '../../../src/html_blocks/js/Html_Tag.js';
 
 QUnit.module('Div', function(hooks) {
 
     hooks.before(function (assert) {
-        window.Div = Div
+        window.Div = Div                                    // expose the Div object in the browser's window (to make it easier to test and debug from a browser)
     })
 
     // working test (which is the only work that works in real-time in Wallaby)
-    QUnit.test('Div - add_element', function (assert) {
+
+    QUnit.test('_should be an instance and inherit from Html_Tag', function(assert) {
+        const divInstance = new Div();
+        assert.ok(divInstance instanceof Html_Tag, 'Div is an instance of Html_Tag');
+        assert.ok(Div.prototype instanceof Html_Tag, 'Div.prototype is an instance of Html_Tag');
+  });
+
+    QUnit.test('.add_element', function (assert) {
         const div = new Div('parent')                                             // parent div
         const div_child_1 = new Div('child_1')                                            // add a div to the parent div
         const expected_inner_html_1 =
@@ -112,7 +120,7 @@ const expected_html_3 =
         // console.log(box.html())
     })
 
-    QUnit.test('Div - Create and show div on QUnit page', function (assert) {
+    QUnit.test('.Create and show div on QUnit page', function (assert) {
         const div = div_create_box()
         //div.dom_element().html('Div - Create and show div on QUnit page')
         const expected_html = `<div id="${div.id}" style="border: 10px solid blue; bottom: 40px; left: 40px; position: absolute; right: 40px; top: 40px;">\n</div>\n`
@@ -120,7 +128,7 @@ const expected_html_3 =
         assert.equal(actual_html, expected_html, "html matches expected")
     })
 
-    QUnit.test('Div.add_to', function (assert) {
+    QUnit.test('.add_to', function (assert) {
         const div_id = 'an_id'
         const target = $(`<div id='${div_id}'>`)[0]                                     // todo: remove jQuery dependency (once Div API is more mature)
         assert.equal(target.outerHTML, `<div id="${div_id}"></div>`)
@@ -142,7 +150,7 @@ const expected_html_3 =
         assert.equal($(`#${div_id}`).html(), undefined)
     });
 
-    QUnit.test('Div.default_styles()',  function (assert) {
+    QUnit.test('.default_styles()',  function (assert) {
         const div = new Div();
 
         const random_styles = {};                                                          // Generate random values for attributes and set them
@@ -162,7 +170,7 @@ const expected_html_3 =
         assert.equal(actual_html, expected_html, "Html generated with all attributes matches the expected output");
     })
 
-    QUnit.test('Div.constructor', function (assert) {
+    QUnit.test('.constructor', function (assert) {
         const div           = new Div()
         const random_id     = div.id
         const expected_html = `<div id="${random_id}">\n</div>\n`
@@ -185,7 +193,7 @@ const expected_html_3 =
         assert.equal(div.html(),expected_html)
     });
 
-    QUnit.test('Div.set_value', function (assert) {
+    QUnit.test('.set_value', function (assert) {
         const div       =   new Div()
         const div_styles = div.styles
         div.set_style('top', '10px')
