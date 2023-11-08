@@ -1,23 +1,14 @@
 import Html_Tag from './Html_Tag.js'
 
 export default class Div extends Html_Tag {
-    constructor(id=null) {
-        super('div', id);
-        //this.styles     = this.default_styles()
-        //this.tag_name   = 'div'
-        //this.id         = id || this.generate_random_id();
-        //this.elements   = []
+    constructor({id=null}={}) {
+        super({tag_name:'div', id:id });
     }
-
-
-
-
-
-
 }
 
+// todo: move this into a components section as (for example) "Div_Box" component
 export function div_create_box(id=null, margin=40, border='10px solid blue')  {
-    const div = new Div(id)
+    const div = new Div({id:id})
     div.set_styles({'top'    : `${margin}px`   ,
                     'bottom' : `${margin}px`   ,
                     'right'  : `${margin}px`   ,

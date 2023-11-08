@@ -1,13 +1,15 @@
 export default class Html_Tag {
-    constructor(tagName='tag', id=null) {
-        this.styles   = this.default_styles();              // set default styles
-        this.tag_name = tagName;
-        this.id       = id || this.generate_random_id();    // ensure there is alwasys an id
-        this.elements = [];
+    constructor({tag_name='tag', id=null}={}) {
+        this.styles      = this.default_styles();              // set default styles
+        this.html_config = this.default_html_config();         // set default html config
+        this.tag_name    = tag_name;
+        this.id          = id || this.generate_random_id();    // ensure there is alwasys an id
+        this.elements    = [];
     }
 
     add_element(element) {
         this.elements.push(element)
+        return true
     }
 
     add_to(selector) {
@@ -20,6 +22,9 @@ export default class Html_Tag {
     add_to_dom_element(dom_element) {
         dom_element.insertAdjacentHTML('beforeend', this.html());
     }
+
+    default_html_config() { return { new_line_before_elements: true,
+                                     new_line_after_final_tag: true }}
 
     default_styles() { return { background_color: null,
                                 border          : null,
@@ -38,7 +43,7 @@ export default class Html_Tag {
         return `${this.tag_name.toLowerCase()}_${random_part}`;
     }
 
-        html(depth=0) {
+    html(depth=0) {
         let styleString = '';
 
         // Check if `this.style` exists and has properties
@@ -64,10 +69,15 @@ export default class Html_Tag {
         if (styleString.length > 0) {
             html += ` style="${styleString}"`;
         }
-        html += '>\n'
+        if (this.html_config.new_line_before_elements) {
+            html += '>\n' }
+        else {
+            html += '>'   }
+
         html += this.inner_html(depth)
         html += indent + `</${this.tag_name}>`;
-        html += '\n'
+        if (this.html_config.new_line_after_final_tag) {
+            html += '\n' }
         return html;
     }
 

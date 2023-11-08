@@ -10,7 +10,7 @@ QUnit.module('Div', function(hooks) {
     // working test (which is the only work that works in real-time in Wallaby)
 
     QUnit.test('_should be an instance and inherit from Html_Tag', function(assert) {
-        const divInstance = new Div();
+        const divInstance = new Div()
         assert.ok(divInstance instanceof Html_Tag, 'Div is an instance of Html_Tag');
         assert.ok(Div.prototype instanceof Html_Tag, 'Div.prototype is an instance of Html_Tag');
   });

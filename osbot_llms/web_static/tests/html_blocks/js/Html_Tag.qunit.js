@@ -11,6 +11,8 @@ QUnit.module('Html_Tag', function(hooks) {
         const random_id     = tag.id
         const expected_html = `<tag id="${random_id}">\n</tag>\n`
 
+        assert.equal(tag.tag_name, 'tag')
+        assert.ok(tag.id.startsWith('tag_'), 'tag.id should start with "tag_"');
         assert.ok(tag instanceof Html_Tag)
         assert.equal(tag.tag_name, 'tag')
         assert.propEqual(tag.styles, { background_color: null,
@@ -25,13 +27,16 @@ QUnit.module('Html_Tag', function(hooks) {
                                        top             : null,
                                        width           : null,
                                        z_index         : null})
-
+        assert.propEqual(tag.html_config, { new_line_before_elements: true,
+                                            new_line_after_final_tag: true})
         assert.equal(tag.html(),expected_html)
     });
 
     QUnit.test('.add_element', function (assert) {
-        const tag = new Html_Tag('tag', 'parent')                                             // parent div
-        const tag_child_1 = new Html_Tag('tag', 'child_1')                                            // add a div to the parent div
+        const tag_id         = 'parent'
+        const tag_child_1_id = 'child_1'
+        const tag            = new Html_Tag({id: tag_id         })                                    // parent div
+        const tag_child_1    = new Html_Tag({id: tag_child_1_id })                                    // add a div to the parent div
         const expected_inner_html_1 =
 `    <tag id="child_1">
     </tag>
@@ -42,12 +47,19 @@ QUnit.module('Html_Tag', function(hooks) {
     </tag>
 </tag>
 `
+        assert.equal(tag.tag_name        , 'tag'         )
+        assert.equal(tag_child_1.tag_name, 'tag'         )
+        assert.equal(tag.id              , tag_id        )
+        assert.equal(tag_child_1.id      , tag_child_1_id)
+
         tag.add_element(tag_child_1)
         assert.propEqual(tag.elements, [tag_child_1])
+        console.log(expected_inner_html_1)
+        console.log(tag.inner_html())
         assert.equal(tag.inner_html(), expected_inner_html_1)
         assert.equal(tag.html(), expected_html_1)
 
-        const tag_child_2 = new Html_Tag('tag', 'child_2')                                           // add another tag to the parent tag
+        const tag_child_2 = new Html_Tag({tag_name:'tag', id:'child_2'})                                           // add another tag to the parent tag
         const expected_inner_html_2 =
 `    <tag id="child_1">
     </tag>
@@ -67,7 +79,7 @@ QUnit.module('Html_Tag', function(hooks) {
         assert.equal(tag.inner_html(), expected_inner_html_2)
         assert.equal(tag.html(), expected_html_2)
 
-        const tag_child_3 = new Html_Tag('tag','child_3')                                            // add another tag to the parent tag
+        const tag_child_3 = new Html_Tag({tag_name:'tag',id:'child_3'})                                            // add another tag to the parent tag
         const expected_inner_html_3 =
 `    <tag id="child_1">
         <tag id="child_3">
@@ -93,7 +105,7 @@ const expected_html_3 =
         assert.equal(tag.inner_html(), expected_inner_html_3)
         assert.equal(tag.html(),expected_html_3)
 
-        const tag_child_4 = new Html_Tag('tag','child_4')                                            // add a child tag to the last child tag
+        const tag_child_4 = new Html_Tag({tag_name:'tag',id:'child_4'})                                            // add a child tag to the last child tag
         const expected_inner_html_4 =
 `    <tag id="child_1">
         <tag id="child_3">
@@ -132,7 +144,7 @@ const expected_html_3 =
         assert.equal($(`#${tag_id}`).html(), undefined, `${tag_id} is undefined`)
         $(`<div id='${tag_id}'>`).appendTo('body')                                      // todo: remove jQuery dependency (once Div API is more mature)
         assert.equal($(`#${tag_id}`).html(), ''       , `${tag_id} is an empty string`)
-        const tag = new Html_Tag('tag', 'an_tag');
+        const tag = new Html_Tag({tag_name:'tag', id:'an_tag'});
         tag.set_style('top', '10px');
         tag.set_style('border', '2px solid');
         const expectedHtml = '<tag id="an_tag" style="border: 2px solid; top: 10px;">\n</tag>\n';        // Expected HTML result
