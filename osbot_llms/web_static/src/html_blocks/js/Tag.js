@@ -69,10 +69,37 @@ export default class Tag {
         return false
     }
 
+    dom_apply_styles() {
+        this.dom_set_styles(this.styles)
+        return self
+    }
     dom_set_style(property, value) {
         if (this.dom()) {
             this.dom().style[property] = value;
         }
+        return this
+    }
+
+    dom_set_styles(styles) {
+        for (let property in styles) {
+            if (styles.hasOwnProperty(property)) {
+                this.dom_set_style(property, styles[property])
+            }
+        }
+        return this
+    }
+    dom_styles(){
+        let style = window.getComputedStyle(this.dom());
+        let styleObject = {};
+
+        // Iterate over all the properties
+        for (let i = 0; i < style.length; i++) {
+            let prop = style[i];
+            let value = style.getPropertyValue(prop);
+            styleObject[prop] = value;
+        }
+
+        return styleObject;
     }
 
     dom_parent() {

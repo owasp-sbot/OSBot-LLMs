@@ -15,14 +15,6 @@ QUnit.module('Div', function(hooks) {
         assert.ok(Div.prototype instanceof Tag, 'Div.prototype is an instance of Html_Tag');
     });
 
-    QUnit.test('.dom_set_style',  function (assert) {
-        const div = div_create_box()
-        div.dom_add()
-        div.dom_remove()
-        window.div_create_box = div_create_box
-        assert.expect(0)
-    })
-
     QUnit.test('.dom , dom_add',  function (assert) {
         const div = div_create_box()
 

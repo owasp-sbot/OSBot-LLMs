@@ -213,6 +213,30 @@ const expected_html_3 =
         assert.equal(tag_styles.top, '10px')
     })
 
+    QUnit.test('.dom_set_styles',  function (assert) {
+        const tag        =   new Tag()
+        assert.equal(tag.dom_add       ()        , true  )
+        assert.equal(tag.dom_styles    ().opacity, 1     )
+        assert.equal(tag.dom_styles    ().top    , 'auto')
+        assert.equal(tag.dom_set_style ('opacity', 0.3     ), tag)
+        assert.equal(tag.dom_set_styles({opacity: 0.3, top:'50px'}) , tag)
+        assert.equal(tag.dom_styles    ().opacity, 0.3   )
+        assert.equal(tag.dom_styles    ().top    , '50px')
+        assert.equal(tag.dom_remove    ()        , true  )
+    })
+
+    QUnit.test('.dom_apply_styles',  function (assert) {
+        const tag        =   new Tag()
+        tag.set_style('top', '10px')
+        tag.dom_add()
+        assert.equal(tag.dom_styles().top, '10px')
+        assert.equal(tag.dom().style.top , '10px')
+        tag.styles.top = '20px'
+        assert.equal(tag.dom().style.top , '10px')
+        tag.dom_apply_styles()
+        assert.equal(tag.dom().style.top, '20px')
+    });
+
     QUnit.test('_should be an instance and inherit from Html_Tag', function(assert) {
         const html_tag = new Tag();
         assert.ok(html_tag instanceof Tag                     , 'Instance created is an instance of Html_Tag');
