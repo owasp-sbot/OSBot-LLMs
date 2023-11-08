@@ -1,4 +1,4 @@
-import Div, {div_create_box} from '../../../src/html_blocks/js/Div.js';
+import Div from '../../../src/html_blocks/js/Div.js';
 import Tag from '../../../src/html_blocks/js/Tag.js';
 
 QUnit.module('Div', function(hooks) {
@@ -16,7 +16,15 @@ QUnit.module('Div', function(hooks) {
     });
 
     QUnit.test('.dom , dom_add',  function (assert) {
-        const div = div_create_box()
+        const margin = 40
+        const border = '10px solid blue'
+        const div = new Div()
+        div.set_styles({'top'    : `${margin}px`   ,
+                        'bottom' : `${margin}px`   ,
+                        'right'  : `${margin}px`   ,
+                        'left'   : `${margin}px`   ,
+                        'border' : border          ,
+                        'position': 'absolute'     })
 
         const expected_html = `<div id="${div.id}" style="border: 10px solid blue; bottom: 40px; left: 40px; position: absolute; right: 40px; top: 40px;">\n</div>\n`
         const actual_html = div.html()

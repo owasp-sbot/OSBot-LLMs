@@ -1,7 +1,8 @@
+
+import 'https://code.jquery.com/jquery-3.7.1.min.js'
 import Tag from "../../../src/html_blocks/js/Tag.js";
 
 QUnit.module('Html_Tag', function(hooks) {
-
     hooks.before(function (assert) {
         //window.Html_Tag = Html_Tag                                        // expose the Div object in the browser's window (to make it easier to test and debug from a browser)
     })

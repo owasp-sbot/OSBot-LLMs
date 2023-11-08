@@ -42,10 +42,10 @@ QUnit.module('full_page_cols_rows.html', function(hooks) {
     });
 
 
-    QUnit.skip('Simple Animation', function(assert) {
-        assert.expect(0)
-        $('#html_block').animate({ left: '+=100px' }, 100).animate({ left: '-=100px' }, 100).fadeOut().fadeIn();
-    })
+    // QUnit.skip('Simple Animation', function(assert) {
+    //     assert.expect(0)
+    //     $('#html_block').animate({ left: '+=100px' }, 100).animate({ left: '-=100px' }, 100).fadeOut().fadeIn();
+    // })
 })
 
 
