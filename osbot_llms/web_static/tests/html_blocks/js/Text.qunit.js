@@ -1,5 +1,5 @@
 import Text  from '../../../src/html_blocks/js/Text.js';
-import Html_Tag from '../../../src/html_blocks/js/Html_Tag.js';
+import Tag from '../../../src/html_blocks/js/Tag.js';
 
 QUnit.module('Text', function(hooks) {
 
@@ -31,20 +31,8 @@ QUnit.module('Text', function(hooks) {
 
     QUnit.test('_should be an instance and inherit from Html_Tag', function(assert) {
         const text = new Text();
-        assert.ok(text instanceof Html_Tag, 'Div is an instance of Html_Tag');
-        assert.ok(Text.prototype instanceof Html_Tag, '.prototype is an instance of Html_Tag');
-        assert.equal(text.tag_name, 'text');
+        assert.ok(text instanceof Tag, 'Div is an instance of Html_Tag');
+        assert.ok(Text.prototype instanceof Tag, '.prototype is an instance of Html_Tag');
+        assert.equal(text.tag, 'text');
     });
-
-
-
 })
-
-
-        // window.tag_create_box = tag_create_box
-        // const box = tag_create_box('an_box', "70")
-        // box.set_style('border', '10px solid red')
-        // box.add_to_dom_element(document.body);
-        //
-        // box.add_element(tag)
-        // console.log(box.html())

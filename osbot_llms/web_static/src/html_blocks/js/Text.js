@@ -1,8 +1,8 @@
-import Html_Tag from './Html_Tag.js'
+import Tag from './Tag.js'
 
-export default class Text extends Html_Tag {
+export default class Text extends Tag {
     constructor({id = null, value=''}={}) {
-        super({tag_name:'text', id:id});
+        super({tag:'text', id:id});
         this.value = value
         this.config()
     }

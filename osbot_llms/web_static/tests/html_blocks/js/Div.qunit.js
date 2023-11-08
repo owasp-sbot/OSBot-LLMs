@@ -1,5 +1,5 @@
 import Div, {div_create_box} from '../../../src/html_blocks/js/Div.js';
-import Html_Tag from '../../../src/html_blocks/js/Html_Tag.js';
+import Tag from '../../../src/html_blocks/js/Tag.js';
 
 QUnit.module('Div', function(hooks) {
 
@@ -11,8 +11,8 @@ QUnit.module('Div', function(hooks) {
 
     QUnit.test('_should be an instance and inherit from Html_Tag', function(assert) {
         const divInstance = new Div()
-        assert.ok(divInstance instanceof Html_Tag, 'Div is an instance of Html_Tag');
-        assert.ok(Div.prototype instanceof Html_Tag, 'Div.prototype is an instance of Html_Tag');
+        assert.ok(divInstance instanceof Tag, 'Div is an instance of Html_Tag');
+        assert.ok(Div.prototype instanceof Tag, 'Div.prototype is an instance of Html_Tag');
   });
 
 

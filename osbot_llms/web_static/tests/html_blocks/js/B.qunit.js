@@ -1,5 +1,5 @@
 import B  from '../../../src/html_blocks/js/B.js';
-import Html_Tag from '../../../src/html_blocks/js/Html_Tag.js';
+import Tag from '../../../src/html_blocks/js/Tag.js';
 
 QUnit.module('B', function(hooks) {
 
@@ -11,9 +11,9 @@ QUnit.module('B', function(hooks) {
 
     QUnit.test('_should be an instance and inherit from Html_Tag', function(assert) {
         const b = new B();
-        assert.ok(b instanceof Html_Tag, 'Div is an instance of Html_Tag');
-        assert.ok(B.prototype instanceof Html_Tag, 'Div.prototype is an instance of Html_Tag');
-        assert.equal(b.tag_name, 'b');
+        assert.ok(b instanceof Tag, 'Div is an instance of Html_Tag');
+        assert.ok(B.prototype instanceof Tag, 'Div.prototype is an instance of Html_Tag');
+        assert.equal(b.tag, 'b');
   });
 
 

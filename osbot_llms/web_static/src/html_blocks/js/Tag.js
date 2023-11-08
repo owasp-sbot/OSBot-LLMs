@@ -1,8 +1,8 @@
-export default class Html_Tag {
-    constructor({tag_name='tag', id=null}={}) {
+export default class Tag {
+    constructor({tag: tag = 'tag', id=null}={}) {
         this.styles      = this.default_styles();              // set default styles
         this.html_config = this.default_html_config();         // set default html config
-        this.tag_name    = tag_name;
+        this.tag         = tag;
         this.id          = id || this.generate_random_id();    // ensure there is alwasys an id
         this.elements    = [];
     }
@@ -40,7 +40,7 @@ export default class Html_Tag {
                                 z_index         : null}}
     generate_random_id() {
         const random_part = Math.random().toString(36).substring(2, 7); // Generate a random string.
-        return `${this.tag_name.toLowerCase()}_${random_part}`;
+        return `${this.tag.toLowerCase()}_${random_part}`;
     }
 
     html(depth=0) {
@@ -65,7 +65,7 @@ export default class Html_Tag {
         // Close the opening tag, insert inner HTML, and close the tag
         const indent = ' '.repeat(depth * 4)
         let html = ''
-        html = indent + `<${this.tag_name} id="${this.id}"`;
+        html = indent + `<${this.tag} id="${this.id}"`;
         if (styleString.length > 0) {
             html += ` style="${styleString}"`;
         }
@@ -75,7 +75,7 @@ export default class Html_Tag {
             html += '>'   }
 
         html += this.inner_html(depth)
-        html += indent + `</${this.tag_name}>`;
+        html += indent + `</${this.tag}>`;
         if (this.html_config.new_line_after_final_tag) {
             html += '\n' }
         return html;

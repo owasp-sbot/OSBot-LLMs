@@ -1,8 +1,8 @@
-import Html_Tag from './Html_Tag.js'
+import Tag from './Tag.js'
 
-export default class Div extends Html_Tag {
+export default class Div extends Tag {
     constructor({id=null}={}) {
-        super({tag_name:'div', id:id });
+        super({tag:'div', id:id });
     }
 }
 
