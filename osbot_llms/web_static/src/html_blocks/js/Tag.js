@@ -1,26 +1,24 @@
 export default class Tag {
     constructor({tag: tag = 'tag', id=null}={}) {
-        this.styles      = this.default_styles();              // set default styles
-        this.html_config = this.default_html_config();         // set default html config
-        this.tag         = tag;
-        this.id          = id || this.generate_random_id();    // ensure there is alwasys an id
-        this.elements    = [];
+        this.styles         = this.default_styles();              // set default styles
+        this.html_config    = this.default_html_config();         // set default html config
+        this.element_dom    = null
+        this.element_parent = null
+        this.parent_dom     = null
+        this.tag            = tag
+        this.id             = id || this.generate_random_id();    // ensure there is alwasys an id
+        this.elements       = [];
+    }
+
+    add(element) {
+        this.add_element(element)
+        return this
     }
 
     add_element(element) {
+        element.element_parent = this
         this.elements.push(element)
         return true
-    }
-
-    add_to(selector) {
-        const targetElements = document.querySelectorAll(selector);
-        targetElements.forEach(element => {
-            this.add_to_dom_element(element)
-        });
-        return this;
-    }
-    add_to_dom_element(dom_element) {
-        dom_element.insertAdjacentHTML('beforeend', this.html());
     }
 
     default_html_config() { return { new_line_before_elements: true,
@@ -38,6 +36,60 @@ export default class Tag {
                                 top             : null,
                                 width           : null,
                                 z_index         : null}}
+
+    dom() {
+        return this.element_dom
+    }
+
+    // dom_add_to_selector(selector) {
+    //     const targetElements = document.querySelectorAll(selector);
+    //
+    //     targetElements.forEach(element => {
+    //         this.dom_add_to_element(element)
+    //     });
+    //     return this;
+    // }
+
+    dom_add() {
+        return this.dom_add_to_element(document.body)
+    }
+
+    dom_add_to_id(tag_id){
+        const element = document.getElementById(tag_id)
+        return this.dom_add_to_element(element)
+    }
+
+    dom_add_to_element(dom_element) {
+        if (dom_element && this.dom() === null) {
+            dom_element.insertAdjacentHTML('beforeend', this.html());
+            this.element_dom = document.getElementById(this.id)
+            this.parent_dom  = dom_element
+            return true
+        }
+        return false
+    }
+
+    dom_set_style(property, value) {
+        if (this.dom()) {
+            this.dom().style[property] = value;
+        }
+    }
+
+    dom_parent() {
+        return this.parent_dom
+    }
+
+    dom_remove() {
+        const dom_element = this.dom()
+        if (dom_element) {
+            dom_element.remove()
+            this.element_dom = null
+            return this.dom() === null
+        }
+        return false
+
+    }
+
     generate_random_id() {
         const random_part = Math.random().toString(36).substring(2, 7); // Generate a random string.
         return `${this.tag.toLowerCase()}_${random_part}`;
@@ -90,7 +142,10 @@ export default class Tag {
         return html
     }
 
-        set_style(key, value) {
+    parent() {
+        return this.element_parent
+    }
+    set_style(key, value) {
         this.styles[key] = value
         return this
     }

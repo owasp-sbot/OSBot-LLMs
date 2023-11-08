@@ -13,15 +13,32 @@ QUnit.module('Div', function(hooks) {
         const divInstance = new Div()
         assert.ok(divInstance instanceof Tag, 'Div is an instance of Html_Tag');
         assert.ok(Div.prototype instanceof Tag, 'Div.prototype is an instance of Html_Tag');
-  });
+    });
 
-
-    QUnit.test('.Create and show div on QUnit page', function (assert) {
+    QUnit.test('.dom_set_style',  function (assert) {
         const div = div_create_box()
-        //div.dom_element().html('Div - Create and show div on QUnit page')
+        div.dom_add()
+        div.dom_remove()
+        window.div_create_box = div_create_box
+        assert.expect(0)
+    })
+
+    QUnit.test('.dom , dom_add',  function (assert) {
+        const div = div_create_box()
+
         const expected_html = `<div id="${div.id}" style="border: 10px solid blue; bottom: 40px; left: 40px; position: absolute; right: 40px; top: 40px;">\n</div>\n`
         const actual_html = div.html()
         assert.equal(actual_html, expected_html, "html matches expected")
+        assert.equal(document.querySelectorAll('#'+div.id).length, 0, "there are no divs with div.id on the page")
+        assert.equal(div.dom_add(), true , "adding once should work" )
+        assert.equal(div.dom_add(), false, "adding again should fail")
+        assert.equal(div.parent_id, null)
+        assert.equal(div.parent_dom, document.body)
+        assert.equal(document.querySelectorAll('#'+div.id).length, 1, "the div.id is now on the page")
+        assert.equal(div.dom(), document.getElementById(div.id))
+        assert.equal(div.dom_remove(), true)
+        assert.equal(div.dom_remove(), false)
+        assert.equal(document.querySelectorAll('#'+div.id).length, 0, "after remove the div.id is not on the page")
     })
 
 })

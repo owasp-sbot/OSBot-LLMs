@@ -3,8 +3,15 @@ import Tag from "../../../src/html_blocks/js/Tag.js";
 QUnit.module('Html_Tag', function(hooks) {
 
     hooks.before(function (assert) {
-        //window.Html_Tag = Html_Tag                                    // expose the Div object in the browser's window (to make it easier to test and debug from a browser)
+        //window.Html_Tag = Html_Tag                                        // expose the Div object in the browser's window (to make it easier to test and debug from a browser)
     })
+
+    QUnit.test('. parent', function (assert) {
+        const tag_parent = new Tag({id:'tag_parent'})
+        const tag_child  = new Tag({id:'tag_child' })
+        tag_parent.add(tag_child)
+        assert.equal(tag_child.parent(), tag_parent)
+    });
 
     QUnit.test('.constructor', function (assert) {
         const tag           = new Tag()
@@ -53,9 +60,10 @@ QUnit.module('Html_Tag', function(hooks) {
         assert.equal(tag_child_1.id      , tag_child_1_id)
 
         tag.add_element(tag_child_1)
-        assert.propEqual(tag.elements, [tag_child_1])
-        console.log(expected_inner_html_1)
-        console.log(tag.inner_html())
+        assert.equal(tag.elements.length,1)
+        assert.equal(tag.elements[0], tag_child_1)
+        assert.equal(tag.parent()        , null)
+        assert.equal(tag_child_1.parent(), tag )
         assert.equal(tag.inner_html(), expected_inner_html_1)
         assert.equal(tag.html(), expected_html_1)
 
@@ -75,7 +83,12 @@ QUnit.module('Html_Tag', function(hooks) {
 </tag>
 `
         tag.add_element(tag_child_2)
-        assert.propEqual(tag.elements, [tag_child_1, tag_child_2])
+        assert.equal(tag.elements.length,2)
+        assert.equal(tag.elements[0],tag_child_1)
+        assert.equal(tag.elements[1],tag_child_2)
+        assert.equal(tag.parent()        , null)
+        assert.equal(tag_child_1.parent(), tag )
+        assert.equal(tag_child_2.parent(), tag )
         assert.equal(tag.inner_html(), expected_inner_html_2)
         assert.equal(tag.html(), expected_html_2)
 
@@ -100,8 +113,13 @@ const expected_html_3 =
 `
 
         tag_child_1.add_element(tag_child_3)
-        assert.propEqual(tag.elements, [tag_child_1, tag_child_2])
-        assert.propEqual(tag_child_1.elements, [tag_child_3])
+        assert.equal(tag.elements.length,2)
+        assert.equal(tag_child_1.elements.length,1)
+        assert.equal(tag_child_1.elements[0],tag_child_3)
+        assert.equal(tag.parent()        , null        )
+        assert.equal(tag_child_1.parent(), tag         )
+        assert.equal(tag_child_2.parent(), tag         )
+        assert.equal(tag_child_3.parent(), tag_child_1 )
         assert.equal(tag.inner_html(), expected_inner_html_3)
         assert.equal(tag.html(),expected_html_3)
 
@@ -129,11 +147,18 @@ const expected_html_3 =
 </tag>
 `
         tag_child_3.add_element(tag_child_4)
-        assert.propEqual(tag.elements, [tag_child_1, tag_child_2])
-        assert.propEqual(tag_child_1.elements, [tag_child_3])
-        assert.propEqual(tag_child_3.elements, [tag_child_4])
+        assert.equal(tag.elements.length,2)
+        assert.equal(tag_child_3.elements.length,1)
+        assert.equal(tag_child_3.elements[0],tag_child_4)
+        assert.equal(tag.parent()        , null        )
+        assert.equal(tag_child_1.parent(), tag         )
+        assert.equal(tag_child_2.parent(), tag         )
+        assert.equal(tag_child_3.parent(), tag_child_1 )
+        assert.equal(tag_child_4.parent(), tag_child_3 )
         assert.equal(tag.inner_html(), expected_inner_html_4)
         assert.equal(tag.html(),expected_html_4)
+
+        window.tag= tag
     })
 
     QUnit.test('.add_to', function (assert) {
@@ -144,18 +169,20 @@ const expected_html_3 =
         assert.equal($(`#${tag_id}`).html(), undefined, `${tag_id} is undefined`)
         $(`<div id='${tag_id}'>`).appendTo('body')                                      // todo: remove jQuery dependency (once Div API is more mature)
         assert.equal($(`#${tag_id}`).html(), ''       , `${tag_id} is an empty string`)
+
         const tag = new Tag({tag_name:'tag', id:'an_tag'});
         tag.set_style('top', '10px');
         tag.set_style('border', '2px solid');
         const expectedHtml = '<tag id="an_tag" style="border: 2px solid; top: 10px;">\n</tag>\n';        // Expected HTML result
+        assert.equal(tag.dom_add_to_id(tag_id), true, "tag added to dom")
 
-        tag.add_to(`#${tag_id}`);
         const actualHtml = $(`#${tag_id}`).html()                                       // Get the value of the id from the DOM
         assert.strictEqual(actualHtml, expectedHtml, "The tag's HTML should match the expected HTML and be appended to the body");   // Test whether the tag was added to the fixture
 
         // Clean up by removing the added div
         $(`#${tag_id}`).remove()                                                        // todo: remove jQuery dependency (once Div API is more mature)
         assert.equal($(`#${tag_id}`).html(), undefined)
+        window.tag = tag
     });
 
     QUnit.test('.default_styles()',  function (assert) {

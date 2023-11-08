@@ -27,10 +27,9 @@ QUnit.module('full_page_cols_rows.html', function(hooks) {
         })
     })
 
-    QUnit.test('debug wallaby', function(assert) {
-        assert.ok(true)
-        console.log('here ...')
-    })
+    // QUnit.test('debug wallaby', function(assert) {
+    //     assert.ok(true)
+    // })
 
     QUnit.test('check block.html was loaded ok',  function (assert) {
         assert.equal   (this.xhr.status               , 200           , "xhr.status is 200"            )

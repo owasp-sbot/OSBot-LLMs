@@ -7,7 +7,7 @@ export default class Div extends Tag {
 }
 
 // todo: move this into a components section as (for example) "Div_Box" component
-export function div_create_box(id=null, margin=40, border='10px solid blue')  {
+export function div_create_box({id=null, margin=40, border='10px solid blue'}={})  {
     const div = new Div({id:id})
     div.set_styles({'top'    : `${margin}px`   ,
                     'bottom' : `${margin}px`   ,
