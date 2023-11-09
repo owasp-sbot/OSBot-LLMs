@@ -1,4 +1,4 @@
-import Div from "../div.js";
+import Div from "../Div.js";
 
 export function div_box({id=null, margin=40, border='5px solid blue'}={})  {
     const div = new Div({id:id})

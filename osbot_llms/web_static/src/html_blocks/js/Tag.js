@@ -1,10 +1,11 @@
 export default class Tag {
-    constructor({tag: tag = 'tag', id=null}={}) {
+    constructor({tag: tag = 'tag', id=null, 'class': class_value=null }={}) {
         this.styles         = this.default_styles();              // set default styles
         this.html_config    = this.default_html_config();         // set default html config
         this.element_dom    = null
         this.element_parent = null
         this.parent_dom     = null
+        this.class          = class_value
         this.tag            = tag
         this.id             = id || this.generate_random_id();    // ensure there is alwasys an id
         this.elements       = [];
@@ -69,6 +70,20 @@ export default class Tag {
         return false
     }
 
+    dom_add_class(className, styles) {
+          let styleString = '';
+          for (const property in styles) {
+            // Convert camelCase to kebab-case
+            const kebabProperty = property.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+            styleString += `${kebabProperty}: ${styles[property]}; `;
+          }
+          const style = document.createElement('style');
+          document.head.appendChild(style);
+          style.sheet.insertRule(`.${className} { ${styleString} }`, 0);
+
+
+    }
+
     dom_apply_styles() {
         this.dom_set_styles(this.styles)
         return self
@@ -123,7 +138,8 @@ export default class Tag {
     }
 
     html(depth=0) {
-        let styleString = '';
+        let attributes  = '';
+        let styleString = '';           // todo refactor styleString into separate method
 
         // Check if `this.style` exists and has properties
         if (this.styles && Object.keys(this.styles).length) {
@@ -138,16 +154,21 @@ export default class Tag {
             // Trim the last space and append the style attribute to the HTML string
             styleString = styleString.trim();
         }
+        if (styleString.length > 0) {
+            attributes += ` style="${styleString}"`;
+        }
 
-        // todo: Add other attributes
+        if (this.class) {
+            attributes += ` class="${this.class}"`
+        }
 
         // Close the opening tag, insert inner HTML, and close the tag
         const indent = ' '.repeat(depth * 4)
         let html = ''
         html = indent + `<${this.tag} id="${this.id}"`;
-        if (styleString.length > 0) {
-            html += ` style="${styleString}"`;
-        }
+
+        html += attributes
+
         if (this.html_config.new_line_before_elements) {
             html += '>\n' }
         else {

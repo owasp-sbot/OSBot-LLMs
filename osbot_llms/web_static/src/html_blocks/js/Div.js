@@ -1,7 +1,18 @@
-import Tag from './Tag.js'
+import Tag from  './Tag.js'
+import Text from './Text.js'
 
 export default class Div extends Tag {
-    constructor({id=null}={}) {
-        super({tag:'div', id:id });
+    constructor({...kwargs}={}) {
+        super({tag:'div',...kwargs})
+    }
+    add_div({...kwargs}={}) {
+        const div = new Div({...kwargs})
+        this.add_element(div)
+        return div
+    }
+    add_text(value) {
+        const text = new Text({value:value})
+        this.add_element(text)
+        return text
     }
 }
