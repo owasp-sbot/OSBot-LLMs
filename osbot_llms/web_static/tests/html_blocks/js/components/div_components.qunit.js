@@ -4,7 +4,7 @@ import Bootstrap  from '../../../../src/html_blocks/js/libraries/Bootstrap.js'
 
 QUnit.module('div components', function(hooks) {
 
-    QUnit.only('test bootstrap', async (assert)=> {
+    QUnit.test('test bootstrap', async (assert)=> {
         assert.expect(0)
         await new Bootstrap().load()
 

@@ -1,9 +1,17 @@
 export default class Chatbot {
     load_control(targetDiv) {
-        $(targetDiv).load('/static/src/chatbot/chatbot-control.html', () => {
+        // for QUnit in auto-reload mode
+        if (document.location.href.includes('OSBot-LLMs/osbot_llms')) {
+            var virtual_path = "../../../../../OSBot-LLMs/osbot_llms/web_static/src/chatbot"
+        } else {
+            var virtual_path = "/static/src/chatbot"
+        }
+        const page_path = `${virtual_path}/chatbot-control.html`
+        $(targetDiv).load(page_path, () => {
             const event = new Event('chatbot-module-loaded');
             document.dispatchEvent(event);
             console.log(`dispatched Event: ${event.type}`)
+            //$(targetDiv).hide()
         });
     }
 

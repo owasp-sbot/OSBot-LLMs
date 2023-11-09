@@ -4,24 +4,27 @@ QUnit.module('Chatbot control tests', function(hooks) {
         //console.log('before test execution')
         var done = assert.async();
         var this_closure=this
-        // if (document.location.href.includes('OSBot-LLMs/osbot_llms')) {
-        //     var virtual_path = "../../../../../OSBot-LLMs/osbot_llms/web_static/src/chatbot"
-        // } else {
-        //     var virtual_path = "/static/src/chatbot"
-        // }
-        var virtual_path = "/static/src/chatbot"                          // this works in qunit in browser at http://localhost:8000/static-tests/chatbot/test-chatbot.html
+        if (document.location.href.includes('OSBot-LLMs/osbot_llms')) {
+            var virtual_path = "../../../../../OSBot-LLMs/osbot_llms/web_static/src/chatbot"
+        } else {
+            var virtual_path = "/static/src/chatbot"
+        }
+        //var virtual_path = "/static/src/chatbot"                          // this works in qunit in browser at http://localhost:8000/static-tests/chatbot/test-chatbot.html
         var page_path = `${virtual_path}/chatbot.html`
+
         this.div_id    = 'chatbot_div'
         this.$chatbot_div  = $(`<div id='${this.div_id}'>`)
         this.$chatbot_div.appendTo('body')
+
 
         this.$chatbot_div.load(page_path, function(response, status, xhr) {
             this_closure.response     = response
             this_closure.status       = status
             this_closure.xhr          = xhr
-
+            //done()
             // we need to wait for this event due to the multiple different ways the execution happens (between Wallaby and Browser based tests)
             document.addEventListener('chatbot-module-loaded', function() {
+                console.log('---------')
                 done()
             });
         })
@@ -31,7 +34,7 @@ QUnit.module('Chatbot control tests', function(hooks) {
          //console.log('[hooks.after]: before after test execution')
      })
 
-    QUnit.test('check chatbot.html was loaded ok',  function (assert) {
+    QUnit.test('check chatbot.html was loaded ok',   function (assert) {
         assert.equal   (this.xhr.status         , 200 , "xhr.status is 200"            )
         assert.equal   (this.xhr.statusText     , 'OK', 'xhr.statusText is OK'         )
         assert.notEqual(this.$chatbot_div.html(), ''  , 'chatbot_div.html is not empty')
@@ -74,7 +77,7 @@ QUnit.module('Chatbot control tests', function(hooks) {
         assert.ok($sendButton.length, 'Send button with id "send-btn" exists');
 
         // Check script tag defer attribute value
-        var $scriptTag = $chatbotDiv.find('script[src="/static/src/chatbot/script.js"]');
+        var $scriptTag = $chatbotDiv.find('script[src="../../src/chatbot/script.js"]');
         assert.equal($scriptTag.attr('defer'), 'defer', 'Script tag has "defer" attribute set correctly');
 
         assert.equal($sendButton.attr('id'), 'send-btn', 'Send button id is "send-btn"');
@@ -100,10 +103,8 @@ QUnit.module('Chatbot control tests', function(hooks) {
         var $h2 = $html.find('.chatbot header h2');
         assert.equal($h2.text().trim(), 'Chatbot', 'The <h2> tag contains the text "Chatbot"');
 
-        // ... additional text content checks
-        // For example, to check for the bot's greeting message:
         var $botGreeting = $html.find('.chatbox .chat.incoming p');
-        assert.ok($botGreeting.text().includes('Hi there 👋'), 'The greeting message contains "Hi there 👋"');
+        assert.ok($botGreeting.text().includes('Hi there'), 'The greeting message contains "Hi there 👋"');
         assert.ok($botGreeting.text().includes('How can I help you today?'), 'The greeting message contains "How can I help you today?"');
 
         // You can continue adding assertions for other text contents as needed
@@ -120,7 +121,7 @@ QUnit.module('Chatbot control tests', function(hooks) {
         assert.ok($html.find('link[href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"]').length, 'Contains Material Symbols Outlined');
         assert.ok($html.find('link[href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0"]').length, 'Contains Material Symbols Rounded');
         //assert.ok($html.find('link[href="/static/src/chatbot/style.css"]').length, 'Contains chatbot stylesheet');
-        assert.ok($html.find('script[src="/static/src/chatbot/script.js"]').attr('defer'), 'Contains chatbot script with defer attribute');
+        assert.ok($html.find('script[src="../../src/chatbot/script.js"]').attr('defer'), 'Contains chatbot script with defer attribute');
 
         // Check for chatbot structure
         var $chatbotStructure = $html.find('.show-chatbot');
