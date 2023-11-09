@@ -9,8 +9,10 @@ QUnit.module('Text', function(hooks) {
 
     QUnit.test('.config',  function (assert) {
         const text = new Text();
-        const expected_html_config = { new_line_before_elements: false,
-		                               new_line_after_final_tag: false }
+        const expected_html_config = {  include_tag             : true  ,
+                                        new_line_before_elements: false ,
+		                                new_line_after_final_tag: false ,
+                                        trim_final_html_code    : false }
         assert.propEqual(text.html_config, expected_html_config)
     })
 

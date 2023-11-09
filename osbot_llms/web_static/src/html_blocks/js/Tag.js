@@ -22,8 +22,10 @@ export default class Tag {
         return true
     }
 
-    default_html_config() { return { new_line_before_elements: true,
-                                     new_line_after_final_tag: true }}
+    default_html_config() { return { include_tag             : true ,
+                                     new_line_before_elements: true ,
+                                     new_line_after_final_tag: true ,
+                                     trim_final_html_code    : false}}
 
     default_styles() { return { background_color: null,
                                 border          : null,
@@ -165,20 +167,26 @@ export default class Tag {
         // Close the opening tag, insert inner HTML, and close the tag
         const indent = ' '.repeat(depth * 4)
         let html = ''
-        html = indent + `<${this.tag} id="${this.id}"`;
+        if (this.html_config.include_tag) {
+            html = indent + `<${this.tag} id="${this.id}"`
 
-        html += attributes
+            html += attributes
 
-        if (this.html_config.new_line_before_elements) {
-            html += '>\n' }
-        else {
-            html += '>'   }
-
+            if (this.html_config.new_line_before_elements) {
+                html += '>\n' }
+            else {
+                html += '>'   }
+        }
         html += this.inner_html(depth)
-        html += indent + `</${this.tag}>`;
-        if (this.html_config.new_line_after_final_tag) {
-            html += '\n' }
-        return html;
+        if (this.html_config.include_tag) {
+            html += indent + `</${this.tag}>`;
+            if (this.html_config.new_line_after_final_tag) {
+                html += '\n' }}
+        if (this.html_config.trim_final_html_code){
+            return html.trim()
+        }
+        else {
+            return html }
     }
 
     inner_html(depth=0) {

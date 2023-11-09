@@ -35,8 +35,10 @@ QUnit.module('Html_Tag', function(hooks) {
                                        top             : null,
                                        width           : null,
                                        z_index         : null})
-        assert.propEqual(tag.html_config, { new_line_before_elements: true,
-                                            new_line_after_final_tag: true})
+        assert.propEqual(tag.html_config, { include_tag             : true ,
+                                            new_line_before_elements: true ,
+                                            new_line_after_final_tag: true ,
+                                            trim_final_html_code    : false})
         assert.equal(tag.html(),expected_html)
     });
 
@@ -205,6 +207,16 @@ const expected_html_3 =
 
         const actual_html = tag.html();
         assert.equal(actual_html, expected_html, "Html generated with all attributes matches the expected output");
+    })
+
+    QUnit.test('.html.html_config.include_tag', function (assert) {
+        const tag = new Tag()
+        assert.equal(tag.html_config.include_tag, true)
+        assert.equal(tag.html(), `<tag id="${tag.id}">\n</tag>\n`)
+
+        tag.html_config.include_tag = false
+        assert.equal(tag.html_config.include_tag, false)
+        assert.equal(tag.html(), ``)
     })
 
     QUnit.test('.set_style', function (assert) {
