@@ -1,7 +1,11 @@
-QUnit.module('Chatbot control tests', function(hooks) {
+QUnit.module('chatbot', function(hooks) {
 
     hooks.before(function(assert) {
-        //console.log('before test execution')
+        this.wallaby = document.location.href.includes('wallaby')
+        if (this.wallaby) {
+            assert.expect(0); // No assertions expected
+            return; // Exit the test
+        }
         var done = assert.async();
         var this_closure=this
         if (document.location.href.includes('OSBot-LLMs/osbot_llms')) {
@@ -16,15 +20,12 @@ QUnit.module('Chatbot control tests', function(hooks) {
         this.$chatbot_div  = $(`<div id='${this.div_id}'>`)
         this.$chatbot_div.appendTo('body')
 
-
         this.$chatbot_div.load(page_path, function(response, status, xhr) {
             this_closure.response     = response
             this_closure.status       = status
             this_closure.xhr          = xhr
-            //done()
             // we need to wait for this event due to the multiple different ways the execution happens (between Wallaby and Browser based tests)
             document.addEventListener('chatbot-module-loaded', function() {
-                console.log('---------')
                 done()
             });
         })
@@ -35,6 +36,10 @@ QUnit.module('Chatbot control tests', function(hooks) {
      })
 
     QUnit.test('check chatbot.html was loaded ok',   function (assert) {
+        if (this.wallaby) {
+            assert.expect(0); // No assertions expected
+            return; // Exit the test
+        }
         assert.equal   (this.xhr.status         , 200 , "xhr.status is 200"            )
         assert.equal   (this.xhr.statusText     , 'OK', 'xhr.statusText is OK'         )
         assert.notEqual(this.$chatbot_div.html(), ''  , 'chatbot_div.html is not empty')
@@ -58,6 +63,10 @@ QUnit.module('Chatbot control tests', function(hooks) {
     // })
 
     QUnit.test('check text contents and attributes', function(assert) {
+        if (this.wallaby) {
+            assert.expect(0); // No assertions expected
+            return; // Exit the test
+        }
         var $chatbotDiv = this.$chatbot_div;
 
         // Check close button text
@@ -93,6 +102,10 @@ QUnit.module('Chatbot control tests', function(hooks) {
 
     });
     QUnit.test('test chatbot_div html text contents', function (assert) {
+        if (this.wallaby) {
+            assert.expect(0); // No assertions expected
+            return; // Exit the test
+        }
         var chat_bot_div_html = this.$chatbot_div.html();
         var $html = $('<div>').append(chat_bot_div_html); // Create a jQuery object to search within
 
@@ -111,6 +124,10 @@ QUnit.module('Chatbot control tests', function(hooks) {
     });
 
     QUnit.test('test chatbot_div html contents',  function (assert)  {
+        if (this.wallaby) {
+            assert.expect(0); // No assertions expected
+            return; // Exit the test
+        }
         chat_bot_div_html = this.$chatbot_div.html()
         var $html = $('<div>').append(chat_bot_div_html); // Create a jQuery object to search within
 
@@ -150,6 +167,10 @@ QUnit.module('Chatbot control tests', function(hooks) {
 
 
     QUnit.test('test createChatLi ability to send messages',  function (assert)  {
+        if (this.wallaby) {
+            assert.expect(0); // No assertions expected
+            return; // Exit the test
+        }
         assert.expect(0)
         chatbox        = document.querySelector(".chatbox");
         chatbox.append(createChatLi("!!this is a message from the test", "outgoing"))
