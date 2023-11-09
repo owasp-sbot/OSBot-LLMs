@@ -22,10 +22,20 @@ export default class Tag {
         return true
     }
 
-    default_html_config() { return { include_tag             : true ,
-                                     new_line_before_elements: true ,
-                                     new_line_after_final_tag: true ,
-                                     trim_final_html_code    : false}}
+    clone({...kwargs}={}) {
+        const prototype = Object.getPrototypeOf(this)
+        const obj       = Object.create(prototype)
+        Object.assign(obj, this);
+        Object.assign(obj, kwargs);
+        obj.elements = []
+        return obj
+    }
+    default_html_config() { return { include_id               : true ,
+                                     include_tag              : true ,
+                                     indent_before_last_tag   : true ,
+                                     new_line_before_elements : true ,
+                                     new_line_after_final_tag : true ,
+                                     trim_final_html_code     : false}}
 
     default_styles() { return { background_color: null,
                                 border          : null,
@@ -43,15 +53,6 @@ export default class Tag {
     dom() {
         return this.element_dom
     }
-
-    // dom_add_to_selector(selector) {
-    //     const targetElements = document.querySelectorAll(selector);
-    //
-    //     targetElements.forEach(element => {
-    //         this.dom_add_to_element(element)
-    //     });
-    //     return this;
-    // }
 
     dom_add() {
         return this.dom_add_to_element(document.body)
@@ -168,7 +169,9 @@ export default class Tag {
         const indent = ' '.repeat(depth * 4)
         let html = ''
         if (this.html_config.include_tag) {
-            html = indent + `<${this.tag} id="${this.id}"`
+            html = indent + `<${this.tag}`
+            if (this.html_config.include_id) {
+                html += ` id="${this.id}"` }
 
             html += attributes
 
@@ -179,7 +182,10 @@ export default class Tag {
         }
         html += this.inner_html(depth)
         if (this.html_config.include_tag) {
-            html += indent + `</${this.tag}>`;
+            if (this.html_config.indent_before_last_tag) {
+                html += indent
+            }
+            html += `</${this.tag}>`;
             if (this.html_config.new_line_after_final_tag) {
                 html += '\n' }}
         if (this.html_config.trim_final_html_code){

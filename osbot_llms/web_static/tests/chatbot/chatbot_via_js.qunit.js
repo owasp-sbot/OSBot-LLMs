@@ -1,4 +1,8 @@
-import Html  from '../../src/html_blocks/js/Html.js';
+import Tag   from '../../src/html_blocks/js/Tag.js';
+import Text  from '../../src/html_blocks/js/Text.js';
+import Div  from '../../src/html_blocks/js/Div.js';
+import H     from '../../src/html_blocks/js/H.js';
+//import Html  from '../../src/html_blocks/js/Html.js';
 
 QUnit.module('chatbot-via-js', function(hooks) {
 
@@ -30,7 +34,7 @@ QUnit.module('chatbot-via-js', function(hooks) {
         //console.log($data.html())
     })
 
-    QUnit.test('create chatbot html from js', function (assert) {
+    QUnit.only('create chatbot html from js', function (assert) {
         const target_html_value =
 `<div class="show-chatbot">
     <div class="chatbot">
@@ -53,10 +57,45 @@ QUnit.module('chatbot-via-js', function(hooks) {
 `
         const html_value =
 `<div class="show-chatbot">
-</div>`
-        const html = new Html({value:html_value})
-        assert.equal(html.html(), html_value)
+    <div class="chatbot">
+        <header>
+            <h2>Chatbot</h2>
+            <span class="close-btn material-symbols-outlined">close</span>
+        </header>
+    </div>
+</div>
+`
+        // const html = new Html({value:html_value})
+        // assert.equal(html.html(), html_value)
+        const tag = new Tag()
+        tag.html_config.include_id = false
+
+        const div_show_chatbot = tag.clone({tag:'div'   , class:'show-chatbot'})
+        const div_chatbot      = tag.clone({tag:'div'   , class:'chatbot'     })
+        const header           = tag.clone({tag:'header' })
+        const h2               = new H({level:2, value:'Chatbot'})
+        const span_close       = new Text({tag:'span' , class:'close-btn material-symbols-outlined', value:'close'})
+
+        div_show_chatbot.add(div_chatbot)
+        div_chatbot     .add(header     )
+        header          .add(h2         )
+        header          .add(span_close)
+
+        h2        .html_config.include_id               = false
+        span_close.html_config.new_line_after_final_tag = true
+        span_close.html_config.include_id               = false
+        span_close.html_config.indent_before_last_tag   = false
+        span_close.html_config.new_line_before_elements = false
+
+        // console.log(header.html())
+        // console.log(span_close.html_config)
+        // console.log(h2.html())
+        // console.log(span_close.html())
+
+        //assert.expect(0)
+        console.log(div_show_chatbot.html())
         //console.log(html_value)
+        assert.equal(html_value, div_show_chatbot.html())
     })
 
 

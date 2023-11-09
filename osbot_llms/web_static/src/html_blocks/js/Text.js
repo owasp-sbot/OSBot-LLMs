@@ -1,8 +1,8 @@
 import Tag from './Tag.js'
 
 export default class Text extends Tag {
-    constructor({id = null, value=''}={}) {
-        super({tag:'text', id:id});
+    constructor({value='', ...kwargs}={}) {
+        super({tag:'text', ...kwargs});
         this.value = value
         this.config()
     }

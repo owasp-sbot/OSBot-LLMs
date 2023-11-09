@@ -14,6 +14,32 @@ QUnit.module('Html_Tag', function(hooks) {
         assert.equal(tag_child.parent(), tag_parent)
     });
 
+    QUnit.test('.clone', function (assert) {
+        const tag = new Tag({class:'an_class'})
+        const tag_cloned_1 = tag.clone()
+        assert.equal(tag.class , tag_cloned_1.class )
+        assert.equal(tag.id    , tag_cloned_1.id    )
+        assert.equal(tag.html(), tag_cloned_1.html())
+
+        const tag_cloned_2 = tag.clone({id:'changed'})
+        assert.notEqual(tag.id, tag_cloned_2.id    )
+        assert.equal   (tag.class, tag_cloned_2.class )
+        assert.equal   (tag.element_parent         , tag_cloned_2.element_parent           )
+        assert.equal   (tag.styles.top             , tag_cloned_2.styles.top               )
+        assert.notEqual(tag.elements               , tag_cloned_2.elements                 )
+
+        const tag_cloned_3 = tag.clone({id:'changed'})
+        tag_cloned_3.element_parent = 'aaaa'
+        tag_cloned_3.styles.top     = '20'
+        tag_cloned_3.html_config.include_tag = false
+        assert.notEqual(tag.element_parent         , tag_cloned_3.element_parent        )
+        assert.equal   (tag.styles.top             , tag_cloned_3.styles.top               )
+        assert.equal   (tag.html_config.include_tag, tag_cloned_3.html_config.include_tag  )
+        assert.equal   (tag.html_config.include_tag, tag_cloned_3.html_config.include_tag  )
+        assert.notEqual(tag.elements               , tag_cloned_3.elements                 )
+
+    })
+
     QUnit.test('.constructor', function (assert) {
         const tag           = new Tag()
         const random_id     = tag.id
@@ -217,6 +243,13 @@ const expected_html_3 =
         tag.html_config.include_tag = false
         assert.equal(tag.html_config.include_tag, false)
         assert.equal(tag.html(), ``)
+    })
+
+    QUnit.test('.html - with no id', function (assert) {
+        const tag = new Tag()
+        assert.equal(tag.html_config.include_id, true)
+        tag.html_config.include_id = false
+        assert.equal(tag.html(), `<tag>\n</tag>\n`)
     })
 
     QUnit.test('.set_style', function (assert) {
