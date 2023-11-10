@@ -1,4 +1,4 @@
-import 'https://code.jquery.com/jquery-3.7.1.min.js'
+import '../../../lib/jquery-3.7.1.min.js'
 import Tag  from "../../../src/html_blocks/js/Tag.js";
 
 QUnit.module('Html_Tag', function(hooks) {

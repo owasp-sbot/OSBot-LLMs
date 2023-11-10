@@ -33,7 +33,7 @@ QUnit.module('UL', function(hooks) {
         //assert.expect(0)
     })
 
-    QUnit.only('.inner_html', function(assert) {
+    QUnit.test('.inner_html', function(assert) {
         const ul     = new UL()
         const kwargs = { key:'an_key', value:'an_value', text:'an_text'}
         ul.add_li(kwargs)

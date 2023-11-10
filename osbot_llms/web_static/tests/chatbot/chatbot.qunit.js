@@ -135,8 +135,8 @@ QUnit.module('chatbot', function(hooks) {
         assert.notEqual(chat_bot_div_html, '', 'chatbot_div.html is not empty');
 
         // Check for the presence of required styles and scripts
-        assert.ok($html.find('link[href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"]').length, 'Contains Material Symbols Outlined');
-        assert.ok($html.find('link[href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0"]').length, 'Contains Material Symbols Rounded');
+        assert.ok($html.find('link[href="../../lib/fonts/css2_Material_Symbols_Outlined.css"]').length, 'Contains Material Symbols Outlined');
+        assert.ok($html.find('link[href="../../lib/fonts/css2_Material_Symbols_Rounded.css"]').length, 'Contains Material Symbols Rounded');
         //assert.ok($html.find('link[href="/static/src/chatbot/style.css"]').length, 'Contains chatbot stylesheet');
         assert.ok($html.find('script[src="../../src/chatbot/script.js"]').attr('defer'), 'Contains chatbot script with defer attribute');
 

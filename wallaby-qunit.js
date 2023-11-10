@@ -25,14 +25,19 @@ module.exports = function (wallaby) {
 
         console.log(wallaby)        // output to Wallaby console the current config
 
-        // use the code below to see all requests made to wallaby server (useful for debugging)
-        // app.use('/*', function (req, res, next) {
-        //     host     = req.headers.host
-        //     base_url = req.baseUrl
-        //     full_url = `http://${host}${base_url}`
-        //     console.log(full_url)
-        //     next()
-        // });
+        //use the code below to see all requests made to wallaby server (useful for debugging)
+        app.use('/*', function (req, res, next) {
+            host     = req.headers.host
+            base_url = req.baseUrl
+            full_url = `http://${host}${base_url}`
+            if (full_url.includes('lib/qunit-2.20.0.js')) {
+                //console.log(`---> Skipping: ${full_url}`)
+                res.status(403).send("// file not supported")
+            }
+            else {
+                // console.log(`____ loading: ${full_url}`)
+                next() }
+        });
 
         app.use(app_route, express.static(staticPath));     // support the dynammically loading of intrumented files
     },
