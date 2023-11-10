@@ -1,14 +1,18 @@
 export default class Tag {
-    constructor({tag: tag = 'tag', id=null, 'class': class_value=null }={}) {
-        this.styles         = this.default_styles();              // set default styles
-        this.html_config    = this.default_html_config();         // set default html config
+    constructor({tag: tag = 'tag', id=null, 'class': class_value=null , attributes={}}={}) {
+        this.tag            = tag                                 // needs to be first some since it is used by others (like in this.generate_random_id)
+        this.attributes     = attributes
+        this.class          = class_value
         this.element_dom    = null
         this.element_parent = null
-        this.parent_dom     = null
-        this.class          = class_value
-        this.tag            = tag
-        this.id             = id || this.generate_random_id();    // ensure there is alwasys an id
         this.elements       = [];
+        this.html_config    = this.default_html_config();         // set default html config
+        this.id             = id || this.generate_random_id();    // ensure there is alwasys an id
+        this.parent_dom     = null
+        this.styles         = this.default_styles();              // set default styles
+
+
+
     }
 
     add(element) {
@@ -140,29 +144,29 @@ export default class Tag {
         return `${this.tag.toLowerCase()}_${random_part}`;
     }
 
+    html_render_extra_attributes() {
+        let extra_attributes = ''
+        for (const key in this.attributes) {
+            if (this.attributes.hasOwnProperty(key)) {
+                const value = this.attributes[key]
+                extra_attributes += `${key}="${value}" ` }}
+        return extra_attributes.trim()
+    }
     html(depth=0) {
         let attributes  = '';
-        let styleString = '';           // todo refactor styleString into separate method
+        const attributes_string = this.html_render_extra_attributes()
+        const style_string      = this.html_render_styles()
 
-        // Check if `this.style` exists and has properties
-        if (this.styles && Object.keys(this.styles).length) {
-            // Construct the style attribute value
-            for (const key in this.styles) {
-                if (this.styles.hasOwnProperty(key) && this.styles[key]) {
-                    const styleKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();      // Convert camelCase to kebab-case for CSS properties
-                    styleString += `${styleKey}: ${this.styles[key]}; `;
-                }
-            }
-
-            // Trim the last space and append the style attribute to the HTML string
-            styleString = styleString.trim();
-        }
-        if (styleString.length > 0) {
-            attributes += ` style="${styleString}"`;
+        if (style_string.length > 0) {
+            attributes += ` style="${style_string}"`;
         }
 
         if (this.class) {
             attributes += ` class="${this.class}"`
+        }
+
+        if (attributes_string.length > 0) {
+            attributes += ` ${attributes_string}`
         }
 
         // Close the opening tag, insert inner HTML, and close the tag
@@ -195,6 +199,20 @@ export default class Tag {
             return html }
     }
 
+    html_render_styles() {
+        let style_string = ''
+        if (this.styles && Object.keys(this.styles).length) {
+            // Construct the style attribute value
+            for (const key in this.styles) {
+                if (this.styles.hasOwnProperty(key) && this.styles[key]) {
+                    const styleKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();      // Convert camelCase to kebab-case for CSS properties
+                    style_string += `${styleKey}: ${this.styles[key]}; `;
+                }
+            }
+        }
+        // Trim the last space and append the style attribute to the HTML string
+        return style_string.trim();
+    }
     inner_html(depth=0) {
         var html = ''
         for (const index in this.elements) {
@@ -220,3 +238,23 @@ export default class Tag {
         return this
     }
 }
+
+// todo: add method to get all css styles and for some specific class
+// const className = '.your-class';
+// const sheets = document.styleSheets;
+// let rulesList = [];
+//
+// for (let i = 0; i < sheets.length; i++) {
+//   const rules = sheets[i].rules || sheets[i].cssRules;
+//   for (let j = 0; j < rules.length; j++) {
+//     const rule = rules[j];
+//     if (rule.type === CSSRule.STYLE_RULE && rule.selectorText.includes(className)) {
+//       rulesList.push(rule.cssText);
+//     }
+//   }
+// }
+//
+// console.log(rulesList);
+
+// for the code above to work the crossOrigin attribute needs to be set to anonymous
+// <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.20.0.css" crossOrigin = "anonymous">

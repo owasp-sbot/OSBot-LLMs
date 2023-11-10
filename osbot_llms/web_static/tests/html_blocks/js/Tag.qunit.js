@@ -1,6 +1,5 @@
-
 import 'https://code.jquery.com/jquery-3.7.1.min.js'
-import Tag from "../../../src/html_blocks/js/Tag.js";
+import Tag  from "../../../src/html_blocks/js/Tag.js";
 
 QUnit.module('Html_Tag', function(hooks) {
     hooks.before(function (assert) {
@@ -62,6 +61,8 @@ QUnit.module('Html_Tag', function(hooks) {
                                        width           : null,
                                        z_index         : null})
         assert.propEqual(tag.html_config, { include_tag             : true ,
+                                            include_id              : true ,
+                                            indent_before_last_tag  : true ,
                                             new_line_before_elements: true ,
                                             new_line_after_final_tag: true ,
                                             trim_final_html_code    : false})
@@ -250,6 +251,14 @@ const expected_html_3 =
         assert.equal(tag.html_config.include_id, true)
         tag.html_config.include_id = false
         assert.equal(tag.html(), `<tag>\n</tag>\n`)
+    })
+
+    QUnit.test('.html - extra attributes',  function (assert) {
+        const key   = 'an key'
+        const value = 'an value'
+        const tag = new Tag({attributes: {key, value}})
+        const expected_html = `<tag id="${tag.id}" key="${key}" value="${value}">\n</tag>\n`
+        assert.equal(tag.html(), expected_html)
     })
 
     QUnit.test('.set_style', function (assert) {

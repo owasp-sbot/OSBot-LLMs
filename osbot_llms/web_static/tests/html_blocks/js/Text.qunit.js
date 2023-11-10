@@ -9,7 +9,9 @@ QUnit.module('Text', function(hooks) {
 
     QUnit.test('.config',  function (assert) {
         const text = new Text();
-        const expected_html_config = {  include_tag             : true  ,
+        const expected_html_config = {  include_id              : true  ,
+                                        include_tag             : true  ,
+                                        indent_before_last_tag  : false  ,
                                         new_line_before_elements: false ,
 		                                new_line_after_final_tag: false ,
                                         trim_final_html_code    : false }

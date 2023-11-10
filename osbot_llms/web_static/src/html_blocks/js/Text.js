@@ -8,6 +8,7 @@ export default class Text extends Tag {
     }
 
     config() {
+        this.html_config.indent_before_last_tag   = false
         this.html_config.new_line_before_elements = false
         this.html_config.new_line_after_final_tag = false
     }
