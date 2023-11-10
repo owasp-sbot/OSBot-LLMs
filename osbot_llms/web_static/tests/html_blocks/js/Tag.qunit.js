@@ -261,6 +261,18 @@ const expected_html_3 =
         assert.equal(tag.html(), expected_html)
     })
 
+    QUnit.test('.html - mixed attributes',  function (assert) {
+        const expected_html = '<textarea placeholder="Enter a message..." spellcheck="false" required></textarea>'
+        const attributes = {placeholder:"Enter a message...", spellcheck:"false", required:null}
+        const textarea    = new Tag({tag:'textarea', attributes:attributes})
+        textarea.html_config.include_id               = false
+        textarea.html_config.new_line_before_elements = false
+        textarea.html_config.new_line_after_final_tag = false
+        assert.equal(textarea.html(), expected_html)
+        //assert.expect(0)
+    });
+
+
     QUnit.test('.set_style', function (assert) {
         const tag        =   new Tag()
         const tag_styles = tag.styles

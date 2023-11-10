@@ -149,7 +149,10 @@ export default class Tag {
         for (const key in this.attributes) {
             if (this.attributes.hasOwnProperty(key)) {
                 const value = this.attributes[key]
-                extra_attributes += `${key}="${value}" ` }}
+                if (value == null) {                                    // special case where attributes that have the value of null are added with no value (which is sometimes needed in html attributes)
+                    extra_attributes += `${key} `
+                } else {
+                    extra_attributes += `${key}="${value}" ` }}}
         return extra_attributes.trim()
     }
     html(depth=0) {

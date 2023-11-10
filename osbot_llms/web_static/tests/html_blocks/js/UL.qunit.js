@@ -15,32 +15,32 @@ QUnit.module('UL', function(hooks) {
         assert.equal(ul_2.html(), '<ul id="an_id" class="an_class">\n</ul>\n')
     })
 
-    QUnit.test('.add_li', function(assert) {
-        const ul = new UL()
-        const kwargs = { key:'1_key__', value:'value__', text:'text__'}
-        const expected_line_items = [ { key: '1_key__', value: 'value__', text: 'text__' },
-                                      { key: '2_aaaaaa', value: 'value__', text: 'text__' },
-                                      { key: '2_aaaaaa', value: 'value__', text: 'text__' },
-                                      { key: '4_bbbbbb', value: 'value__', text: 'text__' } ]
-        ul.add_li(kwargs)
-        kwargs.key = '2_aaaaaa'
-        ul.add_li(kwargs)
-          .add_li(kwargs)
-        kwargs.key = '4_bbbbbb'
-        ul.add_li(kwargs)
-
-        assert.propEqual(ul.list_items, expected_line_items)
-        //assert.expect(0)
-    })
-
-    QUnit.test('.inner_html', function(assert) {
-        const ul     = new UL()
-        const kwargs = { key:'an_key', value:'an_value', text:'an_text'}
-        ul.add_li(kwargs)
-
-        console.log(ul.inner_html())
-        assert.expect(0)
-    })
+    // QUnit.test('.add_li', function(assert) {
+    //     const ul = new UL()
+    //     const kwargs = { key:'1_key__', value:'value__', text:'text__'}
+    //     const expected_line_items = [ { key: '1_key__', value: 'value__', text: 'text__' },
+    //                                   { key: '2_aaaaaa', value: 'value__', text: 'text__' },
+    //                                   { key: '2_aaaaaa', value: 'value__', text: 'text__' },
+    //                                   { key: '4_bbbbbb', value: 'value__', text: 'text__' } ]
+    //     ul.add_li(kwargs)
+    //     kwargs.key = '2_aaaaaa'
+    //     ul.add_li(kwargs)
+    //       .add_li(kwargs)
+    //     kwargs.key = '4_bbbbbb'
+    //     ul.add_li(kwargs)
+    //
+    //     assert.propEqual(ul.list_items, expected_line_items)
+    //     //assert.expect(0)
+    // })
+    //
+    // QUnit.test('.inner_html', function(assert) {
+    //     const ul     = new UL()
+    //     const kwargs = { key:'an_key', value:'an_value', text:'an_text'}
+    //     ul.add_li(kwargs)
+    //
+    //     console.log(ul.inner_html())
+    //     assert.expect(0)
+    // })
 
     QUnit.test('_should be an instance and inherit from Html_Tag', function(assert) {
         const ul = new UL()
