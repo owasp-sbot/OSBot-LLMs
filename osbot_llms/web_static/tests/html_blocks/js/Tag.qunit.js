@@ -17,8 +17,9 @@ QUnit.module('Html_Tag', function(hooks) {
         const tag = new Tag({class:'an_class'})
         const tag_cloned_1 = tag.clone()
         assert.equal(tag.class , tag_cloned_1.class )
-        assert.equal(tag.id    , tag_cloned_1.id    )
-        assert.equal(tag.html(), tag_cloned_1.html())
+
+        assert.notEqual(tag.id    , tag_cloned_1.id, "cloned id is differentfrom original tag" )
+        assert.notEqual(tag.html(), tag_cloned_1.html())
 
         const tag_cloned_2 = tag.clone({id:'changed'})
         assert.notEqual(tag.id, tag_cloned_2.id    )

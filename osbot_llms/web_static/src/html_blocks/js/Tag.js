@@ -29,17 +29,18 @@ export default class Tag {
     clone({...kwargs}={}) {
         const prototype = Object.getPrototypeOf(this)
         const obj       = Object.create(prototype)
-        Object.assign(obj, this);
-        Object.assign(obj, kwargs);
-        obj.elements = []
+        Object.assign(obj, this);                               // clone main properties
+        Object.assign(obj, kwargs);                             // except
+        obj.elements = []                                       //   - elements (i.e. the tag children)
+        obj.id       = this.generate_random_id()                //   - id       (which needs to be unique)
         return obj
     }
     default_html_config() { return { include_id               : true ,
-                                     include_tag              : true ,
-                                     indent_before_last_tag   : true ,
-                                     new_line_before_elements : true ,
-                                     new_line_after_final_tag : true ,
-                                     trim_final_html_code     : false}}
+                                          include_tag              : true ,
+                                          indent_before_last_tag   : true ,
+                                          new_line_before_elements : true ,
+                                          new_line_after_final_tag : true ,
+                                          trim_final_html_code     : false}}
 
     default_styles() { return { background_color: null,
                                 border          : null,

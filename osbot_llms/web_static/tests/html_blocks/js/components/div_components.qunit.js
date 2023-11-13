@@ -5,7 +5,6 @@ import Bootstrap  from '../../../../src/html_blocks/js/libraries/Bootstrap.js'
 QUnit.module('div components', function(hooks) {
 
     QUnit.test('test bootstrap', async (assert)=> {
-        assert.expect(0)
         await new Bootstrap().load()
 
         const div = new Div({id: 'parent', class: 'container-fluid px-5'})
@@ -22,7 +21,11 @@ QUnit.module('div components', function(hooks) {
         div.set_styles({'z-index': 1000, position: 'absolute', top: '100px', color: 'red'})
 
         div.dom_add()
-
+        div.html_config.new_line_after_final_tag = false
+        const element = document.getElementById(div.id)
+        assert.equal(element.outerHTML, div.html())
+        //console.log(div.html())
+        div.dom_remove()
 
     })
 
