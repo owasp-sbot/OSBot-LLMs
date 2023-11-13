@@ -1,4 +1,5 @@
 import Simple_Web_Component  from '../../../src/html_blocks/web_components/Simple_Web_Component.js'
+import Web_Component         from '../../../src/html_blocks/web_components/Web_Component.js'
 
 QUnit.module('Simple_Web_Component', function(hooks) {
 
@@ -6,11 +7,11 @@ QUnit.module('Simple_Web_Component', function(hooks) {
         // Setup before tests run.
             customElements.define('my-custom-component', Simple_Web_Component);
             this.my_custom_component = document.body.appendChild(document.createElement('my-custom-component'));
-            this.remove_on_exit = false
+            this.remove_on_exit = true
 
-            window.my_custom_component = this.my_custom_component
-            window.stylesheet = my_custom_component.shadowRoot.adoptedStyleSheets
-            window.css_style_sheet = window.stylesheet[0]
+            // window.my_custom_component = this.my_custom_component
+            // window.stylesheet = my_custom_component.shadowRoot.adoptedStyleSheets
+            // window.css_style_sheet = window.stylesheet[0]
 
     });
 
@@ -22,6 +23,12 @@ QUnit.module('Simple_Web_Component', function(hooks) {
         }
 
     });
+
+    QUnit.test('constructor', (assert) => {
+        assert.ok(this.my_custom_component instanceof Simple_Web_Component, 'my_custom_component is instance of Simple_Web_Component')
+        assert.ok(Simple_Web_Component.prototype instanceof Web_Component, 'Simple_Web_Component.prototype is an instance of Web_Component');
+
+    })
 
     QUnit.test('root_element', (assert) => {
         const expected_html = `<div class="content">${this.my_custom_component.text_content()}</div>`
@@ -42,10 +49,10 @@ QUnit.module('Simple_Web_Component', function(hooks) {
 
     });
 
-    QUnit.only('CSS properties assignment test', assert => {
+    QUnit.test('CSS properties assignment test', assert => {
         const component = document.querySelector('my-custom-component');
         const computedStyle = getComputedStyle(component);
-        const expectedCssProperties = component.css_properties()[':host']; // Get the 'host' properties
+        const expectedCssProperties = component.css_rules()[':host']; // Get the 'host' properties
 
         // Background Color
         assert.equal(computedStyle.backgroundColor, 'rgb(255, 255, 255)', 'Background color should be white in RGB format.');
