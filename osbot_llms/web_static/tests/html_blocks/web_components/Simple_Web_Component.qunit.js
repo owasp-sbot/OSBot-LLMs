@@ -8,6 +8,10 @@ QUnit.module('Simple_Web_Component', function(hooks) {
             this.my_custom_component = document.body.appendChild(document.createElement('my-custom-component'));
             this.remove_on_exit = false
 
+            window.my_custom_component = this.my_custom_component
+            window.stylesheet = my_custom_component.shadowRoot.adoptedStyleSheets
+            window.css_style_sheet = window.stylesheet[0]
+
     });
 
     hooks.after((assert) => {
@@ -38,10 +42,10 @@ QUnit.module('Simple_Web_Component', function(hooks) {
 
     });
 
-    QUnit.test('CSS properties assignment test', assert => {
+    QUnit.only('CSS properties assignment test', assert => {
         const component = document.querySelector('my-custom-component');
         const computedStyle = getComputedStyle(component);
-        const expectedCssProperties = component.css_properties().host; // Get the 'host' properties
+        const expectedCssProperties = component.css_properties()[':host']; // Get the 'host' properties
 
         // Background Color
         assert.equal(computedStyle.backgroundColor, 'rgb(255, 255, 255)', 'Background color should be white in RGB format.');

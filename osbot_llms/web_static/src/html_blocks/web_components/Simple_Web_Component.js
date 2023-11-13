@@ -23,10 +23,11 @@ export default class Simple_Web_Component extends HTMLElement {
     text_content() {
         return 'Hello, this is my custom component!'
     }
+
     css_properties() {
-        const margin = '30px'
+        const margin = '20px'
         return {
-            host: {
+            ':host': {
                 left            : '50%',
                 top             : margin,
                 right           : margin,
@@ -38,7 +39,7 @@ export default class Simple_Web_Component extends HTMLElement {
                 zIndex          : 10,
                 position        : 'absolute'
             },
-            content: {
+            '.content': {
                 color: 'blue'
             }
         };
@@ -48,23 +49,24 @@ export default class Simple_Web_Component extends HTMLElement {
         const styleSheet = new CSSStyleSheet();
         const cssProperties = this.css_properties();
 
-        const hostRule = this.objectToCssRule(cssProperties.host, ':host');
-        styleSheet.insertRule(hostRule, styleSheet.cssRules.length);
+        Object.entries(cssProperties).forEach(([css_selector, css_properties]) => {             // Iterate over each key (selector) in cssProperties
+            const css_init          = `${css_selector} {}`;                                     // note: it looks like at the moment there isn't another way to create an empty CSSStyleRule and populate it
+            const rules_length      = styleSheet.cssRules.length                                // get size of css rules
+            const insert_position   = styleSheet.insertRule(css_init, rules_length);            // so that we can create a new one at the end
+            const cssRule           = styleSheet.cssRules[insert_position];                     // get a reference to the one we added
+            this.populate_rule(cssRule, css_properties);                                        // populate new css rule with provided css properties
+        });
 
-        const contentRule = this.objectToCssRule(cssProperties.content, '.content');
-        styleSheet.insertRule(contentRule, styleSheet.cssRules.length);
-
-        this.shadowRoot.adoptedStyleSheets = [styleSheet];
+        this.shadowRoot.adoptedStyleSheets = [styleSheet];                                      // add new style sheet to adopted stylesheets for the shadow root
     }
 
-    objectToCssRule(properties, selector) {
-        let rule = `${selector} {`;
-        for (let prop in properties) {
-            let cssProp = prop.replace(/([A-Z])/g, '-$1').toLowerCase(); // Convert camelCase to kebab-case
-            rule += ` ${cssProp}: ${properties[prop]};`;
+
+    populate_rule(css_rule, css_properties) {
+        for (let prop_name in css_properties) {
+            const css_prop_name = prop_name.replace(/([A-Z])/g, '-$1').toLowerCase();           // Convert camelCase to kebab-case
+            const css_prop_value = css_properties[prop_name]                                    // get css prop value
+            css_rule.style.setProperty(css_prop_name, css_prop_value);                          // set property in css_rule
         }
-        rule += ' }';
-        return rule;
     }
 }
 
