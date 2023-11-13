@@ -24,44 +24,47 @@ export default class Simple_Web_Component extends HTMLElement {
         return 'Hello, this is my custom component!'
     }
     css_properties() {
+        const margin = '30px'
         return {
-            leftBuffer      : '50%',
-            margin          : '40px',
-            backgroundColor : 'white',
-            borderColor     : 'black',
-            padding         : '10px',
-            fontFamily      : 'Arial, sans-serif',
-            zIndex          : 10,
-            position        : 'absolute',
-            contentColor    : 'blue',
+            host: {
+                left            : '50%',
+                top             : margin,
+                right           : margin,
+                bottom          : margin,
+                backgroundColor : 'white',
+                border          : '2px solid rgb(0, 0, 0)',
+                padding         : '10px',
+                fontFamily      : 'Arial, sans-serif',
+                zIndex          : 10,
+                position        : 'absolute'
+            },
+            content: {
+                color: 'blue'
+            }
         };
     }
+
     set_css() {
         const styleSheet = new CSSStyleSheet();
-        const cssProperties = this.css_properties()
-        // Use the properties to construct the CSS string
-        styleSheet.replaceSync(`
-            :host {
-                --left-buffer: ${cssProperties.leftBuffer};
-                --margin: ${cssProperties.margin};
-                left: calc(var(--left-buffer) + var(--margin));
-                right: var(--margin);
-                top: var(--margin);
-                bottom: var(--margin);
-                background-color: ${cssProperties.backgroundColor};
-                display: block;
-                border: 1px solid ${cssProperties.borderColor};
-                padding: ${cssProperties.padding};
-                font-family: ${cssProperties.fontFamily};
-                z-index: ${cssProperties.zIndex};
-                position: ${cssProperties.position};
-            }
-            .content {                
-                color: ${cssProperties.contentColor};                
-            }
-        `);
+        const cssProperties = this.css_properties();
+
+        const hostRule = this.objectToCssRule(cssProperties.host, ':host');
+        styleSheet.insertRule(hostRule, styleSheet.cssRules.length);
+
+        const contentRule = this.objectToCssRule(cssProperties.content, '.content');
+        styleSheet.insertRule(contentRule, styleSheet.cssRules.length);
 
         this.shadowRoot.adoptedStyleSheets = [styleSheet];
+    }
+
+    objectToCssRule(properties, selector) {
+        let rule = `${selector} {`;
+        for (let prop in properties) {
+            let cssProp = prop.replace(/([A-Z])/g, '-$1').toLowerCase(); // Convert camelCase to kebab-case
+            rule += ` ${cssProp}: ${properties[prop]};`;
+        }
+        rule += ' }';
+        return rule;
     }
 }
 

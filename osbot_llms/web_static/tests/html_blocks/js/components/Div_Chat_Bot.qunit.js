@@ -9,7 +9,7 @@ QUnit.module('Div_Chat_Bot', function(hooks) {
         div_chat_bot.dom_add()
         assert.equal(document.getElementById('send-btn').innerHTML,'send')
         div_chat_bot.dom_remove()
-        console.log(div_chat_bot.html())
+        //console.log(div_chat_bot.html())
         //assert.expect(0)
     })
 

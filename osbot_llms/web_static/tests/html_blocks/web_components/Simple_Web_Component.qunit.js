@@ -23,13 +23,10 @@ QUnit.module('Simple_Web_Component', function(hooks) {
         const expected_html = `<div class="content">${this.my_custom_component.text_content()}</div>`
         const root_element = this.my_custom_component.root_element()
         assert.equal(root_element.html(), expected_html)
-        console.log(expected_html)
         assert.equal(root_element.html(), this.my_custom_component.html())
-        //assert.ok(root_element, 'root element was defined')
-        //assert.expect(2)
     })
 
-    QUnit.only('Component content test', assert => {
+    QUnit.test('Component content test', assert => {
         const component = document.querySelector('my-custom-component');
         const shadowContent = component.shadowRoot.querySelector('.content').textContent;
 
@@ -41,49 +38,38 @@ QUnit.module('Simple_Web_Component', function(hooks) {
 
     });
 
-    QUnit.only ('CSS properties assignment test', assert => {
-        const component             = document.querySelector('my-custom-component');
-        const computedStyle         = getComputedStyle(component);
-        const expectedCssProperties = component.css_properties();
+    QUnit.test('CSS properties assignment test', assert => {
+        const component = document.querySelector('my-custom-component');
+        const computedStyle = getComputedStyle(component);
+        const expectedCssProperties = component.css_properties().host; // Get the 'host' properties
 
-        // deal with the color's auto converstion into rgb
-        assert.equal(computedStyle        .backgroundColor, 'rgb(255, 255, 255)')
-        assert.equal(expectedCssProperties.backgroundColor, 'white'             )
-        const whiteInRgb = 'rgb(255, 255, 255)';
-        assert.notEqual(computedStyle.backgroundColor, expectedCssProperties.backgroundColor, 'Background color should not match directly');
-        assert.equal(computedStyle.backgroundColor   , whiteInRgb                           , 'Background color should be whiteInRgb');
+        // Background Color
+        assert.equal(computedStyle.backgroundColor, 'rgb(255, 255, 255)', 'Background color should be white in RGB format.');
+        assert.equal(expectedCssProperties.backgroundColor, 'white', 'Expected background color should be white.');
 
-        assert.equal(computedStyle        .borderColor, 'rgb(0, 0, 0)')
-        assert.equal(expectedCssProperties.borderColor, 'black'       )
-        assert.notEqual(computedStyle.borderColor, expectedCssProperties.borderColor)
-
-        //todo figure out why fontFamily doesn't match in wallby
+        // Font Family
+        // Note: The specific font-family might be returned differently by different browsers or environments
+        // Handling WallabyJS specific environment
         if (document.location.href.includes('wallaby')) {
-            assert.notEqual(computedStyle.fontFamily, expectedCssProperties.fontFamily)
-            assert.equal(computedStyle        .fontFamily, 'Poppins, sans-serif')
-            assert.equal(expectedCssProperties.fontFamily, 'Arial, sans-serif'  )
-        }
-        else {
-            assert.equal(computedStyle.fontFamily, expectedCssProperties.fontFamily )
+            assert.notEqual(computedStyle.fontFamily, expectedCssProperties.fontFamily, 'Font family should not match in Wallaby environment.');
+        } else {
+            assert.equal(computedStyle.fontFamily.replace(/"/g, ''), expectedCssProperties.fontFamily, 'Font family should match.'); // Removing quotes for comparison
         }
 
-
-        //todo figure out why fontFamily doesn't match in wallby
+        // Padding
+        // Note: Padding might differ based on the environment (like WallabyJS)
         if (document.location.href.includes('wallaby')) {
-            assert.equal(computedStyle        .padding, '0px')
-            assert.equal(expectedCssProperties.padding, '10px'  )
-            assert.notEqual(computedStyle.padding, expectedCssProperties.padding)
-        }
-        else {
-            assert.equal(computedStyle.padding, expectedCssProperties.padding)
+            assert.notEqual(computedStyle.padding, expectedCssProperties.padding, 'Padding should not match in Wallaby environment.');
+        } else {
+            assert.equal(computedStyle.padding, expectedCssProperties.padding, 'Padding should match.');
         }
 
-
-        // Check if the computed styles match the expected CSS properties.
+        // Border, Z-index and Position
+        assert.equal(computedStyle.border, expectedCssProperties.border)
         assert.equal(computedStyle.zIndex, expectedCssProperties.zIndex.toString(), 'Z-index should match.');
         assert.equal(computedStyle.position, expectedCssProperties.position, 'Position should match.');
 
-        // For color, we have to get the computed style of the child element
+        // Content Color
         const contentStyle = getComputedStyle(component.shadowRoot.querySelector('.content'));
         assert.equal(contentStyle.color, 'rgb(0, 0, 255)', 'Content color should match.'); // Convert color name to RGB for comparison
     });
