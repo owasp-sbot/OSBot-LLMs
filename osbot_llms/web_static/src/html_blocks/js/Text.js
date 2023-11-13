@@ -11,6 +11,7 @@ export default class Text extends Tag {
         this.html_config.indent_before_last_tag   = false
         this.html_config.new_line_before_elements = false
         this.html_config.new_line_after_final_tag = false
+        return this
     }
 
     add_element(element) {              // text elements should NOT have any child elements
@@ -19,5 +20,10 @@ export default class Text extends Tag {
 
     inner_html() {
         return this.value               // inner_html for text elements is always a string
+    }
+
+    just_text() {
+        this.html_config.include_tag   = false
+        return this
     }
 }
