@@ -48,6 +48,7 @@ export default class Div_Chat_Bot extends Tag {
         this.add(div_show_chatbot)
     }
 
+    // note: this did not work effectively which is why we moved all of this into the web_component.chat_bot
     // async load_css() {
     //     return new Promise((resolve, reject) => {
     //         const link = document.createElement('link');

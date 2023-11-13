@@ -11,8 +11,6 @@ QUnit.module('Web_Component', function(hooks) {
         this.web_element    = document.createElement(this.element_name)
         this.web_component  = document.body.appendChild(this.web_element);
         this.remove_on_exit = true
-        window.web_element  = this.web_element
-        window.web_component = this.web_component
     });
 
     hooks.after((assert) => {
