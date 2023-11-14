@@ -58,7 +58,7 @@ QUnit.module('Chat_Bot', function(hooks) {
         <div class="message sent">what is 40+2</div>
         <div class="message received">the sum is 42</div>
         <div class="message sent">thanks</div>
-        <div class="message received">your're welcome</div>
+        <div class="message received">you're welcome</div>
     </div>
     <div class="chat-input">
         <input type="text" placeholder="Enter a message..."/>
@@ -67,15 +67,15 @@ QUnit.module('Chat_Bot', function(hooks) {
         assert.ok(1)
         const html_code = this.element_chat_bot.html_code()
 
-        console.log(html_code)
+        //console.log(html_code)
 
         assert.equal(html_code, expected_html_code)
 
         this.element_chat_bot.set_inner_html(html_code)
 
-        // const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
-        // dom_chat_bot_1.create_target_div({right:"12px", top:"12px" , bottom:"12px"})
-        // dom_chat_bot_1.build()
+        const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
+        dom_chat_bot_1.create_target_div({right:"12px", top:"12px" , bottom:"12px"})
+        dom_chat_bot_1.build()
 
     })
 
@@ -96,12 +96,14 @@ QUnit.module('Chat_Bot', function(hooks) {
                                       '.message.received': '.message.received { background-color: rgb(229, 229, 234); align-self: flex-start; }',
                                       '.message.sent'    : '.message.sent { background-color: rgb(75, 44, 116); align-self: flex-end; color: rgb(255, 255, 255); }',
                                       '.chat-input'      : '.chat-input { padding: 10px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px -2px 10px; }',
-                                      '.chat-input input': '.chat-input input { width: 90%; padding: 10px; border-radius: 20px; border: 1px solid rgb(204, 204, 204); outline: none; }',
+                                      '.chat-input input': '.chat-input input { width: 90%; padding: 10px; border-radius: 20px; border: 1px solid rgb(204, 204, 204); outline: currentcolor; }',
 		                            }
         const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
         dom_chat_bot_1.create_target_div({right:"12px", top:"12px" , bottom:"12px"})
         dom_chat_bot_1.build()
         assert.propEqual(dom_chat_bot_1.css_rules(), expected_css_rules)
         window.dom_chat_bot_1 = dom_chat_bot_1
+        dom_chat_bot_1.remove()
+
     })
 })

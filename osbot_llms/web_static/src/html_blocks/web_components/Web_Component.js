@@ -54,6 +54,9 @@ export default class Web_Component extends HTMLElement {
             all_stylesheets.push(...Array.from(this.shadowRoot.styleSheets)) }
         if (include_shadow) {
             all_stylesheets.push(...this.shadowRoot.adoptedStyleSheets) }
+        // this is required for Safari which was duplicating the entires
+        return all_stylesheets.filter((stylesheet, index, self) =>      // return unique list
+            index === self.findIndex(s => s === stylesheet))
         return all_stylesheets
     }
 
