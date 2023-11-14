@@ -1,5 +1,5 @@
 import Web_Component from "./Web_Component.js";
-import Div from "../js/Div.js";
+import Div           from "../js/Div.js";
 
 export default class Bootstrap_Rows_Cols extends Web_Component {
     constructor() {
@@ -62,122 +62,75 @@ export default class Bootstrap_Rows_Cols extends Web_Component {
                 "align-items": "center"
             }
         };
-
-        var styles =
-`
-<link href="../../../lib/bootstrap.min.css"     rel="stylesheet">
-        <style>
-        /*html, body {*/
-        /*    height: 100%;*/
-        /*    margin: 0;*/
-        /*}*/
-        .container-fluid {
-            min-height: 100%;      /* Minimum height to fill the parent */
-            display: flex;          /* Enable flexbox */
-            flex-direction: column; /* Stack children vertically */
-            padding: 0;
-        }
-        .row {
-            flex: 1; /* Allow each row to grow */
-            display: flex; /* Enable flexbox for direct children, which are the columns */
-            margin: 0; /* Remove any default margin */
-        }
-        .col-3, .col-4, .col-6, .col-12 {
-            display: flex;
-            padding: 0; /* Override Bootstrap padding */
-        }
-
-        .chatbot-control {
-            border: 3px solid red;
-            flex-grow: 1;
-            margin: 0px;
-            display: flex;
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-        }
-        </style>
-`
-        const container =
-`
-    <div class="container-fluid"> <!-- Full height container -->
-        <div class="row">
-            <div class="col-6">
-                <div id="chatbot-control-1" class="chatbot-control">
-                    1
-                </div>
-            </div>
-            <div class="col-6">
-                <div id="chatbot-control-2" class="chatbot-control">
-                    2
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4">
-                <div id="chatbot-control-3" class="chatbot-control">
-                    3
-                </div>
-            </div>
-            <div class="col-4">
-                <div id="chatbot-control-4" class="chatbot-control">
-                    4
-                </div>
-            </div>
-            <div class="col-4">
-                <div id="chatbot-control-5" class="chatbot-control">
-                    4
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <div id="chatbot-control-3" class="chatbot-control">
-                    5
-                </div>
-            </div>
-            <div class="col-6">
-                <div id="chatbot-control-4" class="chatbot-control">
-                    6
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <div id="chatbot-control-3" class="chatbot-control">
-                    7
-                </div>
-            </div>
-            <div class="col-3">
-                <div id="chatbot-control-4" class="chatbot-control">
-                    8
-                </div>
-            </div>
-            <div class="col-3">
-                <div id="chatbot-control-4" class="chatbot-control">
-                    9
-                </div>
-            </div>
-            <div class="col-3">
-                <div id="chatbot-control-4" class="chatbot-control">
-                    10
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div id="chatbot-control-3" class="chatbot-control">
-                    11
-                </div>
-            </div>
-        </div>
-    </div>
-`
+        
+        const container_div = this.create_container_div()
+        const container_2 = container_div.html()
         this.add_css_rules(css_rules)
-        styles = '<link href="../../../lib/bootstrap.min.css"     rel="stylesheet">'
-        //const html_data = styles + container
-        const html_data = styles + container
+        const html_data =  container_2
         const target_div = this.shadowRoot.querySelector('.right-div')
         target_div.innerHTML = html_data
         console.log('here')
+    }
+
+    create_container_div () {
+
+        const div_container   = new Div({id:'container_div', class:'container-fluid'})
+        const row_1           = new Div({class:'row'})
+        const row_1_col_1     = new Div({class:'col-6'})
+        const row_1_col_1_div = new Div({class:'chatbot-control'})
+        const row_1_col_2     = new Div({class:'col-6'})
+        const row_1_col_2_div = new Div({class:'chatbot-control'})
+
+
+        div_container.add(row_1)
+        row_1        .add(row_1_col_1)
+        row_1_col_1  .add(row_1_col_1_div)
+        row_1_col_1_div.add_text('1').just_text()
+
+        row_1        .add(row_1_col_2)
+        row_1_col_2  .add(row_1_col_2_div)
+        row_1_col_2_div.add_text('2').just_text()
+
+        // row 2
+        div_container
+            .add_div({class:'row'})
+            .add_div({class:'col-6'})
+            .add_div({class:'chatbot-control'})
+            .add_text('3').parent().parent().parent()
+            .add_div({class:'col-6'})
+            .add_div({class:'chatbot-control'})
+            .add_text('4')
+
+        // row 3
+        div_container
+            .add_div({class:'row'})
+            .add_div({class:'col-4'})
+            .add_div({class:'chatbot-control'})
+            .add_text('5').parent().parent().parent()
+            .add_div({class:'col-4'})
+            .add_div({class:'chatbot-control'})
+            .add_text('6').parent().parent().parent()
+            .add_div({class:'col-4'})
+            .add_div({class:'chatbot-control'})
+            .add_text('7')
+
+        // row 4
+        div_container
+            .add_div({class:'row'})
+            .add_div({class:'col-12'})
+            .add_div({class:'chatbot-control'})
+            .add_text('8')
+
+        return div_container
+    }
+    async load_bootstrap() {
+        const path = "../../../lib/bootstrap.min.css"
+        const css_code = await fetch(path)
+                                .then(res => res.text())
+                                .then(data => { return data} )
+        const style = document.createElement('style');
+        style.textContent = css_code;
+        this.shadowRoot.appendChild(style);
+        return 'ok'
     }
 }
