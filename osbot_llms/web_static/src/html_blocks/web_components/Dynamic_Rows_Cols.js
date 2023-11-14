@@ -106,14 +106,4 @@ create_target_div() {
 
         return div_container
     }
-    async load_bootstrap() {
-        const path = "../../../lib/bootstrap.min.css"
-        const css_code = await fetch(path)
-                                .then(res => res.text())
-                                .then(data => { return data} )
-        const style = document.createElement('style');
-        style.textContent = css_code;
-        this.shadowRoot.appendChild(style);
-        return 'ok'
-    }
 }
