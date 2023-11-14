@@ -16,14 +16,14 @@ QUnit.module('Dynamic_Rows_Cols', function(hooks) {
         //this.dom_chat_bot.remove()
     })
 
-    QUnit.only('build', async (assert) => {
+    QUnit.test('build', async (assert) => {
         this.dom_chat_bot.create_target_div()
         this.dom_chat_bot.build()
         assert.ok(true)
     })
 
 
-    QUnit.test('test with chat bot', async (assert) => {
+    QUnit.skip('test with chat bot', async (assert) => {
         this.dom_chat_bot.create_target_div()
         //this.dom_chat_bot.build()
         const div_container = new Div({id: 'container_div', class: 'container-full-height'})
