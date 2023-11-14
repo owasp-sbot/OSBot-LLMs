@@ -11,7 +11,8 @@ QUnit.module('Text', function(hooks) {
         const text = new Text();
         const expected_html_config = {  include_id              : true  ,
                                         include_tag             : true  ,
-                                        indent_before_last_tag  : false  ,
+                                        include_end_tag         : true  ,
+                                        indent_before_last_tag  : false ,
                                         new_line_before_elements: false ,
 		                                new_line_after_final_tag: false ,
                                         trim_final_html_code    : false }

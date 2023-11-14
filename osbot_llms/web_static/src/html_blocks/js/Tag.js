@@ -1,5 +1,5 @@
 export default class Tag {
-    constructor({tag: tag = 'tag', id=null, 'class': class_value=null , attributes={}}={}) {
+    constructor({tag: tag = 'tag', id=null, 'class': class_value=null , attributes={}, value=null}={}) {
         this.tag            = tag                                 // needs to be first some since it is used by others (like in this.generate_random_id)
         this.attributes     = attributes
         this.class          = class_value
@@ -10,15 +10,18 @@ export default class Tag {
         this.id             = id || this.generate_random_id();    // ensure there is alwasys an id
         this.parent_dom     = null
         this.styles         = this.default_styles();              // set default styles
-
-
-
+        this.value          = value
     }
 
-    add(element) {
-        this.add_element(element)
-        return this
-    }
+    add(target) {
+    if (Array.isArray(target)) {
+        for (let element of target) {       // If the argument is an array, iterate over it and add each element
+            this.add_element(element);}
+    } else {
+        this.add_element(target); }         // If the argument is a single element, add it directly
+    return this;
+}
+
 
     add_element(element) {
         element.element_parent = this
@@ -29,18 +32,22 @@ export default class Tag {
     clone({...kwargs}={}) {
         const prototype = Object.getPrototypeOf(this)
         const obj       = Object.create(prototype)
-        Object.assign(obj, this);                               // clone main properties
-        Object.assign(obj, kwargs);                             // except
-        obj.elements = []                                       //   - elements (i.e. the tag children)
-        obj.id       = this.generate_random_id()                //   - id       (which needs to be unique)
+        Object.assign(obj, this);                                   // clone this object
+        Object.assign(obj, kwargs);                                 // except
+        obj.html_config = { ...this.html_config   }                 //   - html_config (create a copy of the current html_config object)
+        obj.elements    = []                                        //   - elements    (i.e. the tag children)
+        obj.id          = this.generate_random_id()                 //   - id          (which needs to be unique)
+        obj.styles      = { ...this.styles        }                 //   - styles      (create a copy of the current styles object)
         return obj
     }
     default_html_config() { return { include_id               : true ,
-                                          include_tag              : true ,
-                                          indent_before_last_tag   : true ,
-                                          new_line_before_elements : true ,
-                                          new_line_after_final_tag : true ,
-                                          trim_final_html_code     : false}}
+                                     include_tag              : true ,
+                                     include_end_tag          : true ,
+                                     indent_before_last_tag   : true ,
+                                     new_line_before_elements : true ,
+                                     new_line_after_final_tag : true ,
+
+                                     trim_final_html_code     : false}}
 
     default_styles() { return { background_color: null,
                                 border          : null,
@@ -156,6 +163,7 @@ export default class Tag {
                     extra_attributes += `${key}="${value}" ` }}}
         return extra_attributes.trim()
     }
+
     html(depth=0) {
         let attributes  = '';
         const attributes_string = this.html_render_extra_attributes()
@@ -182,20 +190,28 @@ export default class Tag {
                 html += ` id="${this.id}"` }
 
             html += attributes
-
-            if (this.html_config.new_line_before_elements) {
-                html += '>\n' }
+            if (this.html_config.include_end_tag) {
+                html += '>' }
             else {
-                html += '>'   }
+                html += '/>' }
         }
-        html += this.inner_html(depth)
-        if (this.html_config.include_tag) {
-            if (this.html_config.indent_before_last_tag) {
-                html += indent
+        if (this.html_config.include_end_tag) {
+            if (this.value != null) {                                   // when value is set, use it for the inner_html value
+                html += this.value
             }
-            html += `</${this.tag}>`;
-            if (this.html_config.new_line_after_final_tag) {
-                html += '\n' }}
+            else {
+                if (this.html_config.new_line_before_elements) {
+                    html += '\n' }
+                html += this.inner_html(depth)
+                if (this.html_config.indent_before_last_tag) {
+                    html += indent
+                }
+            }
+            if (this.html_config.include_tag) {
+                    html += `</${this.tag}>`; }
+        }
+        if (this.html_config.new_line_after_final_tag) {
+                    html += '\n' }
         if (this.html_config.trim_final_html_code){
             return html.trim()
         }

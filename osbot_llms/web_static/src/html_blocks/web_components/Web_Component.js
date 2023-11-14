@@ -20,6 +20,14 @@ export default class Web_Component extends HTMLElement {
         return styleSheet
     }
 
+    css_rules() {
+        const cssObject = {}
+        for (let stylesheet of this.stylesheets()) {
+            const cssRules = stylesheet.cssRules;
+            for (let rule of cssRules) {
+                cssObject[rule.selectorText] = rule.cssText; }}
+        return cssObject
+    }
     create_stylesheet_from_css_rules(css_rules) {
         const styleSheet = new CSSStyleSheet();
 
@@ -40,8 +48,13 @@ export default class Web_Component extends HTMLElement {
     shadow_root() {
         return this.shadowRoot
     }
-    stylesheets() {
-        return this.shadowRoot.adoptedStyleSheets
+    stylesheets(include_root=true, include_shadow=true) {
+        const all_stylesheets =[]
+        if (include_root) {
+            all_stylesheets.push(...Array.from(this.shadowRoot.styleSheets)) }
+        if (include_shadow) {
+            all_stylesheets.push(...this.shadowRoot.adoptedStyleSheets) }
+        return all_stylesheets
     }
 
     populate_rule(css_rule, css_properties) {
