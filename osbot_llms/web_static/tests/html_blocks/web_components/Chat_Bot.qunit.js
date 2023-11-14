@@ -33,7 +33,7 @@ QUnit.module('Chat_Bot', function(hooks) {
     //     this.element_chat_bot.add_css_rules(css_rules)
     //     assert.ok(true)
     // })
-    QUnit.only('fix css and fit two chatbots side by side', async (assert) => {
+    QUnit.test('fix css and fit two chatbots side by side', async (assert) => {
         const id_box_1  = 'div_box_1'
         const div_box_1 = this.element_chat_bot.add_div_box({id: id_box_1 , bottom:"65%", left:'20%', border: "2px dashed blue"})
         const div_box_2 = this.element_chat_bot.add_div_box({top:"65%", left:'20%'   , border: "2px dashed black"})
@@ -58,7 +58,7 @@ QUnit.module('Chat_Bot', function(hooks) {
             chatbox.style.width = `${width}px`;
             chatbox.style.height = `${height}px`;
     // Additional styles (such as overflow handling) can be set here if necessary
-}
+} 
 
     })
 

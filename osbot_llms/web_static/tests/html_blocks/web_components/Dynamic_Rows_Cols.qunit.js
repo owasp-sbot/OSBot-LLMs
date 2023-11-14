@@ -14,7 +14,7 @@ QUnit.module('Dynamic_Rows_Cols', function(hooks) {
         //this.dom_chat_bot.remove()
     })
 
-    QUnit.only('build', async (assert) => {
+    QUnit.test('build', async (assert) => {
         this.dom_chat_bot.create_target_div()
         this.dom_chat_bot.build()
         assert.ok(true)
