@@ -1,16 +1,16 @@
 import Div_Chat_Bot from '../js/components/Div_Chat_Bot.js';
 import Web_Component from "./Web_Component.js";
+import Div from "../js/Div.js";
 
 export default class Chat_Bot extends Web_Component {
     constructor() {
         super();
-        //this.shadowRoot.innerHTML = this.html()
-        //this.set_css()
     }
     build() {
-        const div_chat_bot = new Div_Chat_Bot()
-        const chat_bot_html = div_chat_bot.html()
-        this.shadowRoot.innerHTML = chat_bot_html
+        const div_chat_bot        = new Div_Chat_Bot()
+        this.shadowRoot.innerHTML = div_chat_bot.html()
+        const css_rules = this.get_css_rules()
+        this.add_css_rules(css_rules)
     }
 
     get_css_rules() {
@@ -21,11 +21,11 @@ export default class Chat_Bot extends Web_Component {
                 margin: "0",
                 padding: "0",
                 "box-sizing": "border-box",
-                "font-family": '"Poppins", sans-serif'
+                "font-family": 'sans-serif'
             },
-            body: {
-                background: "#E3F2FD"
-            },
+            // body: {
+            //     background: "#E3F2FD"
+            // },
             ".chatbot-toggler": {
                 position: "fixed",
                 bottom: "30px",
@@ -56,11 +56,12 @@ export default class Chat_Bot extends Web_Component {
                 opacity: "1"
             },
             ".chatbot": {
-                top: "20px",
-                position: "fixed",
-                right: "35px",
-                bottom: "90px",
-                width: "420px",
+                top: "0px",
+                //position: "fixed",
+                left: "0px",
+                //right: "0px",
+                //bottom: "0px",
+                //width: "100px",
                 background: "#fff",
                 "border-radius": "15px",
                 overflow: "hidden",
@@ -188,6 +189,19 @@ export default class Chat_Bot extends Web_Component {
 
 
         return css_rules
+    }
+
+    add_div_box({id=null, top="10px", bottom="10px", right="10px", left="10px", border="2px black solid"} = {}) {
+        const div = new Div({id:id})
+        div.set_styles({'top'             : `${top}`   ,
+                        'bottom'          : `${bottom}`,
+                        'right'           : `${right}` ,
+                        'left'            : `${left}`  ,
+                        'border'          : border     ,
+                        'position'        : 'absolute' ,
+                        'background-color': 'gray'    })
+        div.dom_add()
+        return div
     }
     // async load_css_from_url()
     // {
