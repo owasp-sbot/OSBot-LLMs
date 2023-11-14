@@ -1,7 +1,7 @@
 import Web_Component from "./Web_Component.js";
 import Div           from "../js/Div.js";
 
-export default class Bootstrap_Rows_Cols extends Web_Component {
+export default class Dynamic_Rows_Cols extends Web_Component {
     constructor() {
         super();
     }
@@ -19,6 +19,7 @@ export default class Bootstrap_Rows_Cols extends Web_Component {
                                                     "z-index"        : "1000"          },/* High z-index to ensure it's in front of other elements */
 
                             ".container-fluid"  : { "min-height"    : "100%",
+                                "height": "100%",
                                                     display         : "flex",
                                                     "flex-direction": "column",
                                                     padding         : "0" },
