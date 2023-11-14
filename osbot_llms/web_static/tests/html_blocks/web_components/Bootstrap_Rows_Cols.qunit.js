@@ -10,17 +10,10 @@ QUnit.module('Bootstrap_Rows_Cols', function(hooks) {
         this.dom_chat_bot     = document.body.appendChild(this.element_chat_bot);
     })
 
-    QUnit.only('create_target_div', async (assert) => {
-
-        //dom_chat_bot.shadowRoot.innerHTML = inner_html
+    QUnit.only('build', async (assert) => {
         this.dom_chat_bot.create_target_div()
-
-        // const result = await dom_chat_bot.load_html_page()
-        //
-        const result = await this.dom_chat_bot.load_bootstrap()
-        assert.equal(result, 'ok')
-        this.dom_chat_bot.set_inner_html_manually()
-
+        await this.dom_chat_bot.load_bootstrap()
+        this.dom_chat_bot.build()
         assert.ok(true)
 
     })
