@@ -42,7 +42,6 @@ QUnit.module('WebC__Chat_Bot', function(hooks) {
 
     QUnit.test('test with chat bot',   async (assert) => {
         assert.equal(document.querySelectorAll('chat-bot').length, 1)
-        console.log(document.querySelectorAll('chat-bot').length)
         const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
         const dom_chat_bot_2 = document.body.appendChild(document.createElement(this.element_name));
         const dom_chat_bot_3 = document.body.appendChild(document.createElement(this.element_name));
@@ -91,7 +90,7 @@ QUnit.module('WebC__Chat_Bot', function(hooks) {
 
 
 
-    QUnit.test('test css_code',  (assert) => {
+    QUnit.test('test css_code',   (assert) => {
         const expected_css_rules =  { '.right-div'            : '.right-div { border: 3px solid blue; bottom: 12px; overflow: auto; position: fixed; right: 12px; top: 12px; width: 30%; z-index: 1000; background-color: white; }',
                                       '.container-full-height': '.container-full-height { display: flex; flex-direction: column; height: 100%; padding: 0px; }',
                                       '.flex-row'             : '.flex-row { flex: 1 1 0%; display: flex; }',
@@ -127,35 +126,43 @@ QUnit.module('WebC__Chat_Bot', function(hooks) {
 </div>
 `
         const templates_html = this.element_chat_bot.templates_html()
-        console.log(templates_html)
         assert.equal(templates_html, expected_template_html)
 
     })
 
-    QUnit.test('test internal-data-model', async (assert)=> {
-        assert.ok(true)
+    QUnit.test('.messages__add',  async (assert)=> {
         const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
-
-        window.dom_chat_bot_1 = dom_chat_bot_1
-        const chat_bot_top = '50%'
+        const chat_bot_top = '10%'
         dom_chat_bot_1.build({top: chat_bot_top, left:'10px', width:null, right:'10px', bottom:'10px'})
-        const delay = 300
+        const delay = 0 //300
         dom_chat_bot_1.messages__add_sent   ('ping')
-        dom_chat_bot_1.messages__add_receive('pong')
+        dom_chat_bot_1.messages__add_received('pong')
 
         dom_chat_bot_1.messages__add_sent   ('ping, with some \n new\nlines')
-        dom_chat_bot_1.messages__add_receive('pong, with also \n new \n lines')
+        dom_chat_bot_1.messages__add_received('pong, with also \n new \n lines')
 
         await dom_chat_bot_1.wait_for(delay)
         dom_chat_bot_1.messages__add_sent('abc xyz '.repeat (50))
         await dom_chat_bot_1.wait_for(delay)
-        dom_chat_bot_1.messages__add_receive('ok')
+        dom_chat_bot_1.messages__add_received('ok')
         await dom_chat_bot_1.wait_for(delay)
         dom_chat_bot_1.messages__add_sent('one more message ')
         await dom_chat_bot_1.wait_for(delay)
-        dom_chat_bot_1.messages__add_receive('.. an big response ...'.repeat (20))
+        dom_chat_bot_1.messages__add_received('.. an big response ...\n'.repeat (20))
 
-        //dom_chat_bot_1.remove()
+        dom_chat_bot_1.remove()
+        assert.ok(true)
 
+    })
+
+    QUnit.only('.message__update',  async (assert)=> {
+        const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
+        const chat_bot_top = '50%'
+        dom_chat_bot_1.build({top: chat_bot_top, left:'10px', width:null, right:'10px', bottom:'10px'})
+        console.log('in messages update')
+        dom_chat_bot_1.messages__add_sent('Hello')
+        dom_chat_bot_1.messages__add_received('Good morning')
+        dom_chat_bot_1.remove()
+        assert.ok(true)
     })
 })

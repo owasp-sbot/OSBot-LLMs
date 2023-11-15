@@ -156,7 +156,6 @@ export default class WebC__Chat_Bot extends Web_Component {
         templates        .add(template_received         )
         template_sent    .add(template_sent_message     )
         template_received.add(template_received_message )
-        console.log(templates.html())
         return templates.html()
     }
 
@@ -167,7 +166,7 @@ export default class WebC__Chat_Bot extends Web_Component {
         new_message.querySelector('.message').innerHTML = formatted_message;
 
         const div_chat_messages = this.target_element.querySelector('.chat-messages')
-        div_chat_messages.appendChild(new_message);
+        const result = div_chat_messages.appendChild(new_message);
 
         div_chat_messages.scrollTop = div_chat_messages.scrollHeight;
     }
@@ -177,7 +176,7 @@ export default class WebC__Chat_Bot extends Web_Component {
         this.messages__add(template, message)
     }
 
-    messages__add_receive (message) {
+    messages__add_received (message) {
         const template = this.target_element.querySelector('#template_received') //.content.cloneNode(true);
         this.messages__add(template, message)
     }
