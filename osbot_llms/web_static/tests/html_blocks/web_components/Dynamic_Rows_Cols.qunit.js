@@ -1,6 +1,4 @@
-import Chat_Bot             from '../../../src/html_blocks/web_components/Chat_Bot.js'
 import Dynamic_Rows_Cols    from '../../../src/html_blocks/web_components/Dynamic_Rows_Cols.js'
-import Div                  from "../../../src/html_blocks/js/Div.js";
 
 QUnit.module('Dynamic_Rows_Cols', function(hooks) {
 

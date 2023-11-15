@@ -2,7 +2,7 @@ import Web_Component from "./Web_Component.js";
 import Div from "../js/Div.js";
 import Tag from "../js/Tag.js";
 
-export default class Chat_Bot extends Web_Component {
+export default class WebC__Chat_Bot extends Web_Component {
     constructor() {
         super();
     }
@@ -14,13 +14,17 @@ export default class Chat_Bot extends Web_Component {
         this.set_inner_html(div_target_div.html())
     }
 
-    add_chat_bot_to_target_div(chat_bot_id) {
+    add_chat_bot_to_element(element) {
         const css_rules__chat_bot = this.css_rules__chat_bot()
         this.add_css_rules(css_rules__chat_bot)
         const div_chatbot_ui = this.div_chatbot_ui()
-        const chat_bot_div    = this.shadowRoot.getElementById(chat_bot_id)
-        chat_bot_div.innerHTML= div_chatbot_ui.html()
-        return chat_bot_div
+        element.innerHTML= div_chatbot_ui.html()
+        return element
+    }
+    add_chat_bot_to_target_div(chat_bot_id) {
+        const element    = this.shadowRoot.getElementById(chat_bot_id)
+        return this.add_chat_bot_to_element(element)
+
     }
 
     build({chat_bot_id="chat_bot_id", ...kwargs}={}) {
@@ -31,6 +35,7 @@ export default class Chat_Bot extends Web_Component {
     css_rules__chat_bot() {
         return {    "*"              : { "font-family": "Verdana"},
                     ".chatbot-ui"    : { display: "flex",
+                                         flex: 1,
                                          "flex-direction": "column",
                                          "max-width": "100%",
                                          height: "100%", // Adjust to the height of the content-center div
@@ -66,17 +71,18 @@ export default class Chat_Bot extends Web_Component {
                                             border: "1px solid #ccc",
                                             outline: "currentcolor" }};}
 
-    css_rules__target_div({right="60px" , width="30%", top="60px", bottom="120px", height=null}={}) {
-        return {    ".right-div"     : { border:             "3px solid blue",
-                                         bottom:             bottom,
-                                         overflow:           "auto",
-                                         position:           "fixed",
-                                         right:              right,
-                                         top:                top,
-                                         height:             height,
-                                         width:              width,
-                                         "z-index":          "1000",
-                                         backgroundColor:    "white"},
+    css_rules__target_div({right="60px" , left=null, width="30%", top="60px", bottom="120px", height=null}={}) {
+        return {    ".right-div"     : { border         : "3px solid blue",
+                                         bottom         : bottom    ,
+                                         left           : left      ,
+                                         overflow       : "auto"    ,
+                                         position       : "fixed"   ,
+                                         right          : right     ,
+                                         top            : top       ,
+                                         height         : height    ,
+                                         width          : width     ,
+                                         "z-index"      : "1000"    ,
+                                         backgroundColor: "white"   },
                     ".container-full-height": {
                                          display:            "flex",
                                          "flex-direction":   "column",

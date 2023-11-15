@@ -1,6 +1,7 @@
 import Div_Chat_Bot from '../../../../src/html_blocks/js/components/Div_Chat_Bot.js';
 
 
+//todo remove to 'early experiments' section
 QUnit.module('Div_Chat_Bot', function(hooks) {
 
 
@@ -12,13 +13,5 @@ QUnit.module('Div_Chat_Bot', function(hooks) {
         //console.log(div_chat_bot.html())
         //assert.expect(0)
     })
-
-    //todo: refactor this to use Web Components and shadow dom
-    // QUnit.only('.load_css', async (assert)=> {
-    //     const div_chat_bot = new Div_Chat_Bot()
-    //     const result = await div_chat_bot.load_css()
-    //     div_chat_bot.dom_add()
-    //     assert.expect(0)
-    // })
 
 });

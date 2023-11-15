@@ -1,4 +1,4 @@
-import Chat_Bot         from '../../../src/html_blocks/web_components/Chat_Bot.js'
+import WebC__Chat_Bot   from '../../../src/html_blocks/web_components/WebC__Chat_Bot.js'
 import Web_Component    from '../../../src/html_blocks/web_components/Web_Component.js'
 import Div              from "../../../src/html_blocks/js/Div.js";
 
@@ -6,7 +6,7 @@ QUnit.module('Chat_Bot', function(hooks) {
 
     hooks.before(() => {
         this.element_name = 'chat-bot'
-        this.element_class = Chat_Bot
+        this.element_class = WebC__Chat_Bot
 
         customElements.define(this.element_name, this.element_class);
 
@@ -24,8 +24,8 @@ QUnit.module('Chat_Bot', function(hooks) {
     });
 
     QUnit.test('constructor', (assert) => {
-        assert.ok(this.dom_chat_bot instanceof Chat_Bot, 'dom_chat_bot is instance of Simple_Web_Component')
-        assert.ok(Chat_Bot.prototype instanceof Web_Component, 'Simple_Web_Component.prototype is an instance of Web_Component');
+        assert.ok(this.dom_chat_bot        instanceof WebC__Chat_Bot, 'dom_chat_bot is instance of Simple_Web_Component')
+        assert.ok(WebC__Chat_Bot.prototype instanceof Web_Component, 'Simple_Web_Component.prototype is an instance of Web_Component');
     })
 
 
@@ -52,8 +52,20 @@ QUnit.module('Chat_Bot', function(hooks) {
         dom_chat_bot_2.build({left:"12px", right:null  , top: null  , "bottom": "10px", width:"45%", height:"45%"})
         dom_chat_bot_3.build({left:null  , right:"12px", top: "10px", "bottom": null  , width:"45%", height:"45%"})
         dom_chat_bot_4.build({left:null  , right:"12px", top: null  , "bottom": "10px", width:"45%", height:"45%"})
-        // dom_chat_bot_4.build({left:"200px", right:"200px", top: "420px", "bottom": "10px"})
-        assert.equal(document.querySelectorAll('chat-bot').length, 5)
+
+        const dom_elements = document.querySelectorAll('chat-bot')
+        assert.equal(dom_elements.length, 5)
+        assert.equal(getComputedStyle(dom_elements[1].shadowRoot.children[0]).top   , '10px')
+        assert.equal(getComputedStyle(dom_elements[2].shadowRoot.children[0]).bottom, '10px')
+        assert.equal(getComputedStyle(dom_elements[3].shadowRoot.children[0]).top   , '10px')
+        assert.equal(getComputedStyle(dom_elements[4].shadowRoot.children[0]).bottom, '10px')
+
+        dom_chat_bot_1.remove()
+        dom_chat_bot_2.remove()
+        dom_chat_bot_3.remove()
+        dom_chat_bot_4.remove()
+
+        assert.equal(document.querySelectorAll('chat-bot').length, 1)
         assert.ok(true)
     })
 

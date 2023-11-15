@@ -9,12 +9,13 @@ export default class Dynamic_Rows_Cols extends Web_Component {
 create_target_div() {
     const css_rules = {     ".right-div": {
                                 border:             "3px solid blue",
-                                bottom:             "120px",
+                                bottom:             "10px",
                                 overflow:           "auto",
                                 position:           "fixed",
-                                right:              "60px",
-                                top:                "60px",
-                                width:              "50%",
+                                right:              "10px",
+                                left:               "10px",
+                                top:                "10px",
+                                //width:              "90%",
                                 "z-index":          "1000",
                                 backgroundColor:    "white"
                             },
