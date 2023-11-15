@@ -29,22 +29,31 @@ QUnit.module('Chat_Bot', function(hooks) {
     })
 
 
-    QUnit.test('test with chat bot',  async (assert) => {
-        assert.ok(true)
-        return
+    QUnit.test('build',  async (assert) => {
+        const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
+        const chat_bot_id = 'test_chat_bot_build'
+        const chat_bot_div = dom_chat_bot_1.build({chat_bot_id:chat_bot_id})
+        assert.equal(chat_bot_div.id, chat_bot_id)
+        assert.ok(chat_bot_div.innerHTML.includes('div class="chatbot-ui">'))
+        chat_bot_div.remove()
+        dom_chat_bot_1.remove()
+        assert.equal(document.querySelectorAll('chat-bot').length, 1)
+    })
+
+    QUnit.test('test with chat bot',   async (assert) => {
+        assert.equal(document.querySelectorAll('chat-bot').length, 1)
+        console.log(document.querySelectorAll('chat-bot').length)
         const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
         const dom_chat_bot_2 = document.body.appendChild(document.createElement(this.element_name));
         const dom_chat_bot_3 = document.body.appendChild(document.createElement(this.element_name));
         const dom_chat_bot_4 = document.body.appendChild(document.createElement(this.element_name));
-        dom_chat_bot_1.create_target_div({right:"12px"})
-        dom_chat_bot_2.create_target_div({right:"250px"})
-        dom_chat_bot_3.create_target_div({right:"450px"})
-        dom_chat_bot_4.create_target_div({right:"850px"})
 
-        dom_chat_bot_1.build()
-        dom_chat_bot_2.build()
-        dom_chat_bot_3.build()
-        dom_chat_bot_4.build()
+        dom_chat_bot_1.build({left:"12px", right:null  , top: "10px", "bottom": null  , width:"45%", height:"45%"})
+        dom_chat_bot_2.build({left:"12px", right:null  , top: null  , "bottom": "10px", width:"45%", height:"45%"})
+        dom_chat_bot_3.build({left:null  , right:"12px", top: "10px", "bottom": null  , width:"45%", height:"45%"})
+        dom_chat_bot_4.build({left:null  , right:"12px", top: null  , "bottom": "10px", width:"45%", height:"45%"})
+        // dom_chat_bot_4.build({left:"200px", right:"200px", top: "420px", "bottom": "10px"})
+        assert.equal(document.querySelectorAll('chat-bot').length, 5)
         assert.ok(true)
     })
 
@@ -64,19 +73,8 @@ QUnit.module('Chat_Bot', function(hooks) {
         <input type="text" placeholder="Enter a message..."/>
     </div>
 </div>`
-        assert.ok(1)
-        const html_code = this.element_chat_bot.html_code()
-
-        //console.log(html_code)
-
+        const html_code = this.element_chat_bot.div_chatbot_ui().html()
         assert.equal(html_code, expected_html_code)
-
-        this.element_chat_bot.set_inner_html(html_code)
-
-        const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
-        dom_chat_bot_1.create_target_div({right:"12px", top:"12px" , bottom:"12px"})
-        dom_chat_bot_1.build()
-
     })
 
 
@@ -99,10 +97,8 @@ QUnit.module('Chat_Bot', function(hooks) {
                                       '.chat-input input': '.chat-input input { width: 90%; padding: 10px; border-radius: 20px; border: 1px solid rgb(204, 204, 204); outline: currentcolor; }',
 		                            }
         const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
-        dom_chat_bot_1.create_target_div({right:"12px", top:"12px" , bottom:"12px"})
-        dom_chat_bot_1.build()
-        assert.propEqual(dom_chat_bot_1.css_rules(), expected_css_rules)
-        window.dom_chat_bot_1 = dom_chat_bot_1
+        dom_chat_bot_1.build({right:"12px", top:"12px" , bottom:"12px"})
+        assert.propEqual(dom_chat_bot_1.all_css_rules(), expected_css_rules)
         dom_chat_bot_1.remove()
 
     })

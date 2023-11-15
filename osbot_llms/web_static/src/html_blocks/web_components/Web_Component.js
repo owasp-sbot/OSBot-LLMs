@@ -20,7 +20,7 @@ export default class Web_Component extends HTMLElement {
         return styleSheet
     }
 
-    css_rules() {
+    all_css_rules() {
         const cssObject = {}
         for (let stylesheet of this.stylesheets()) {
             const cssRules = stylesheet.cssRules;
