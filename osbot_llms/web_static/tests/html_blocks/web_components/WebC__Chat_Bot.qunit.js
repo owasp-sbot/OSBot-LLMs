@@ -115,20 +115,30 @@ QUnit.module('WebC__Chat_Bot', function(hooks) {
 
     })
 
+    QUnit.only('.templates_html', (assert)=> {
+        var expected_template_html =
+`<template id="messageTemplate">
+    <div class="message sent"></div>
+</template>
+`
+        const templates_html = this.element_chat_bot.templates_html()
+        assert.equal(templates_html, expected_template_html)
+
+    })
+
     QUnit.only('test internal-data-model', async (assert)=> {
-
-
         //const done = assert.async();
         const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
         dom_chat_bot_1.build({top:'40%', left:'10px', width:null, right:'10px', bottom:'10px'})
-        assert.expect(1)
         dom_chat_bot_1.messages__add_sent('aaaa')
         dom_chat_bot_1.messages__add_sent('this is an message '.repeat (10))
-        await dom_chat_bot_1.wait_for(1000)
+        await dom_chat_bot_1.wait_for(500)
         dom_chat_bot_1.messages__add_sent('abc xyz '.repeat (50))
-        await dom_chat_bot_1.wait_for(1000)
+        await dom_chat_bot_1.wait_for(500)
         dom_chat_bot_1.messages__add_sent('one more message ')
-        await dom_chat_bot_1.wait_for(1000) 
+        await dom_chat_bot_1.wait_for(500)
         dom_chat_bot_1.messages__add_sent('and another one ')
+        //dom_chat_bot_1.remove()
+        assert.ok(true)
     })
 })

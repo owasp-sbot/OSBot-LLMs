@@ -20,7 +20,9 @@ export default class WebC__Chat_Bot extends Web_Component {
         const css_rules__chat_bot = this.css_rules__chat_bot()
         this.add_css_rules(css_rules__chat_bot)
         const div_chatbot_ui = this.div_chatbot_ui()
-        element.innerHTML= div_chatbot_ui.html()
+        const templates_html = this.templates_html()
+        const inner_html = div_chatbot_ui.html() + templates_html
+        element.innerHTML= inner_html
         return element
     }
     add_chat_bot_to_target_div(chat_bot_id) {
@@ -140,14 +142,22 @@ export default class WebC__Chat_Bot extends Web_Component {
         return new Promise(resolve => setTimeout(resolve, duration));
     }
 
-    messages__add_sent (message) {
-        const template_html =
-`<template id="messageTemplate">
-  <div class="message sent"></div>
-</template>`
+    templates_html() {
+        const template         = new Tag({tag:'template', id   :'messageTemplate'})
+        const div_message_sent = new Tag({tag:'div'     , class:'message sent'   , value:''})
+        div_message_sent.html_config.include_id = false
+        template.add(div_message_sent)
+        return template.html()
+    }
 
-        this.target_element.insertAdjacentHTML('beforeend', template_html);
-        const div = new Div({tag:'div', class:'message sent', value:'thanks'})
+    messages__add_sent (message) {
+//         const template_html =
+// `<template id="messageTemplate">
+//   <div class="message sent"></div>
+// </template>`
+//
+//         this.target_element.insertAdjacentHTML('beforeend', template_html);
+//         const div = new Div({tag:'div', class:'message sent', value:'thanks'})
         //const new_message = div.html()
         window.target_element = this.target_element
         const template = this.target_element.querySelector('#messageTemplate') //.content.cloneNode(true);
@@ -157,15 +167,6 @@ export default class WebC__Chat_Bot extends Web_Component {
         const div_chat_messages = this.target_element.querySelector('.chat-messages')
         div_chat_messages.appendChild(new_message);
 
-        //const chatMessagesDiv = target_element.querySelector('.chat-messages');
         div_chat_messages.scrollTop = div_chat_messages.scrollHeight;
-        //console.log(div.html())
-
-        // const div_new_message = document.createElement('div')
-        // div_new_message.class = 'message sent'
-        // div_new_message.innerHTML = 'an message'
-        // div_chat_messages.appendChild(div_new_message)
-        // //console.log( div_new_message.innerHTML)
-        // console.log(div_chat_messages.outerHTML)
     }
 }

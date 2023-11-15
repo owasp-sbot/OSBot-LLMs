@@ -46,7 +46,6 @@ export default class Tag {
                                      indent_before_last_tag   : true ,
                                      new_line_before_elements : true ,
                                      new_line_after_final_tag : true ,
-
                                      trim_final_html_code     : false}}
 
     default_styles() { return { background_color: null,
