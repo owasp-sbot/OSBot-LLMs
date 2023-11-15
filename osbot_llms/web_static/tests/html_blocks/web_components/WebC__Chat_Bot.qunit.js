@@ -115,30 +115,47 @@ QUnit.module('WebC__Chat_Bot', function(hooks) {
 
     })
 
-    QUnit.only('.templates_html', (assert)=> {
+    QUnit.test('.templates_html', (assert)=> {
         var expected_template_html =
-`<template id="messageTemplate">
-    <div class="message sent"></div>
-</template>
+`<div id="templates">
+    <template id="template_sent">
+        <div class="message sent"></div>
+    </template>
+    <template id="template_received">
+        <div class="message received"></div>
+    </template>
+</div>
 `
         const templates_html = this.element_chat_bot.templates_html()
+        console.log(templates_html)
         assert.equal(templates_html, expected_template_html)
 
     })
 
-    QUnit.only('test internal-data-model', async (assert)=> {
-        //const done = assert.async();
-        const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
-        dom_chat_bot_1.build({top:'40%', left:'10px', width:null, right:'10px', bottom:'10px'})
-        dom_chat_bot_1.messages__add_sent('aaaa')
-        dom_chat_bot_1.messages__add_sent('this is an message '.repeat (10))
-        await dom_chat_bot_1.wait_for(500)
-        dom_chat_bot_1.messages__add_sent('abc xyz '.repeat (50))
-        await dom_chat_bot_1.wait_for(500)
-        dom_chat_bot_1.messages__add_sent('one more message ')
-        await dom_chat_bot_1.wait_for(500)
-        dom_chat_bot_1.messages__add_sent('and another one ')
-        //dom_chat_bot_1.remove()
+    QUnit.test('test internal-data-model', async (assert)=> {
         assert.ok(true)
+        const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
+
+        window.dom_chat_bot_1 = dom_chat_bot_1
+        const chat_bot_top = '50%'
+        dom_chat_bot_1.build({top: chat_bot_top, left:'10px', width:null, right:'10px', bottom:'10px'})
+        const delay = 300
+        dom_chat_bot_1.messages__add_sent   ('ping')
+        dom_chat_bot_1.messages__add_receive('pong')
+
+        dom_chat_bot_1.messages__add_sent   ('ping, with some \n new\nlines')
+        dom_chat_bot_1.messages__add_receive('pong, with also \n new \n lines')
+
+        await dom_chat_bot_1.wait_for(delay)
+        dom_chat_bot_1.messages__add_sent('abc xyz '.repeat (50))
+        await dom_chat_bot_1.wait_for(delay)
+        dom_chat_bot_1.messages__add_receive('ok')
+        await dom_chat_bot_1.wait_for(delay)
+        dom_chat_bot_1.messages__add_sent('one more message ')
+        await dom_chat_bot_1.wait_for(delay)
+        dom_chat_bot_1.messages__add_receive('.. an big response ...'.repeat (20))
+
+        //dom_chat_bot_1.remove()
+
     })
 })

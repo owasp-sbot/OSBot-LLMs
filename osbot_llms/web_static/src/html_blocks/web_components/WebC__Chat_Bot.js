@@ -143,30 +143,42 @@ export default class WebC__Chat_Bot extends Web_Component {
     }
 
     templates_html() {
-        const template         = new Tag({tag:'template', id   :'messageTemplate'})
-        const div_message_sent = new Tag({tag:'div'     , class:'message sent'   , value:''})
-        div_message_sent.html_config.include_id = false
-        template.add(div_message_sent)
-        return template.html()
+        const templates                 = new Tag({tag:'div'     , id   :'templates'                    })
+        const template_sent             = new Tag({tag:'template', id   :'template_sent'                })
+        const template_sent_message     = new Tag({tag:'div'     , class:'message sent'     , value:''  })
+        const template_received         = new Tag({tag:'template', id   :'template_received'            })
+        const template_received_message = new Tag({tag:'div'     , class:'message received'   , value:''})
+
+        template_sent_message    .html_config.include_id = false
+        template_received_message.html_config.include_id = false
+
+        templates        .add(template_sent             )
+        templates        .add(template_received         )
+        template_sent    .add(template_sent_message     )
+        template_received.add(template_received_message )
+        console.log(templates.html())
+        return templates.html()
     }
 
-    messages__add_sent (message) {
-//         const template_html =
-// `<template id="messageTemplate">
-//   <div class="message sent"></div>
-// </template>`
-//
-//         this.target_element.insertAdjacentHTML('beforeend', template_html);
-//         const div = new Div({tag:'div', class:'message sent', value:'thanks'})
-        //const new_message = div.html()
-        window.target_element = this.target_element
-        const template = this.target_element.querySelector('#messageTemplate') //.content.cloneNode(true);
+    messages__add(template, message) {
+        const formatted_message = message.replace(/\n/g, '<br>');
+
         const new_message = template.content.cloneNode(true)
-        new_message.querySelector('.message').textContent = message;
+        new_message.querySelector('.message').innerHTML = formatted_message;
 
         const div_chat_messages = this.target_element.querySelector('.chat-messages')
         div_chat_messages.appendChild(new_message);
 
         div_chat_messages.scrollTop = div_chat_messages.scrollHeight;
+    }
+
+    messages__add_sent (message) {
+        const template = this.target_element.querySelector('#template_sent') //.content.cloneNode(true);
+        this.messages__add(template, message)
+    }
+
+    messages__add_receive (message) {
+        const template = this.target_element.querySelector('#template_received') //.content.cloneNode(true);
+        this.messages__add(template, message)
     }
 }
