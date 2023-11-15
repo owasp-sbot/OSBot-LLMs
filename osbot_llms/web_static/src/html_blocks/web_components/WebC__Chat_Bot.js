@@ -69,7 +69,8 @@ export default class WebC__Chat_Bot extends Web_Component {
                                             padding: "10px",
                                             "border-radius": "20px",
                                             border: "1px solid #ccc",
-                                            outline: "currentcolor" }};}
+                                        //    outline: "currentcolor"       // this was inconsistent in Safari and Firefox
+                                        }};}
 
     css_rules__target_div({right="60px" , left=null, width="30%", top="60px", bottom="120px", height=null}={}) {
         return {    ".right-div"     : { border         : "3px solid blue",

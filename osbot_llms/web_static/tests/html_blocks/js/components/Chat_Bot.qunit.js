@@ -16,7 +16,7 @@ QUnit.module('Chat_Bot', function(hooks) {
         assert.equal(this.chat_bot.webc_defined , true          )           // we are calling this.chat_bot.define() in hooks.before
     })
 
-    QUnit.only('.add_to_page',  (assert)=>{
+    QUnit.test('.add_to_page',  (assert)=>{
         const chat_bot_div = this.chat_bot.add_to_page({top:'10px', right:'10px'})
         chat_bot_div.remove()
         assert.ok(true)
@@ -39,20 +39,31 @@ QUnit.module('Chat_Bot', function(hooks) {
         const styleSheet          = webc__chat_bot.create_stylesheet_from_css_rules(css_rules__chat_bot)
         dynamic_row_cols.add_adopted_stylesheet(styleSheet)
 
-        cells[0].parentNode.style.height = '200px'
-        cells[5].parentNode.style.height = '200px'
-        cells[7].parentNode.style.height = '200px'
+        cells[0].parentNode.style.height = '100px'
+        cells[5].parentNode.style.height = '100px'
+        cells[7].parentNode.style.height = '100px'
         webc__chat_bot.add_chat_bot_to_element(cells[0])
         webc__chat_bot.add_chat_bot_to_element(cells[1])
         webc__chat_bot.add_chat_bot_to_element(cells[5])
         webc__chat_bot.add_chat_bot_to_element(cells[7])
 
-        //cell_1.innerHTML =' aaaaa bbb '
-        //dynamic_row_cols.remove()
-        window.cells = cells
-        window.chat_bot = this.chat_bot
+        // tweak styles
 
+        const div_right_style = dynamic_row_cols.shadowRoot.querySelector('.right-div').style
+        const chatbox_ui_style = dynamic_row_cols.shadowRoot.querySelector('.chatbot-ui').style
+
+        div_right_style.top   = '0px'
+        div_right_style.right = '10px'
+        div_right_style.left  = 'unset'
+        div_right_style.width  = '70%'
+        div_right_style.fontSize = '6px'
+        div_right_style.border = 'unset'
+        chatbox_ui_style.border = '2px solid blue'                                                      // this will impact on
+        dynamic_row_cols.shadowRoot.adoptedStyleSheets[1].cssRules[1].style.border = '3px solid green'  // this will impact all
+        dynamic_row_cols.shadowRoot.adoptedStyleSheets[0].cssRules[4].style.border = '1px dashed red'
         window.dynamic_row_cols = dynamic_row_cols
+        //webc__chat_bot.remove()
+        //dynamic_row_cols.remove()
 
     });
 

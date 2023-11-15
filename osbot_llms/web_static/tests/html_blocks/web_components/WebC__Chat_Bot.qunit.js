@@ -2,7 +2,7 @@ import WebC__Chat_Bot   from '../../../src/html_blocks/web_components/WebC__Chat
 import Web_Component    from '../../../src/html_blocks/web_components/Web_Component.js'
 import Div              from "../../../src/html_blocks/js/Div.js";
 
-QUnit.module('Chat_Bot', function(hooks) {
+QUnit.module('WebC__Chat_Bot', function(hooks) {
 
     hooks.before(() => {
         this.element_name = 'chat-bot'
@@ -99,14 +99,14 @@ QUnit.module('Chat_Bot', function(hooks) {
                                       '.content-center': '.content-center { border: 3px solid red; flex-grow: 1; display: flex; justify-content: center; align-items: center; }' ,
 
                                      '*'                 : '* { font-family: Verdana; }',
-                                      '.chatbot-ui'      : '.chatbot-ui { display: flex; flex-direction: column; max-width: 100%; height: 100%; background-color: rgb(255, 255, 255); border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px; overflow: hidden; }',
+                                      '.chatbot-ui'      : '.chatbot-ui { display: flex; flex: 1 1 0%; flex-direction: column; max-width: 100%; height: 100%; background-color: rgb(255, 255, 255); border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px; overflow: hidden; }',
                                       '.chat-header'     : '.chat-header { background-color: rgb(90, 74, 209); color: rgb(255, 255, 255); padding: 10px; text-align: center; font-size: 1.2em; }',
                                       '.chat-messages'   : '.chat-messages { display: flex; flex-direction: column; flex-grow: 1; padding: 10px; overflow-y: auto; }',
                                       '.message'         : '.message { margin-bottom: 10px; padding: 10px; border-radius: 20px; max-width: 80%; }',
                                       '.message.received': '.message.received { background-color: rgb(229, 229, 234); align-self: flex-start; }',
                                       '.message.sent'    : '.message.sent { background-color: rgb(75, 44, 116); align-self: flex-end; color: rgb(255, 255, 255); }',
                                       '.chat-input'      : '.chat-input { padding: 10px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px -2px 10px; }',
-                                      '.chat-input input': '.chat-input input { width: 90%; padding: 10px; border-radius: 20px; border: 1px solid rgb(204, 204, 204); outline: currentcolor; }',
+                                      '.chat-input input': '.chat-input input { width: 90%; padding: 10px; border-radius: 20px; border: 1px solid rgb(204, 204, 204); }',
 		                            }
         const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
         dom_chat_bot_1.build({right:"12px", top:"12px" , bottom:"12px"})
