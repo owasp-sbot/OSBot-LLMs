@@ -5,6 +5,7 @@ import Tag from "../js/Tag.js";
 export default class WebC__Chat_Bot extends Web_Component {
     constructor() {
         super();
+        this.target_element = null
     }
 
     add_target_div({chat_bot_id, ...kwargs}={}) {
@@ -15,6 +16,7 @@ export default class WebC__Chat_Bot extends Web_Component {
     }
 
     add_chat_bot_to_element(element) {
+        this.target_element = element
         const css_rules__chat_bot = this.css_rules__chat_bot()
         this.add_css_rules(css_rules__chat_bot)
         const div_chatbot_ui = this.div_chatbot_ui()
@@ -132,5 +134,38 @@ export default class WebC__Chat_Bot extends Web_Component {
 
     div_target_div(chat_bot_id) {
         return new Div({id:chat_bot_id, class:'right-div'})
+    }
+
+    async wait_for(duration) {
+        return new Promise(resolve => setTimeout(resolve, duration));
+    }
+
+    messages__add_sent (message) {
+        const template_html =
+`<template id="messageTemplate">
+  <div class="message sent"></div>
+</template>`
+
+        this.target_element.insertAdjacentHTML('beforeend', template_html);
+        const div = new Div({tag:'div', class:'message sent', value:'thanks'})
+        //const new_message = div.html()
+        window.target_element = this.target_element
+        const template = this.target_element.querySelector('#messageTemplate') //.content.cloneNode(true);
+        const new_message = template.content.cloneNode(true)
+        new_message.querySelector('.message').textContent = message;
+
+        const div_chat_messages = this.target_element.querySelector('.chat-messages')
+        div_chat_messages.appendChild(new_message);
+
+        //const chatMessagesDiv = target_element.querySelector('.chat-messages');
+        div_chat_messages.scrollTop = div_chat_messages.scrollHeight;
+        //console.log(div.html())
+
+        // const div_new_message = document.createElement('div')
+        // div_new_message.class = 'message sent'
+        // div_new_message.innerHTML = 'an message'
+        // div_chat_messages.appendChild(div_new_message)
+        // //console.log( div_new_message.innerHTML)
+        // console.log(div_chat_messages.outerHTML)
     }
 }
