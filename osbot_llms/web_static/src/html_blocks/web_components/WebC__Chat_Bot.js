@@ -1,3 +1,4 @@
+import Data__Chat_Bot from "../data/Data__Chat_Bot.js";
 import Web_Component from "./Web_Component.js";
 import Div from "../js/Div.js";
 import Tag from "../js/Tag.js";
@@ -5,8 +6,38 @@ import Tag from "../js/Tag.js";
 export default class WebC__Chat_Bot extends Web_Component {
     constructor() {
         super();
-        this.target_element = null
+        this.target_element     = null
+        this.div_chat_messages  = null
+        this.data_chat_bot      = new Data__Chat_Bot()
     }
+
+    //static fields and methods
+    static element_name  = 'webc-chat-bot'
+
+    static define() {
+       if (!customElements.get(WebC__Chat_Bot.element_name)) {
+           customElements.define(WebC__Chat_Bot.element_name, WebC__Chat_Bot);
+           return true; }
+    }
+
+    static create_element() {
+        WebC__Chat_Bot.define()
+        return document.createElement(WebC__Chat_Bot.element_name)
+    }
+    static create_element_add_to_body() {
+        const element = WebC__Chat_Bot.create_element()
+        return  document.body.appendChild(element);
+    }
+
+    // properties
+    get style() {
+        return this.target_element.style
+    }
+    get style_computed() {
+        return getComputedStyle(this.target_element)
+    }
+
+    // instance methods
 
     add_target_div({chat_bot_id, ...kwargs}={}) {
         const css_rules__target_div = this.css_rules__target_div(kwargs)
@@ -16,15 +47,15 @@ export default class WebC__Chat_Bot extends Web_Component {
     }
 
     add_chat_bot_to_element(element) {
-        this.target_element = element
         const css_rules__chat_bot = this.css_rules__chat_bot()
         this.add_css_rules(css_rules__chat_bot)
         const div_chatbot_ui = this.div_chatbot_ui()
         const templates_html = this.templates_html()
-        const inner_html = div_chatbot_ui.html() + templates_html
-        element.innerHTML= inner_html
+        element.innerHTML    = div_chatbot_ui.html() + templates_html
+        this.set_target_element(element)
         return element
     }
+
     add_chat_bot_to_target_div(chat_bot_id) {
         const element    = this.shadowRoot.getElementById(chat_bot_id)
         return this.add_chat_bot_to_element(element)
@@ -108,24 +139,15 @@ export default class WebC__Chat_Bot extends Web_Component {
     div_chatbot_ui() {
         const tag = new Tag()
         tag.html_config.include_id=false
-        const div_with_text = new Div().add_text().just_text().parent()
-        //console.log(div_with_text.html())
 
         const div_chatbot_ui    = tag.clone({tag:'div', class:'chatbot-ui'   })
         const div_chat_header   = tag.clone({tag:'div', class:'chat-header'  , value:'Chatbot'})
         const div_chat_messages = tag.clone({tag:'div', class:'chat-messages'})
-        const div_message_1     = tag.clone({tag:'div', class:'message received', value:'Hi there 👋<br>How can I help you today?'})
-        const div_message_2     = tag.clone({tag:'div', class:'message sent', value:'what is 40+2'})
-        const div_message_3     = tag.clone({tag:'div', class:'message received', value:'the sum is 42'})
-        const div_message_4     = tag.clone({tag:'div', class:'message sent', value:'thanks'})
-        const div_message_5     = tag.clone({tag:'div', class:'message received', value:'you\'re welcome'})
         const div_chat_input    = tag.clone({tag:'div', class:'chat-input'})
         const input_chat_input  = tag.clone({tag:'input', attributes:{type:'text', placeholder:'Enter a message...'}})
 
         div_chatbot_ui    .add(div_chat_header  )
         div_chatbot_ui    .add(div_chat_messages)
-        div_chat_messages .add([div_message_1, div_message_2, div_message_3,
-                                div_message_4, div_message_5])
         div_chatbot_ui    .add(div_chat_input)
         div_chat_input.add(input_chat_input)
 
@@ -138,6 +160,53 @@ export default class WebC__Chat_Bot extends Web_Component {
         return new Div({id:chat_bot_id, class:'right-div'})
     }
 
+    hide() {
+        this.hidden = true
+        return this
+    }
+
+    load_messages(user_messages) {
+        user_messages.forEach((item) => {
+            if (item.type === 'sent') {
+                this.messages__add_sent(item.message)
+            }
+            if (item.type === 'received') {
+                this.messages__add_received(item.message)
+            }
+        });
+        return this
+    }
+
+    set_user_messages(user_messages) {
+        //this.data_chat_bot.user_messages = user_messages            // set data_chat_bot.user_messages value
+        this.reset_user_messages()
+        this.load_messages(user_messages)                           // reload messages in UI
+        return this
+    }
+
+    set_target_element(element){
+        this.target_element     = element
+        this.div_chat_messages = this.target_element.querySelector('.chat-messages')
+    }
+
+    show() {
+        this.hidden = false
+        return this
+    }
+
+    reset_user_messages() {
+        this.data_chat_bot.user_messages = []
+        webc_chat_bot.div_chat_messages.innerHTML =''
+        // while (webc_chat_bot.div_chat_messages.childNodes.length > 0) {
+        //      webc_chat_bot.div_chat_messages.removeChild(webc_chat_bot.div_chat_messages.childNodes[0]);
+        // }
+        return this
+    }
+
+    store_message(message, type) {
+        this.data_chat_bot.add_user_message(message, type)
+        return this
+    }
     async wait_for(duration) {
         return new Promise(resolve => setTimeout(resolve, duration));
     }
@@ -161,23 +230,22 @@ export default class WebC__Chat_Bot extends Web_Component {
 
     messages__add(template, message) {
         const formatted_message = message.replace(/\n/g, '<br>');
-
         const new_message = template.content.cloneNode(true)
         new_message.querySelector('.message').innerHTML = formatted_message;
-
-        const div_chat_messages = this.target_element.querySelector('.chat-messages')
-        const result = div_chat_messages.appendChild(new_message);
-
-        div_chat_messages.scrollTop = div_chat_messages.scrollHeight;
+        const document_fragment = this.div_chat_messages.appendChild(new_message);
+        this.div_chat_messages.scrollTop = this.div_chat_messages.scrollHeight;      // todo: add check if we should do this
+        return document_fragment
     }
 
     messages__add_sent (message) {
         const template = this.target_element.querySelector('#template_sent') //.content.cloneNode(true);
         this.messages__add(template, message)
+        this.data_chat_bot.add_user_message(message, 'sent')
     }
 
     messages__add_received (message) {
         const template = this.target_element.querySelector('#template_received') //.content.cloneNode(true);
         this.messages__add(template, message)
+        this.data_chat_bot.add_user_message(message, 'received')
     }
 }
