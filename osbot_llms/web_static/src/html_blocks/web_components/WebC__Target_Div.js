@@ -27,6 +27,7 @@ export default class WebC__Target_Div extends Web_Component {
         const target_div = new Div({id:chat_bot_id, class:'target_div'})
         const slot_div = new Tag({tag:'slot'})
         target_div.add(slot_div)
+        slot_div.html_config.include_id = false
         return target_div.html()
     }
 

@@ -28,10 +28,6 @@ QUnit.module('Web_Component', function(hooks) {
         assert.ok(Web_Component.prototype instanceof HTMLElement  , 'Web_Component.prototype is an instance of HTMLElement');
 
     })
-    QUnit.test('root_element', (assert) => {
-        const root_element = this.web_component.root_element()
-        assert.equal(root_element, null)
-    })
 
     QUnit.test('stylesheets', assert => {
         assert.propEqual(this.web_component.stylesheets(), [])

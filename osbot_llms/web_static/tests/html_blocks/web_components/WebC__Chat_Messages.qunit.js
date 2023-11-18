@@ -1,21 +1,31 @@
-import WebC__Chat_Message   from '../../../src/html_blocks/web_components/WebC__Chat_Message.js'
+import WebC__Chat_Messages  from '../../../src/html_blocks/web_components/WebC__Chat_Messages.js'
 import WebC__Target_Div     from '../../../src/html_blocks/web_components/WebC__Target_Div.js'
 import Web_Component        from "../../../src/html_blocks/web_components/Web_Component.js";
 
 
 QUnit.module('WebC__Chat_Message', function(hooks) {
 
-    hooks.before((assert) => { });
+    hooks.before((assert) => {
+        //this.element_name      = WebC__Chat_Messages.element_name
+        //this.webc_chat_message = WebC__Chat_Message.create_element_add_to_body() // document.body.appendChild(this.element_chat_bot);
 
-    hooks.after((assert) => { });
+        //this.remove_on_exit = true
+    });
+
+    hooks.after((assert) => {
+        // assert.equal(document.querySelector(this.element_name), this.webc_chat_message)
+        //  if (this.remove_on_exit) {
+        //      this.webc_chat_message.remove()
+        //  }
+    });
 
     QUnit.test('constructor', (assert) => {
-        assert.equal(WebC__Chat_Message.element_name            , 'webc-chat-message'         , 'WebC__Chat_Message element name was correctly set'           )
-        assert.ok   (WebC__Chat_Message.prototype instanceof Web_Component      , 'WebC__Chat_Message.prototype is an instance of Web_Component');
+        assert.equal(WebC__Chat_Messages.element_name, 'webc-chat-messages'         , 'WebC__Chat_Message element name was correctly set'           )
+        assert.ok   (WebC__Chat_Messages.prototype instanceof Web_Component      , 'WebC__Chat_Message.prototype is an instance of Web_Component');
     })
 
     QUnit.test('add_target_div',  (assert) =>  {
-        assert.ok(1)
+        assert.ok(true)
         return
         const target_div = WebC__Target_Div.add_to_body().build()
         window.target_div = target_div
