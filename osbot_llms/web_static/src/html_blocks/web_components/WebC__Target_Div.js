@@ -1,5 +1,6 @@
 import Web_Component from "./Web_Component.js"
 import Div           from "../js/Div.js";
+import Tag          from "../js/Tag.js";
 
 export default class WebC__Target_Div extends Web_Component {
     constructor() {
@@ -24,6 +25,8 @@ export default class WebC__Target_Div extends Web_Component {
 
     html(chat_bot_id=null) {
         const target_div = new Div({id:chat_bot_id, class:'target_div'})
+        const slot_div = new Tag({tag:'slot'})
+        target_div.add(slot_div)
         return target_div.html()
     }
 

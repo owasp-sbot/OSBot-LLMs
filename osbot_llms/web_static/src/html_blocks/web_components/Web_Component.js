@@ -17,6 +17,22 @@ export default class Web_Component extends HTMLElement {
         return this.create_element_add_to_body()
     }
 
+    static create({inner_html=null, tag=null,...attributes}={}) {
+        const element = document.createElement(this.element_name);        // Create a new element using the provided tag name
+        for (const [attr, value] of Object.entries(attributes)) {         // // Iterate over the attributes object and set attributes on the element
+            element.setAttribute(attr, value);
+        }
+        if (inner_html != null) {
+            element.innerHTML = inner_html;
+        }
+        if (tag != null) {
+            element.innerHTML = tag.html();
+        }
+
+        return element;
+    }
+
+    // todo: refactor to use the create() method above (since this is adding an element to to document body which is only one of the scenarios
     static create_element() {
         this.define();
         return document.createElement(this.element_name);
@@ -40,10 +56,15 @@ export default class Web_Component extends HTMLElement {
         this.shadowRoot.adoptedStyleSheets = [...currentStylesheets, stylesheet];
     }
 
-    root_element() {
-        return null
+    append_child(web_component, ...attributes) {
+        console.log(web_component)
+        console.log(attributes)
     }
+    // root_element() {
+    //     return null
+    // }
 
+    // todo: refactor stylesheets to separate class
     add_css_rules(css_rules) {
         const styleSheet  = this.create_stylesheet_from_css_rules(css_rules) // add new style sheet to adopted stylesheets for the shadow root
         this.add_adopted_stylesheet(styleSheet)
@@ -58,6 +79,7 @@ export default class Web_Component extends HTMLElement {
                 cssObject[rule.selectorText] = rule.cssText; }}
         return cssObject
     }
+
     create_stylesheet_from_css_rules(css_rules) {
         const styleSheet = new CSSStyleSheet();
 
