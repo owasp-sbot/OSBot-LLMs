@@ -2,9 +2,39 @@ export default class Web_Component extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-        this.name = 'web-component'
     }
 
+    // static properties
+    static get element_name() {
+        return this.name.replace    (/_/g , '-')  // Replace underscores with hyphens
+                        .replace    (/--/g, '-')  // make sure we only have one hyphen
+                        .toLowerCase()            // Convert to lowercase
+    }
+
+    // static methods
+
+    static add_to_body() {
+        return this.create_element_add_to_body()
+    }
+
+    static create_element() {
+        this.define();
+        return document.createElement(this.element_name);
+    }
+
+    static create_element_add_to_body() {
+        const element = this.create_element();
+        return document.body.appendChild(element);
+    }
+
+    static define() {
+        if (!customElements.get(this.element_name)) {
+            customElements.define(this.element_name, this);
+            return true; }
+        return false;
+    }
+
+    // instance methods
     add_adopted_stylesheet(stylesheet) {
         const currentStylesheets = this.shadowRoot.adoptedStyleSheets;
         this.shadowRoot.adoptedStyleSheets = [...currentStylesheets, stylesheet];
