@@ -15,7 +15,7 @@ QUnit.module('WebC__Chat_Message', function(hooks) {
         assert.ok   (WebC__Chat_Message.prototype instanceof Web_Component      , 'WebC__Chat_Message.prototype is an instance of Web_Component');
     })
 
-    QUnit.test('add_target_div',  (assert) =>  {
+    QUnit.test('add_target_div', (assert) =>  {
         const target_div = WebC__Target_Div.add_to_body().build()
         assert.propEqual(target_div.css_rules(), { ".target_div": { border         : "3px solid #724ae8",
                                                                    bottom         : "10px"             ,

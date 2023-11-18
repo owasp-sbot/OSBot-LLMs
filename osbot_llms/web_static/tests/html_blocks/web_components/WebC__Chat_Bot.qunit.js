@@ -192,7 +192,6 @@ QUnit.module('WebC__Chat_Bot', function(hooks) {
 
         dom_chat_bot_1.remove()
         assert.ok(true)
-
     })
 
     QUnit.test('.set_user_messages',  async (assert)=> {
