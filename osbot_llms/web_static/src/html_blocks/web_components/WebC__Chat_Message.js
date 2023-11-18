@@ -22,7 +22,7 @@ export default class WebC__Chat_Message extends Web_Component {
     css_messages() { return {   ".message"  : { "margin-bottom"   : "10px"            ,
                                                 "max-width"       : "80%"              ,
                                                 "padding"         : "10px"            ,
-        "display": "flex"
+
         },
                                 ".received" : { "background-color": "#f2f2f2"         ,
                                                 "align-self"      : "flex-start"      ,
@@ -34,10 +34,20 @@ export default class WebC__Chat_Message extends Web_Component {
     }
 
     append(message) {
-        this.innerHTML += message
+        this.innerHTML += this.format_message(message)
         return this
     }
-    message() {
+
+    // todo: add markdown support
+    format_message(message) {
+        return message.replace(/\n/g, '<br>');          // for now, the only thing we do is to replace new lines with <br>
+    }
+
+    //todo see if this assigment is better done using a property
+    message(value) {
+        if (value){
+            this.innerHTML = this.format_message(value)
+        }
         return this.innerHTML
     }
 }

@@ -3,7 +3,7 @@ import WebC__Target_Div     from '../../../src/html_blocks/web_components/WebC__
 import Web_Component        from "../../../src/html_blocks/web_components/Web_Component.js";
 
 
-QUnit.module('WebC__Chat_Message', function(hooks) {
+QUnit.module('WebC__Chat_Messages', function(hooks) {
 
     hooks.before((assert) => { });
 
@@ -14,7 +14,7 @@ QUnit.module('WebC__Chat_Message', function(hooks) {
         assert.ok   (WebC__Chat_Messages.prototype instanceof Web_Component      , 'WebC__Chat_Message.prototype is an instance of Web_Component');
     })
 
-    QUnit.only('add_target_div', async (assert) =>  {
+    QUnit.test('add_target_div', async (assert) =>  {
         assert.ok(true)
 
         const target_div       = WebC__Target_Div.add_to_body().build()

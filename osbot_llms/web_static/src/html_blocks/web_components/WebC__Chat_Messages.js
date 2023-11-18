@@ -27,14 +27,18 @@ export default class WebC__Chat_Messages extends Web_Component {
     }
 
     add_message(message, type) {
-        const new_message =  WebC__Chat_Message.create({inner_html: message, type:type})
+        const new_message =  WebC__Chat_Message.create({type:type})
         this.appendChild(new_message)
+        new_message.message(message)
         return new_message
     }
 
     add_message_sent    (message) { return this.add_message(message, 'sent'   ) }
     add_message_received(message) { return this.add_message(message, 'received') }
 
+    messages () {
+        return this.childNodes
+    }
 }
 
 WebC__Chat_Messages.define()

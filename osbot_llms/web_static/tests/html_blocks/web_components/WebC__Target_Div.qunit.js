@@ -26,10 +26,9 @@ QUnit.module('WebC__Target_Div', function(hooks) {
 
 
     QUnit.test('build',  (assert) => {
-        const target_div = this.webc_target_div.build()
+        const target_div     = this.webc_target_div.build()
         const target_element = target_div.target_element
-        assert.equal(target_div.outerHTML, '<webc-target-div></webc-target-div>')
-        console.log(target_element.outerHTML)
+        assert.equal(target_div.outerHTML    , '<webc-target-div></webc-target-div>')
         assert.equal(target_element.outerHTML, '<div id="target_div_id" class="target_div">\n    <slot>\n    </slot>\n</div>')
         const html            = this.webc_target_div.html     ();
         const cssRules        = this.webc_target_div.css_rules();
