@@ -13,7 +13,6 @@ export default class WebC__Chat_Messages extends Web_Component {
     }
 
     build() {
-        const type = this.attributes.type?.value
         this.add_css_rules(this.css_rules())
         const html = `<div class="messages"><slot></slot></div>`
         this.set_inner_html(html)

@@ -34,7 +34,7 @@ export default class Web_Component extends HTMLElement {
 
     // todo: refactor to use the create() method above (since this is adding an element to to document body which is only one of the scenarios
     static create_element() {
-        this.define();
+        //this.define();
         return document.createElement(this.element_name);
     }
 
@@ -93,6 +93,9 @@ export default class Web_Component extends HTMLElement {
         return styleSheet
     }
 
+    query_selector(selector) {
+        return this.shadow_root().querySelector(selector)
+    }
     set_inner_html(inner_html) {
         this.shadowRoot.innerHTML = inner_html
     }
@@ -100,6 +103,7 @@ export default class Web_Component extends HTMLElement {
     shadow_root() {
         return this.shadowRoot
     }
+
     stylesheets(include_root=true, include_shadow=true) {
         const all_stylesheets =[]
         if (include_root) {
@@ -124,3 +128,4 @@ export default class Web_Component extends HTMLElement {
         return new Promise(resolve => setTimeout(resolve, duration));
     }
 }
+

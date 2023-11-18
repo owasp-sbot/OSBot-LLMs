@@ -31,7 +31,7 @@ export default class WebC__Target_Div extends Web_Component {
         return target_div.html()
     }
 
-    css_rules({right="10px" , left=null, width=null, top="10px", bottom="10px", height=null}={}) {
+    css_rules({right="10px" , left=null, width=null, top="10px", bottom="10px", height=null, z_index=null}={}) {
         return { ".target_div": { border         : "3px solid #724ae8",
                                   bottom         : bottom            ,
                                   left           : left              ,
@@ -41,8 +41,9 @@ export default class WebC__Target_Div extends Web_Component {
                                   top            : top               ,
                                   height         : height            ,
                                   width          : width || '70%'    ,
-                                  zIndex         : "1000"            ,
+                                  zIndex         : z_index || "1000" ,
                                   backgroundColor: "white"          }}
     }
 }
 
+WebC__Target_Div.define()

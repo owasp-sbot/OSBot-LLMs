@@ -1,7 +1,7 @@
-import Data__Chat_Bot from "../data/Data__Chat_Bot.js";
-import Web_Component from "./Web_Component.js";
-import Div from "../js/Div.js";
-import Tag from "../js/Tag.js";
+import Data__Chat_Bot      from "../data/Data__Chat_Bot.js";
+import Web_Component       from "./Web_Component.js";
+import WebC__Chat_Messages from "./WebC__Chat_Messages.js";
+import Tag                 from "../js/Tag.js";
 
 export default class WebC__Chat_Bot extends Web_Component {
     constructor() {
@@ -11,40 +11,53 @@ export default class WebC__Chat_Bot extends Web_Component {
         this.data_chat_bot      = new Data__Chat_Bot()
     }
 
+    connectedCallback() {
+        console.log('in connected callback')
+        this.build()
+    }
+
+    build() {
+        this.add_css_rules(this.css_rules__chat_bot())
+        const html = this.div_chatbot_ui().html()
+            //`<div class="messages"><slot></slot></div>`
+        this.set_inner_html(html)
+    }
+
     //static fields and methods
-    static element_name  = 'webc-chat-bot'
+    //static element_name  = 'webc-chat-bot'
 
-    static define() {
-       if (!customElements.get(WebC__Chat_Bot.element_name)) {
-           customElements.define(WebC__Chat_Bot.element_name, WebC__Chat_Bot);
-           return true; }
-    }
-
-    static create_element() {
-        WebC__Chat_Bot.define()
-        return document.createElement(WebC__Chat_Bot.element_name)
-    }
-    static create_element_add_to_body() {
-        const element = WebC__Chat_Bot.create_element()
-        return  document.body.appendChild(element);
-    }
+    // static define() {
+    //    if (!customElements.get(WebC__Chat_Bot.element_name)) {
+    //        customElements.define(WebC__Chat_Bot.element_name, WebC__Chat_Bot);
+    //        return true; }
+    // }
+    //
+    // static create_element() {
+    //     WebC__Chat_Bot.define()
+    //     return document.createElement(WebC__Chat_Bot.element_name)
+    // }
+    // static create_element_add_to_body() {
+    //     const element = WebC__Chat_Bot.create_element()
+    //     return  document.body.appendChild(element);
+    // }
 
     // properties
     get style() {
         return this.target_element.style
     }
+
     get style_computed() {
         return getComputedStyle(this.target_element)
     }
 
     // instance methods
 
-    add_target_div({chat_bot_id, ...kwargs}={}) {
-        const css_rules__target_div = this.css_rules__target_div(kwargs)
-        this.add_css_rules(css_rules__target_div)
-        const div_target_div = this.div_target_div(chat_bot_id)
-        this.set_inner_html(div_target_div.html())
-    }
+    // add_target_div({chat_bot_id, ...kwargs}={}) {
+    //     const css_rules__target_div = this.css_rules__target_div(kwargs)
+    //     this.add_css_rules(css_rules__target_div)
+    //     const div_target_div = this.div_target_div(chat_bot_id)
+    //     this.set_inner_html(div_target_div.html())
+    // }
 
     add_chat_bot_to_element(element) {
         const css_rules__chat_bot = this.css_rules__chat_bot()
@@ -56,16 +69,19 @@ export default class WebC__Chat_Bot extends Web_Component {
         return element
     }
 
-    add_chat_bot_to_target_div(chat_bot_id) {
-        const element    = this.shadowRoot.getElementById(chat_bot_id)
-        return this.add_chat_bot_to_element(element)
+    // add_chat_bot_to_target_div(chat_bot_id) {
+    //     const element    = this.shadowRoot.getElementById(chat_bot_id)
+    //     return this.add_chat_bot_to_element(element)
+    //
+    // }
 
-    }
-
-    build({chat_bot_id="chat_bot_id", ...kwargs}={}) {
-        this.add_target_div({chat_bot_id, ...kwargs})
-        return this.add_chat_bot_to_target_div(chat_bot_id)
-    }
+    // build({chat_bot_id="chat_bot_id", ...kwargs}={}) {
+    //     const target_div = WebC__Target_Div.add_to_body().build({target_div_id:chat_bot_id, z_index:999})
+    //     return this.add_chat_bot_to_element(target_div.target_element)
+    //
+    //     // this.add_target_div({chat_bot_id, ...kwargs})
+    //     //return this.add_chat_bot_to_target_div(chat_bot_id)
+    // }
 
     css_rules__chat_bot() {
         return {    "*"              : { "font-family": "Verdana"},
@@ -107,58 +123,66 @@ export default class WebC__Chat_Bot extends Web_Component {
                                         //    outline: "currentcolor"       // this was inconsistent in Safari and Firefox
                                         }};}
 
-    css_rules__target_div({right="60px" , left=null, width="30%", top="60px", bottom="120px", height=null}={}) {
-        return {    ".right-div"     : { border         : "3px solid blue",
-                                         bottom         : bottom    ,
-                                         left           : left      ,
-                                         overflow       : "auto"    ,
-                                         position       : "fixed"   ,
-                                         right          : right     ,
-                                         top            : top       ,
-                                         height         : height    ,
-                                         width          : width     ,
-                                         "z-index"      : "1000"    ,
-                                         backgroundColor: "white"   },
-                    ".container-full-height": {
-                                         display:            "flex",
-                                         "flex-direction":   "column",
-                                         height:             "100%",
-                                         padding:            "0"  },
-                    ".flex-row"      : { flex:               "1",
-                                         display:            "flex" },
-                    ".flex-col"      : { flex:               "1",
-                                         display:            "flex",
-                                         padding:            "0"  },
-                    ".content-center": { border:             "3px solid red",
-                                         "flex-grow":        "1",
-                                         display:            "flex",
-                                         "justify-content":  "center",
-                                         "align-items":      "center" } };
-    }
+    // css_rules__target_div({right="60px" , left=null, width="30%", top="60px", bottom="120px", height=null}={}) {
+    //     return {    ".right-div"     : { border         : "3px solid blue",
+    //                                      bottom         : bottom    ,
+    //                                      left           : left      ,
+    //                                      overflow       : "auto"    ,
+    //                                      position       : "fixed"   ,
+    //                                      right          : right     ,
+    //                                      top            : top       ,
+    //                                      height         : height    ,
+    //                                      width          : width     ,
+    //                                      "z-index"      : "1000"    ,
+    //                                      backgroundColor: "white"   },
+    //                 ".container-full-height": {
+    //                                      display:            "flex",
+    //                                      "flex-direction":   "column",
+    //                                      height:             "100%",
+    //                                      padding:            "0"  },
+    //                 ".flex-row"      : { flex:               "1",
+    //                                      display:            "flex" },
+    //                 ".flex-col"      : { flex:               "1",
+    //                                      display:            "flex",
+    //                                      padding:            "0"  },
+    //                 ".content-center": { border:             "3px solid red",
+    //                                      "flex-grow":        "1",
+    //                                      display:            "flex",
+    //                                      "justify-content":  "center",
+    //                                      "align-items":      "center" } };
+    // }
 
     div_chatbot_ui() {
+
         const tag = new Tag()
+        const chat_messages__element_name = WebC__Chat_Messages.element_name
+        const chat_messages__id           = 'chat_messages'
+
         tag.html_config.include_id=false
 
-        const div_chatbot_ui    = tag.clone({tag:'div', class:'chatbot-ui'   })
-        const div_chat_header   = tag.clone({tag:'div', class:'chat-header'  , value:'Chatbot'})
-        const div_chat_messages = tag.clone({tag:'div', class:'chat-messages'})
-        const div_chat_input    = tag.clone({tag:'div', class:'chat-input'})
-        const input_chat_input  = tag.clone({tag:'input', attributes:{type:'text', placeholder:'Enter a message...'}})
+        const div_chatbot_ui     = tag.clone({tag:'div'  , class:'chatbot-ui'   })
+        const div_chat_header    = tag.clone({tag:'div'  , class:'chat-header'  , value:'Chatbot'})
+        const webc_chat_messages = new Tag({tag:chat_messages__element_name, class:'chat-messages', id: chat_messages__id})
+        const div_chat_messages  = tag.clone({tag:'div'  , class:'chat-messages'})
+        const div_chat_input     = tag.clone({tag:'div'  , class:'chat-input'})
+        const input_chat_input   = tag.clone({tag:'input', attributes:{type:'text', placeholder:'Enter a message...'}})
 
-        div_chatbot_ui    .add(div_chat_header  )
-        div_chatbot_ui    .add(div_chat_messages)
-        div_chatbot_ui    .add(div_chat_input)
+        console.log(webc_chat_messages.html())
+
+        div_chatbot_ui.add(div_chat_header  )
+        //div_chatbot_ui.add(div_chat_messages)
+        div_chatbot_ui.add(webc_chat_messages)
+        div_chatbot_ui.add(div_chat_input)
         div_chat_input.add(input_chat_input)
 
-        div_chatbot_ui.html_config.trim_final_html_code        = true
-        input_chat_input.html_config.include_end_tag           = false
+        div_chatbot_ui.html_config.trim_final_html_code = true
+        input_chat_input.html_config.include_end_tag    = false
         return div_chatbot_ui
     }
 
-    div_target_div(chat_bot_id) {
-        return new Div({id:chat_bot_id, class:'right-div'})
-    }
+    // div_target_div(chat_bot_id) {
+    //     return new Div({id:chat_bot_id, class:'right-div'})
+    // }
 
     hide() {
         this.hidden = true
@@ -208,41 +232,43 @@ export default class WebC__Chat_Bot extends Web_Component {
         return this
     }
 
-    templates_html() {
-        const templates                 = new Tag({tag:'div'     , id   :'templates'                    })
-        const template_sent             = new Tag({tag:'template', id   :'template_sent'                })
-        const template_sent_message     = new Tag({tag:'div'     , class:'message sent'     , value:''  })
-        const template_received         = new Tag({tag:'template', id   :'template_received'            })
-        const template_received_message = new Tag({tag:'div'     , class:'message received'   , value:''})
+    // templates_html() {
+    //     const templates                 = new Tag({tag:'div'     , id   :'templates'                    })
+    //     const template_sent             = new Tag({tag:'template', id   :'template_sent'                })
+    //     const template_sent_message     = new Tag({tag:'div'     , class:'message sent'     , value:''  })
+    //     const template_received         = new Tag({tag:'template', id   :'template_received'            })
+    //     const template_received_message = new Tag({tag:'div'     , class:'message received'   , value:''})
+    //
+    //     template_sent_message    .html_config.include_id = false
+    //     template_received_message.html_config.include_id = false
+    //
+    //     templates        .add(template_sent             )
+    //     templates        .add(template_received         )
+    //     template_sent    .add(template_sent_message     )
+    //     template_received.add(template_received_message )
+    //     return templates.html()
+    // }
 
-        template_sent_message    .html_config.include_id = false
-        template_received_message.html_config.include_id = false
-
-        templates        .add(template_sent             )
-        templates        .add(template_received         )
-        template_sent    .add(template_sent_message     )
-        template_received.add(template_received_message )
-        return templates.html()
-    }
-
-    messages__add(template, message) {
-        const formatted_message = message.replace(/\n/g, '<br>');
-        const new_message = template.content.cloneNode(true)
-        new_message.querySelector('.message').innerHTML = formatted_message;
-        const document_fragment = this.div_chat_messages.appendChild(new_message);
-        this.div_chat_messages.scrollTop = this.div_chat_messages.scrollHeight;      // todo: add check if we should do this
-        return document_fragment
-    }
-
-    messages__add_sent (message) {
-        const template = this.target_element.querySelector('#template_sent') //.content.cloneNode(true);
-        this.messages__add(template, message)
-        this.data_chat_bot.add_user_message(message, 'sent')
-    }
-
-    messages__add_received (message) {
-        const template = this.target_element.querySelector('#template_received') //.content.cloneNode(true);
-        this.messages__add(template, message)
-        this.data_chat_bot.add_user_message(message, 'received')
-    }
+    // messages__add(template, message) {
+    //     const formatted_message = message.replace(/\n/g, '<br>');
+    //     const new_message = template.content.cloneNode(true)
+    //     new_message.querySelector('.message').innerHTML = formatted_message;
+    //     const document_fragment = this.div_chat_messages.appendChild(new_message);
+    //     this.div_chat_messages.scrollTop = this.div_chat_messages.scrollHeight;      // todo: add check if we should do this
+    //     return document_fragment
+    // }
+    //
+    // messages__add_sent (message) {
+    //     const template = this.target_element.querySelector('#template_sent') //.content.cloneNode(true);
+    //     this.messages__add(template, message)
+    //     this.data_chat_bot.add_user_message(message, 'sent')
+    // }
+    //
+    // messages__add_received (message) {
+    //     const template = this.target_element.querySelector('#template_received') //.content.cloneNode(true);
+    //     this.messages__add(template, message)
+    //     this.data_chat_bot.add_user_message(message, 'received')
+    // }
 }
+
+WebC__Chat_Bot.define()

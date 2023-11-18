@@ -18,8 +18,7 @@ QUnit.module('WebC__Chat_Messages', function(hooks) {
         assert.ok(true)
 
         const target_div       = WebC__Target_Div.add_to_body().build()
-        const inner_html       = ""
-        const chat_messages    = WebC__Chat_Messages.create({inner_html: inner_html})
+        const chat_messages    = WebC__Chat_Messages.create()
 
         target_div.appendChild(chat_messages)
 

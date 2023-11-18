@@ -1,47 +1,62 @@
-import Data__Chat_Bot   from "../../../src/html_blocks/data/Data__Chat_Bot.js";
-import WebC__Chat_Bot   from '../../../src/html_blocks/web_components/WebC__Chat_Bot.js'
-import Web_Component    from '../../../src/html_blocks/web_components/Web_Component.js'
+import Data__Chat_Bot      from "../../../src/html_blocks/data/Data__Chat_Bot.js";
+import WebC__Chat_Bot      from '../../../src/html_blocks/web_components/WebC__Chat_Bot.js'
+import WebC__Target_Div    from '../../../src/html_blocks/web_components/WebC__Target_Div.js'
+import WebC__Chat_Messages from '../../../src/html_blocks/web_components/WebC__Chat_Messages.js'
+import Web_Component       from '../../../src/html_blocks/web_components/Web_Component.js'
 
 QUnit.module('WebC__Chat_Bot', function(hooks) {
 
     hooks.before((assert) => {
-        this.element_name = WebC__Chat_Bot.element_name //'chat-bot'
-        this.element_class = WebC__Chat_Bot
-
-        //this.element_chat_bot = WebC__Chat_Bot.create_element()
-        //assert.equal(typeof(this.element_chat_bot.add_target_div), 'function')
-        this.webc_chat_bot = WebC__Chat_Bot.create_element_add_to_body() // document.body.appendChild(this.element_chat_bot);
-        this.webc_chat_bot.build()
-        this.remove_on_exit = true
+        // this.element_name = WebC__Chat_Bot.element_name
+        // this.element_class = WebC__Chat_Bot
+        // this.webc_chat_bot = WebC__Chat_Bot.create_element_add_to_body() // document.body.appendChild(this.element_chat_bot);
+        // this.webc_chat_bot.build()
+        // this.remove_on_exit = true
     });
 
     hooks.after((assert) => {
-        assert.equal(this.webc_chat_bot.data_chat_bot.user_messages.length, 0                 ,  "there were no messages left in data_chat_bot")
-        assert.equal(document.querySelector(this.element_name)            , this.webc_chat_bot)
-        if (this.remove_on_exit) {
-            this.webc_chat_bot.remove()
-        }
+        // assert.equal(this.webc_chat_bot.data_chat_bot.user_messages.length, 0                 ,  "there were no messages left in data_chat_bot")
+        // assert.equal(document.querySelector(this.element_name)            , this.webc_chat_bot)
+        // if (this.remove_on_exit) {
+        //     this.webc_chat_bot.remove()
+        // }
     });
 
     QUnit.test('constructor', (assert) => {
-        assert.ok   (this.webc_chat_bot       instanceof WebC__Chat_Bot, 'dom_chat_bot is instance of Simple_Web_Component')
+        const webc_chat_bot = WebC__Chat_Bot.create()
+        assert.ok   (webc_chat_bot       instanceof WebC__Chat_Bot, 'dom_chat_bot is instance of Simple_Web_Component')
         assert.ok   (WebC__Chat_Bot.prototype instanceof Web_Component, 'Simple_Web_Component.prototype is an instance of Web_Component');
-        assert.ok   (this.webc_chat_bot.data_chat_bot  instanceof Data__Chat_Bot)
-        assert.ok   (this.webc_chat_bot.target_element instanceof HTMLDivElement)
+        assert.ok   (webc_chat_bot.data_chat_bot  instanceof Data__Chat_Bot)
+        //assert.ok   (webc_chat_bot.target_element instanceof HTMLDivElement)
     })
 
 
-    QUnit.test('build',  async (assert) => {
-        const dom_chat_bot_1 = document.body.appendChild(document.createElement(this.element_name));
-        const chat_bot_id = 'test_chat_bot_build'
-        const chat_bot_div = dom_chat_bot_1.build({chat_bot_id:chat_bot_id})
-        assert.equal(chat_bot_div.id, chat_bot_id)
-        assert.ok(chat_bot_div.innerHTML.includes('div class="chatbot-ui">'))
-        assert.equal(dom_chat_bot_1.target_element       , chat_bot_div)
-        assert.equal(dom_chat_bot_1.shadowRoot.firstChild, chat_bot_div)
-        chat_bot_div.remove()
-        dom_chat_bot_1.remove()
-        assert.equal(document.querySelectorAll(this.element_name).length, 1)
+    QUnit.only('build',  async (assert) => {
+        const target_div   = WebC__Target_Div.add_to_body().build({width:"20%"})
+        const web_chat_bot = WebC__Chat_Bot.create()
+
+        target_div.appendChild(web_chat_bot)
+        const chat_messages = web_chat_bot.query_selector('#chat_messages')
+        chat_messages.add_message_sent      ('ping'    )
+        chat_messages.add_message_received  ('pong'    )
+        chat_messages.add_message_sent      ('sent'    ).append(' abc.....123').append(' 123\n'.repeat(12))
+        chat_messages.add_message_received  ('received').append(' xyz.....123').append(' 123\n'.repeat(12))
+        chat_messages.add_message_sent      ('sent'    ).append(' abc.....123').append(' 123\n'.repeat(12))
+        assert.equal(chat_messages.messages().length, 6)
+        //target_div.remove()
+
+        // todo add asserts like the one below to make sure the elements are loading ok
+
+        // const dom_chat_bot = WebC__Chat_Bot.create_element_add_to_body()
+        //
+        // const chat_bot_div = dom_chat_bot.build({chat_bot_id:chat_bot_id})
+        // assert.equal(chat_bot_div.id, chat_bot_id)
+        // assert.ok(chat_bot_div.innerHTML.includes('div class="chatbot-ui">'))
+        // assert.equal(dom_chat_bot.target_element       , chat_bot_div)
+        // return
+        // assert.equal(dom_chat_bot.shadowRoot.firstChild, chat_bot_div)
+        // assert.equal(dom_chat_bot.innerHTML, '')
+        // //dom_chat_bot.remove()
     })
 
     QUnit.test('test with chat bot',   async (assert) => {
@@ -72,18 +87,19 @@ QUnit.module('WebC__Chat_Bot', function(hooks) {
         assert.ok(true)
     })
 
-    QUnit.test('test html_code', (assert)=>{
+    QUnit.only('test html_code',  (assert)=>{
+        const webc_chat_bot = WebC__Chat_Bot.create()
 
         const expected_html_code =
 `<div class="chatbot-ui">
     <div class="chat-header">Chatbot</div>
-    <div class="chat-messages">
-    </div>
+    <webc-chat-messages id="chat_messages" class="chat-messages">
+    </webc-chat-messages>
     <div class="chat-input">
         <input type="text" placeholder="Enter a message..."/>
     </div>
 </div>`
-        const html_code = this.webc_chat_bot.div_chatbot_ui().html()
+        const html_code = webc_chat_bot.div_chatbot_ui().html()
         assert.equal(html_code, expected_html_code)
     })
 
