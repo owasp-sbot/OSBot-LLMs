@@ -119,4 +119,8 @@ export default class Web_Component extends HTMLElement {
             css_rule.style.setProperty(css_prop_name, css_prop_value);                          // set property in css_rule
         }
     }
+
+    async wait_for(duration) {
+        return new Promise(resolve => setTimeout(resolve, duration));
+    }
 }

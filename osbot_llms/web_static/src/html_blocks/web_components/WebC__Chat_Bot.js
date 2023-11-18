@@ -207,9 +207,6 @@ export default class WebC__Chat_Bot extends Web_Component {
         this.data_chat_bot.add_user_message(message, type)
         return this
     }
-    async wait_for(duration) {
-        return new Promise(resolve => setTimeout(resolve, duration));
-    }
 
     templates_html() {
         const templates                 = new Tag({tag:'div'     , id   :'templates'                    })

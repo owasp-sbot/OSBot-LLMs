@@ -14,12 +14,11 @@ export default class WebC__Chat_Messages extends Web_Component {
     build() {
         const type = this.attributes.type?.value
         this.add_css_rules(this.css_messages())
-        const html = `<div class="messages"><slot></slot></div></div>`
+        const html = `<div class="messages"><slot></slot></div>`
         this.set_inner_html(html)
     }
 
     css_messages() { return {   "*"         : { "font-family"     : "Verdana"         },
-                                                //"padding"         : "10px"            },
                                 ".messages" : { "display"         : "flex"            ,
                                                 "flex-direction"  : "column"          ,
                                                 "overflow-y"      : "auto"            ,
