@@ -32,6 +32,14 @@ export default class WebC__Chat_Message extends Web_Component {
                                                 "color"           : "#fff"            ,
                                                 "border-radius"   : "10px 10px 0 10px"}}
     }
+
+    append(message) {
+        this.innerHTML += message
+        return this
+    }
+    message() {
+        return this.innerHTML
+    }
 }
 
 WebC__Chat_Message.define()
