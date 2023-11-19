@@ -56,9 +56,12 @@ export default class Web_Component extends HTMLElement {
         this.shadowRoot.adoptedStyleSheets = [...currentStylesheets, stylesheet];
     }
 
-    append_child(web_component, ...attributes) {
-        console.log(web_component)
-        console.log(attributes)
+    append_child(WebC_Class, ...attributes) {
+        const child_component = WebC_Class.create(...attributes)        // calls static method create from the Web Component class
+        this.appendChild(child_component)                               // adds it as a child to the current WebC
+        return child_component                                          // returns the instance created of WebC_Class
+        // console.log(webc_chat_bot)
+        // console.log(attributes)
     }
     // root_element() {
     //     return null
@@ -96,6 +99,11 @@ export default class Web_Component extends HTMLElement {
     query_selector(selector) {
         return this.shadow_root().querySelector(selector)
     }
+
+    parent_element() {
+        return this.parentElement
+    }
+
     set_inner_html(inner_html) {
         this.shadowRoot.innerHTML = inner_html
     }

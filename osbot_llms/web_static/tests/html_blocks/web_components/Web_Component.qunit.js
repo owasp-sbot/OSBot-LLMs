@@ -122,7 +122,7 @@ QUnit.module('Web_Component', function(hooks) {
         dom_element.remove()                                                // remove from dom
     })
 
-    QUnit.test('set_css_from_css_properties (css inner element) - with 10ms setTimeout', assert => {
+    QUnit.test('set_css_from_css_properties (css inner element) - with 0ms setTimeout', assert => {
         const done = assert.async();                             // needed for the setTimeout below
 
         const new_name       = 'new-element'
@@ -146,7 +146,7 @@ QUnit.module('Web_Component', function(hooks) {
             assert.equal(computed_style.top, '100px');
             dom_element.remove()                                // remove from dom
             done()
-            }, 10);                                              // delay of 0 means that this will go to the end of the event loop
+            }, 0);                                              // delay of 0 means that this will go to the end of the event loop
 
     })
 });

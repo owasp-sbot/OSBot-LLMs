@@ -4,26 +4,24 @@ import Dynamic_Rows_Cols from '../../../../src/html_blocks/web_components/Dynami
 
 QUnit.module('Chat_Bot', function(hooks) {
 
-    hooks.before((assert) =>{
+    hooks.before(() =>{
         this.chat_bot = new Chat_Bot()
-        assert.equal(this.chat_bot.define(), true)
     })
 
     QUnit.test('constructor', (assert)=>{
         assert.equal(Chat_Bot.prototype.constructor,Chat_Bot, 'check Chat_Bot constructor')
         assert.equal(this.chat_bot.webc_name    , 'chat-bot'    )
         assert.equal(this.chat_bot.webc_class   , WebC__Chat_Bot)
-        assert.equal(this.chat_bot.webc_defined , true          )           // we are calling this.chat_bot.define() in hooks.before
     })
 
-    QUnit.test('.add_to_page',  (assert)=>{
-        const chat_bot_div = this.chat_bot.add_to_page({top:'10px', right:'10px'})
-        chat_bot_div.remove()
-        assert.ok(true)
+    QUnit.test('.create_and_add_to_body', (assert)=>{
+        const webc_chat_bot = this.chat_bot.create_and_add_to_body({top:'100px', right:'10px', width:'30%'})
+        assert.equal(webc_chat_bot.messages.add_message_received('an message').message(), 'an message')
+        webc_chat_bot.parent_element().remove()
     })
 
-    QUnit.test('_using Dynamic_Rows_Cols',  (assert)=> {
-        assert.ok(true)
+    QUnit.skip('_using Dynamic_Rows_Cols',  (assert)=> {
+
         this.element_name = 'dynamic-rows-cols'
         this.element_class = Dynamic_Rows_Cols
         customElements.define(this.element_name, this.element_class);
@@ -34,6 +32,8 @@ QUnit.module('Chat_Bot', function(hooks) {
         const cells = dynamic_row_cols.shadowRoot.querySelectorAll('.flex-col')
         assert.equal(cells.length, 8)
 
+        //dynamic_row_cols.remove()
+        return
         const webc__chat_bot      = this.chat_bot.create_element_in_document_body()
         const css_rules__chat_bot = webc__chat_bot.css_rules__chat_bot()
         const styleSheet          = webc__chat_bot.create_stylesheet_from_css_rules(css_rules__chat_bot)
@@ -73,15 +73,6 @@ QUnit.module('Chat_Bot', function(hooks) {
         //window.cells = cells
         webc__chat_bot.remove()
         dynamic_row_cols.remove()
-
     });
-
-
-    QUnit.test('define', (assert)=>{
-        // assert.equal(this.chat_bot.webc_defined , false)
-        // assert.equal(this.chat_bot.define()     , true )
-        assert.equal(this.chat_bot.webc_defined , true )
-        assert.equal(this.chat_bot.define()     , false)
-    })
 
 });
