@@ -6,18 +6,18 @@ export default class Dynamic_Rows_Cols extends Web_Component {
         super();
     }
 
-create_target_div() {
+create_target_div({top=null, right=null, left=null, bottom=null, width=null, border=null, z_index=null}={}) {
     const css_rules = {     ".right-div": {
-                                border:             "3px solid blue",
-                                bottom:             "10px",
-                                overflow:           "auto",
-                                position:           "fixed",
-                                right:              "10px",
-                                left:               "10px",
-                                top:                "10px",
-                                //width:              "90%",
-                                "z-index":          "1000",
-                                backgroundColor:    "white"
+                                border          :  border  || "3px solid blue" ,
+                                bottom          :  bottom  || "10px"           ,
+                                overflow        :  "auto"                      ,
+                                position        :  "fixed"                     ,
+                                right           :  right   || "10px"           ,
+                                left            :  left    || "10px"           ,
+                                top             :  top     || "10px"           ,
+                                width           :  width   || null             ,
+                                "z-index"       :  z_index || "1000"           ,
+                                backgroundColor :  "white"
                             },
                             ".container-full-height": {
                                 display:            "flex",
@@ -108,3 +108,5 @@ create_target_div() {
         return div_container
     }
 }
+
+Dynamic_Rows_Cols.define()

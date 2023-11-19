@@ -19,12 +19,11 @@ export default class Chat_Bot {
         //return  element_chat_bot.build(...kwrags)
     }
 
-    create_element_in_document_body() {
-        const new_element = document.createElement(this.webc_name)
+    create_element_in_document_body(...kwargs) {
+        const new_element = WebC__Chat_Bot.create()
+        // const new_element = document.createElement(this.webc_name)
         document.body.appendChild(new_element);
         return new_element
     }
 
 }
-
-WebC__Chat_Bot.define()

@@ -20,12 +20,11 @@ QUnit.module('Chat_Bot', function(hooks) {
         webc_chat_bot.parent_element().remove()
     })
 
-    QUnit.skip('_using Dynamic_Rows_Cols',  (assert)=> {
 
-        this.element_name = 'dynamic-rows-cols'
-        this.element_class = Dynamic_Rows_Cols
-        customElements.define(this.element_name, this.element_class);
-        const dynamic_row_cols = document.createElement(this.element_name)
+    //todo refactor to
+    QUnit.test('_using Dynamic_Rows_Cols',  (assert)=> {
+
+        const dynamic_row_cols = Dynamic_Rows_Cols.create()
         document.body.appendChild(dynamic_row_cols);
         dynamic_row_cols.create_target_div()
         dynamic_row_cols.build()
@@ -33,8 +32,8 @@ QUnit.module('Chat_Bot', function(hooks) {
         assert.equal(cells.length, 8)
 
         //dynamic_row_cols.remove()
-        return
         const webc__chat_bot      = this.chat_bot.create_element_in_document_body()
+
         const css_rules__chat_bot = webc__chat_bot.css_rules__chat_bot()
         const styleSheet          = webc__chat_bot.create_stylesheet_from_css_rules(css_rules__chat_bot)
         dynamic_row_cols.add_adopted_stylesheet(styleSheet)
@@ -48,10 +47,18 @@ QUnit.module('Chat_Bot', function(hooks) {
         cells[5].style.width = '80%'
         cells[5].style.flex = 'auto'
         cells[7].parentNode.style.height = '40%'
-        webc__chat_bot.add_chat_bot_to_element(cells[0])
+
+        window.cell = cells[0]
+        window.webc__chat_bot = webc__chat_bot
+        //webc__chat_bot.add_chat_bot_to_element(cells[0])
+
+
+        const element = webc__chat_bot.add_chat_bot_to_element(cells[0])
         webc__chat_bot.add_chat_bot_to_element(cells[1])
         webc__chat_bot.add_chat_bot_to_element(cells[5])
         webc__chat_bot.add_chat_bot_to_element(cells[7])
+
+        console.log(element)
 
         // tweak styles
 
@@ -68,11 +75,9 @@ QUnit.module('Chat_Bot', function(hooks) {
         dynamic_row_cols.shadowRoot.adoptedStyleSheets[1].cssRules[1].style.border = '3px solid green'  // this will impact all
         dynamic_row_cols.shadowRoot.adoptedStyleSheets[0].cssRules[4].style.border = '1px dashed red'
         dynamic_row_cols.shadowRoot.adoptedStyleSheets[1].insertRule('input { font-size: 5px }')       // dynamically adding a rule
-        //dynamic_row_cols.shadowRoot.adoptedStyleSheets[1].insertRule()
-        //window.dynamic_row_cols = dynamic_row_cols
-        //window.cells = cells
-        webc__chat_bot.remove()
-        dynamic_row_cols.remove()
+
+        //webc__chat_bot.remove()
+        //dynamic_row_cols.remove()
     });
 
 });

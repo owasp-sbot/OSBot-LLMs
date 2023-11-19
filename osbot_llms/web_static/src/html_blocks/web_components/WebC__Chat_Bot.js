@@ -38,6 +38,21 @@ export default class WebC__Chat_Bot extends Web_Component {
 
     // instance methods
 
+    // todo: refactor to use new web components tech stack
+    add_chat_bot_to_element(element) {
+        const css_rules__chat_bot = this.css_rules__chat_bot()
+        this.add_css_rules(css_rules__chat_bot)
+        const div_chatbot_ui = this.div_chatbot_ui()
+        element.innerHTML    = div_chatbot_ui.html()
+        this.set_target_element(element)
+        return element
+    }
+
+    set_target_element(element){
+        this.target_element     = element
+        this.div_chat_messages = this.target_element.querySelector('.chat-messages')
+    }
+
 
     css_rules__chat_bot() {
         return {    "*"              : { "font-family": "Verdana"},
