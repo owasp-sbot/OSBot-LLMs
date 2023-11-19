@@ -6,7 +6,7 @@ import Web_Component    from  "../../src/html_blocks/web_components/Web_Componen
 QUnit.module('Chatbot_OpenAI', function(hooks) {
 
     hooks.before(() =>{
-        this.target_div    = WebC__Target_Div.add_to_body().build()
+        this.target_div    = WebC__Target_Div.add_to_body().build({width:"50%"})
         this.chatbot_openai = this.target_div.append_child(Chatbot_OpenAI)
         this.remove_target_div = false
     })
@@ -28,11 +28,24 @@ QUnit.module('Chatbot_OpenAI', function(hooks) {
         assert.ok(response.length > 10, 'got an answer that was bigger than 10')
     })
 
-    QUnit.only('.add_event_listeners',  async (assert)=>{
-        this.chatbot_openai.messages.add_message_sent('hello')
+    QUnit.only('.post_openai_prompt_with_stream',  async (assert)=>{
+        const message  = "Hello"
 
+        this.chatbot_openai.messages.add_message_sent(message)
+        const response = await this.chatbot_openai.post_openai_prompt_with_stream(message)
+        console.log(response)
         assert.ok(1)
     })
+
+    QUnit.test('.add_event_listeners',  async (assert)=>{
+
+        //this.chatbot_openai.messages.add_message_sent('hello')
+        assert.ok(1)
+    })
+
+
+
+
 
 
 });
