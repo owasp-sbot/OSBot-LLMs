@@ -5,17 +5,18 @@ import Dynamic_Rows_Cols from '../../../../src/html_blocks/web_components/Dynami
 QUnit.module('Chat_Bot', function(hooks) {
 
     hooks.before(() =>{
-        this.chat_bot = new Chat_Bot()
+        //this.chat_bot = new Chat_Bot()
     })
 
     QUnit.test('constructor', (assert)=>{
+        const chat_bot = new Chat_Bot()
         assert.equal(Chat_Bot.prototype.constructor,Chat_Bot, 'check Chat_Bot constructor')
-        assert.equal(this.chat_bot.webc_name    , 'chat-bot'    )
-        assert.equal(this.chat_bot.webc_class   , WebC__Chat_Bot)
+        assert.equal(chat_bot.webc_name    , 'chat-bot'    )
+        assert.equal(chat_bot.webc_class   , WebC__Chat_Bot)
     })
 
     QUnit.test('.create_and_add_to_body', (assert)=>{
-        const webc_chat_bot = this.chat_bot.create_and_add_to_body({top:'100px', right:'10px', width:'30%'})
+        const webc_chat_bot = Chat_Bot.create_and_add_to_body({top:'100px', right:'10px', width:'30%'})
         assert.equal(webc_chat_bot.messages.add_message_received('an message').message(), 'an message')
         webc_chat_bot.parent_element().remove()
     })
@@ -39,10 +40,10 @@ QUnit.module('Chat_Bot', function(hooks) {
         cells[5].style.flex                 = 'auto'
         cells[7].parentNode.style.height    = '40%'
 
-        const web_chat_bot_1 = this.chat_bot.create_in_element(cells[0])
-        const web_chat_bot_2 = this.chat_bot.create_in_element(cells[1])
-        const web_chat_bot_3 = this.chat_bot.create_in_element(cells[5])
-        const web_chat_bot_4 = this.chat_bot.create_in_element(cells[7])
+        const web_chat_bot_1 = Chat_Bot.create_in_element(cells[0])
+        const web_chat_bot_2 = Chat_Bot.create_in_element(cells[1])
+        const web_chat_bot_3 = Chat_Bot.create_in_element(cells[5])
+        const web_chat_bot_4 = Chat_Bot.create_in_element(cells[7])
 
         web_chat_bot_1.messages.add_message_sent('sent 1')
         web_chat_bot_2.messages.add_message_sent('sent 2')
@@ -59,7 +60,15 @@ QUnit.module('Chat_Bot', function(hooks) {
         div_right_style.fontSize = '6px'
         div_right_style.border   = '2px solid purple'
 
-        //dynamic_row_cols.remove()
+        dynamic_row_cols.remove()
     });
+
+
+    QUnit.only('test chat_bot_funcionality', (assert)=>{
+        const webc_chat_bot = Chat_Bot.create_and_add_to_body({top:'100px', right:'10px', width:'60%'})
+        assert.equal(webc_chat_bot.messages.add_message_received('an message').message(), 'an message')
+        webc_chat_bot.parent_element().remove()
+        //window.webc_chat_bot = webc_chat_bot
+    })
 
 });

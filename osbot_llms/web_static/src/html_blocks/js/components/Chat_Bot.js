@@ -7,11 +7,9 @@ export default class Chat_Bot {
         this.webc_class = WebC__Chat_Bot
     }
 
-    // create_element() {
-    //     const webc_chat_bot = WebC__Chat_Bot.create()
-    //     return webc_chat_bot
-    // }
-    create_and_add_to_body(...kwargs) {
+    // static methods (helpers to create)
+    //todo move into another calss
+    static create_and_add_to_body(...kwargs) {
         const target_div   = WebC__Target_Div.add_to_body().build(...kwargs)
         return target_div.append_child(WebC__Chat_Bot)
         //return webc_chat_bot
@@ -19,19 +17,18 @@ export default class Chat_Bot {
         //return  element_chat_bot.build(...kwrags)
     }
 
-    create_in_document_body(...kwargs) {
+    static create_in_document_body(...kwargs) {
         const webc_chat_bot = WebC__Chat_Bot.create(...kwargs)
         // const new_element = document.createElement(this.webc_name)
         document.body.appendChild(webc_chat_bot);
         return webc_chat_bot
     }
 
-    create_in_element(element, ...kwargs) {
+    static create_in_element(element, ...kwargs) {
         const webc_chat_bot = WebC__Chat_Bot.create(...kwargs)
         element.innerHTML =''
         webc_chat_bot.style.display = 'contents'    // allow display to propagete via the main webc_chat_bot object
         element.appendChild(webc_chat_bot)
         return webc_chat_bot
     }
-
 }

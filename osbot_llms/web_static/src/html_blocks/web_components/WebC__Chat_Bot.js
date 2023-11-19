@@ -18,11 +18,15 @@ export default class WebC__Chat_Bot extends Web_Component {
     build() {
         this.add_css_rules(this.css_rules__chat_bot())
         const html = this.div_chatbot_ui().html()
-            //`<div class="messages"><slot></slot></div>`
         this.set_inner_html(html)
+        this.add_event_hooks()
     }
 
     // properties
+
+    get input() {
+        return this.query_selector('input')
+    }
 
     get messages() {
         return this.query_selector('#chat_messages')        //todo: refactor chat_messages
@@ -38,22 +42,18 @@ export default class WebC__Chat_Bot extends Web_Component {
 
     // instance methods
 
-    // todo: refactor to use new web components tech stack
-    // add_chat_bot_to_element(element) {
-    //     const css_rules__chat_bot = this.css_rules__chat_bot()
-    //
-    //     //this.add_css_rules(css_rules__chat_bot)
-    //     const div_chatbot_ui = this.div_chatbot_ui()
-    //     element.innerHTML    = div_chatbot_ui.html()
-    //     this.set_target_element(element)
-    //     return element
-    // }
-
-    set_target_element(element){
-        this.target_element     = element
-        this.div_chat_messages = this.target_element.querySelector('.chat-messages')
+    add_event_hooks() {
+        this.input.addEventListener('keydown',(e) => this.on_input_keydown(e))
     }
 
+    on_input_keydown(e) {
+        console.log(e._key)
+        // todo: remove e_.key once test event trigger is working
+        if(e.key === "Enter" || e._key === "Enter") {         //  todo: add this when we have support for textarea as the bot input:    && !e.shiftKey
+            this.messages.add_message_sent(this.input.value)
+            this.input.value  =''
+        }
+    }
 
     css_rules__chat_bot() {
         return {    "*"              : { "font-family": "Verdana"},
