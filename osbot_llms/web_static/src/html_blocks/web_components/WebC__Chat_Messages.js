@@ -32,8 +32,26 @@ export default class WebC__Chat_Messages extends Web_Component {
         return new_message
     }
 
-    add_message_sent    (message) { return this.add_message(message, 'sent'   ) }
-    add_message_received(message) { return this.add_message(message, 'received') }
+    add_message_sent    (message) {
+        const event = new CustomEvent('messageSent', {
+            bubbles : true    ,                         // allows the event to bubble up through the DOM
+            composed: true    ,                         // allows the event to cross shadow DOM boundaries
+            detail  : { message } });
+        this.dispatchEvent(event);
+
+        return this.add_message(message, 'sent'   )
+    }
+    add_message_received(message) {
+        return this.add_message(message, 'received')
+    }
+
+
+    on_message_sent    (callback) {
+        // how to create a custom event
+    }
+    on_message_received(message) {
+
+    }  // method to be overwritten by Classes that extend this one
 
     messages () {
         return this.childNodes

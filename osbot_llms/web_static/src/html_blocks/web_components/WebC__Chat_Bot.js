@@ -47,7 +47,6 @@ export default class WebC__Chat_Bot extends Web_Component {
     }
 
     on_input_keydown(e) {
-        console.log(e._key)
         // todo: remove e_.key once test event trigger is working
         if(e.key === "Enter" || e._key === "Enter") {         //  todo: add this when we have support for textarea as the bot input:    && !e.shiftKey
             this.messages.add_message_sent(this.input.value)

@@ -64,7 +64,7 @@ QUnit.module('Chat_Bot', function(hooks) {
     });
 
 
-    QUnit.only('test chat_bot_funcionality', (assert)=>{
+    QUnit.test('test chat_bot_funcionality', (assert)=>{
         const webc_chat_bot = Chat_Bot.create_and_add_to_body({top:'100px', right:'10px', width:'60%'})
         assert.equal(webc_chat_bot.messages.add_message_received('an message').message(), 'an message')
         webc_chat_bot.parent_element().remove()

@@ -35,7 +35,7 @@ function config_ui() {
 
 var url = '/open_ai/prompt_with_system__stream';
 //url = 'http://localhost:8000/open_ai/prompt_with_system__stream';
-url = 'https://7crg65ubx4wo3mujxqr5dys7ci0gbenh.lambda-url.eu-west-2.on.aws/open_ai/prompt_with_system__stream'
+url = 'https://.....lambda-url.eu-west-2.on.aws/open_ai/prompt_with_system__stream'
 
 async function fetchStream(user_prompt) {
 
