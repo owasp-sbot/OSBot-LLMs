@@ -22,24 +22,28 @@ QUnit.module('Chatbot_OpenAI', function(hooks) {
         assert.ok       (this.chatbot_openai instanceof WebC_Chat_Bot)
     })
 
-    QUnit.test('.post_openai_prompt_simple',  async (assert)=>{
-        const message  = "Hello"
-        const response = await this.chatbot_openai.post_openai_prompt_simple(message)
-        assert.ok(response.length > 10, 'got an answer that was bigger than 10')
-    })
+    // todo fix these methods which need a live server to send the requests to (since currently localhost:8000 is not sending the corrent host headers)
+    //
+    // QUnit.test('.post_openai_prompt_simple',  async (assert)=>{
+    //     const message  = "Hello"
+    //     const response = await this.chatbot_openai.post_openai_prompt_simple(message)
+    //     assert.ok(response.length > 10, 'got an answer that was bigger than 10')
+    // })
+    //
+    // QUnit.only('.post_openai_prompt_with_stream',  async (assert)=>{
+    //     const message  = "Hello"
+    //
+    //     this.chatbot_openai.messages.add_message_sent(message)
+    //     const response = await this.chatbot_openai.post_openai_prompt_with_stream(message)
+    //     console.log(response)
+    //     assert.ok(1)
+    // })
 
-    QUnit.only('.post_openai_prompt_with_stream',  async (assert)=>{
-        const message  = "Hello"
-
-        this.chatbot_openai.messages.add_message_sent(message)
-        const response = await this.chatbot_openai.post_openai_prompt_with_stream(message)
-        console.log(response)
-        assert.ok(1)
-    })
-
-    QUnit.test('.add_event_listeners',  async (assert)=>{
-
-        //this.chatbot_openai.messages.add_message_sent('hello')
+    QUnit.only('.add_event_listeners',   async (assert)=>{
+        //calculate_histories
+        // this.chatbot_openai.messages.add_message_sent('ping')
+        // this.chatbot_openai.messages.add_message_received('pong')
+        console.log(this.chatbot_openai.calculate_histories())
         assert.ok(1)
     })
 

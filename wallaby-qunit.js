@@ -30,8 +30,8 @@ module.exports = function (wallaby) {
             host     = req.headers.host
             base_url = req.baseUrl
             full_url = `http://${host}${base_url}`
-            if (full_url.includes('lib/qunit-2.20.0.js')) {
-                //console.log(`---> Skipping: ${full_url}`)
+            if (full_url.includes('qunit-2.20.0.js')) {
+                console.log(`---> Skipping: ${full_url}`)
                 res.status(403).send("// file not supported")
             }
             else {

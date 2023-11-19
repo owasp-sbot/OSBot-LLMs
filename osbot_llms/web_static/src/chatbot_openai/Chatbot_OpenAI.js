@@ -22,21 +22,14 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
     }
     add_event_listeners() {
         this.addEventListener('messageSent', async (event) => {
-            console.log(event)
             const message = event.detail.message
-            console.log(`on message sent: ${message}`)
             await this.post_openai_prompt_with_stream(message)
-            //const response = await this.post_openai_prompt_simple(message)
-            //console.log(response)
-            //this.messages.add_message_received(response)
-            //console.log(event);
-            //.console.log(event.detail);
         });
     }
 
     apply_ui_tweaks () {
-        chatbot_openai.messages.add_message_received(this.innial_message)
-        chatbot_openai.input.value                 = this.initial_prompt
+        //this.messages.add_message_received(this.innial_message)
+        this.input.value                 = this.initial_prompt
     }
 
     //todo refactor into separate Openai helper class
@@ -61,9 +54,11 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
 
     async post_openai_prompt_with_stream(user_prompt) {
         const url = '/open_ai/prompt_with_system__stream';
+        const histories = this.calculate_histories()
         const data = { model            : "gpt-4-1106-preview",
                        user_prompt      : user_prompt         ,
-                       system_prompts   : []                  };
+                       system_prompts   : []                  ,
+                       histories        : histories           }
 
         try {
           this.dispatchEvent(new CustomEvent('streamStart', {
@@ -88,7 +83,6 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
 
           const processStream = async ({done, value}) => {
             if (done) {
-              //console.log('Stream complete');
               this.dispatchEvent(new CustomEvent('streamComplete', {
                     bubbles : true    ,                         // allows the event to bubble up through the DOM
                     composed: true    ,                         // allows the event to cross shadow DOM boundaries
@@ -99,7 +93,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
 
             const chunk = decoder.decode(value, {stream: true});                            // Decode and process chunk
 
-            console.log(chunk.replace(/\n/g, '\\n'));
+            //console.log(chunk.replace(/\n/g, '\\n'));
 
             let fixed_chunk = chunk.replace(/\n\n/g, '{{DOUBLE_NEWLINE}}');
             fixed_chunk = fixed_chunk.replace(/\n/g, '');
@@ -121,6 +115,35 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
           this.events.dispatchEvent(new CustomEvent('streamError', { detail: error.message }));
         }
     }
+
+    calculate_histories() {
+        const histories = []
+        let question = null
+        let answer = null
+        console.log(this.messages.childNodes.length)
+        this.messages.childNodes.forEach(message => {
+            if (message.message_raw) {
+                if (question === null) {
+                    question = message.message_raw
+                } else if (answer === null) {
+                    answer = message.message_raw
+                    histories.push({question, answer})
+                    question = answer = null
+                }
+            }
+
+        //     const question = message.text
+        //     const answer   = message.text
+        //     histories.push({question, answer})
+        })
+        return histories
+    }
+
+    // "histories": [
+    //     {
+    //       "question": "My name is John",
+    //       "answer": "Hi John"
+    //     }
 }
 
 Chatbot_OpenAI.define()

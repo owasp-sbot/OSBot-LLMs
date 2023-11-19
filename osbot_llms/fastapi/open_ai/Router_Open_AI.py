@@ -31,15 +31,16 @@ class Router_Open_AI(FastAPI_Router):
         answer         = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt, system_prompts=system_prompts)
         return GPT_Answer(answer=answer)
 
-    async def prompt_with_system__stream(self,gpt_prompt_with_system: GPT_Prompt_With_System):# = Depends()):
+    async def prompt_with_system__stream(self,gpt_prompt_with_system_and_history: GPT_Prompt_With_System_And_History):# = Depends()):
         from osbot_utils.utils.Misc import str_to_bytes
         async def streamer():
             #yield str_to_bytes(f"[#{i}] This is streaming from Lambda \n")
-            user_prompt    = gpt_prompt_with_system.user_prompt
-            system_prompts = gpt_prompt_with_system.system_prompts
+            user_prompt    = gpt_prompt_with_system_and_history.user_prompt
+            system_prompts = gpt_prompt_with_system_and_history.system_prompts
+            histories      = gpt_prompt_with_system_and_history.histories
             async_mode     = True
             #model          = gpt_prompt_with_system.model
-            generator      = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt, system_prompts=system_prompts, async_mode=async_mode)
+            generator      = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt, system_prompts=system_prompts, histories=histories, async_mode=async_mode)
             for answer in generator:
                 if answer:
                     yield f"{answer}\n"

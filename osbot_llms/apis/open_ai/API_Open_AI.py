@@ -70,15 +70,15 @@ class API_Open_AI:
                 full_answer += item
         return full_answer
 
-    def ask_using_system_prompts(self, user_prompt, system_prompts=None, user_history=None, async_mode=False):
+    def ask_using_system_prompts(self, user_prompt, system_prompts=None, histories=None, async_mode=False):
         messages = []
         if system_prompts:
             for system_prompt in system_prompts:
                 messages.append({"role": "system", "content": system_prompt})
-        if user_history:
-            for item in user_history:
-                question = item.get('question')
-                answer   = item.get('answer')
+        if histories:
+            for item in histories:
+                question = item.question
+                answer   = item.answer
                 messages.append({"role": "user"     , "content": question})
                 messages.append({"role": "assistant", "content": answer})
         messages.append({"role": "user", "content": user_prompt})

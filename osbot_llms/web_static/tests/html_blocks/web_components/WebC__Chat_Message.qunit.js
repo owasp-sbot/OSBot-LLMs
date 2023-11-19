@@ -15,7 +15,7 @@ QUnit.module('WebC__Chat_Message', function(hooks) {
         assert.ok   (WebC__Chat_Message.prototype instanceof Web_Component      , 'WebC__Chat_Message.prototype is an instance of Web_Component');
     })
 
-    QUnit.test('add_target_div', (assert) =>  {
+    QUnit.test('.add_message_sent, add_message_received', (assert) =>  {
         const target_div = WebC__Target_Div.add_to_body().build()
         assert.propEqual(target_div.css_rules(), { ".target_div": { border         : "3px solid #724ae8",
                                                                    bottom         : "10px"             ,
@@ -58,5 +58,54 @@ QUnit.module('WebC__Chat_Message', function(hooks) {
         assert.equal(message[3].attributes.type.value      , 'received'                                   )
 
         target_div.remove()
+    })
+
+    QUnit.only('.show_message', async (assert) => {
+        const div_setup = {top: "200px"}
+        const target_div        = WebC__Target_Div.add_to_body().build(div_setup)
+        const web_chat_messages = target_div.append_child(WebC__Chat_Messages)
+
+        // adding full messages
+        const url_markdown        = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js'
+        const message_raw         = 'this is **bold** in markdown\n\nnew line'
+        const message_html_lite   = 'this is **bold** in markdown<br><br>new line'
+        const message_html_marked = '<p>this is <strong>bold</strong> in markdown</p>\n<p>new line</p>\n'
+
+        const chat_message_without_marked = web_chat_messages.add_message_sent(message_raw)
+        assert.equal(chat_message_without_marked.message_raw , message_raw      )
+        assert.equal(chat_message_without_marked.message_html ,message_html_lite)
+
+        await fetch(url_markdown).then(response => response.text().then(text => eval(text)))
+        const chat_message_with_marked = web_chat_messages.add_message_sent(message_raw)
+        assert.equal(chat_message_with_marked.message_raw , message_raw        )
+        assert.equal(chat_message_with_marked.message_html ,message_html_marked)
+
+        // adding a streamed message
+        const message_streamed             = ['this '         , 'is '              , '\n\n a new line'                   ]
+        const message_streamed_raw         = ['this '         , 'this is '         ,  'this is \n\n a new line'          ]
+        const message_streamed_html_marked = ['<p>this </p>\n', '<p>this is </p>\n', '<p>this is </p>\n<p> a new line</p>\n']
+
+        const chat_message_with_marked_streamed = web_chat_messages.add_message_sent(message_streamed[0])
+        assert.equal(chat_message_with_marked_streamed.message_raw , message_streamed_raw        [0])
+        assert.equal(chat_message_with_marked_streamed.message_html ,message_streamed_html_marked[0])
+
+        for (let i = 1; i < 3; i++) {
+            chat_message_with_marked_streamed.append(message_streamed[i])
+            assert.equal(chat_message_with_marked_streamed.message_raw , message_streamed_raw        [i])
+            assert.equal(chat_message_with_marked_streamed.message_html ,message_streamed_html_marked[i])
+        }
+
+
+        const message_with_marked_table_raw =
+`| Subject | Answer |
+|-----------|------------------------------------|
+| Markdown | Yes, I can help you with Markdown. |`
+
+        const received_chat_message_with_marked_table = web_chat_messages.add_message_sent    (message_with_marked_table_raw)
+        const sent_chat_message_with_marked_table     = web_chat_messages.add_message_received(message_with_marked_table_raw)
+
+        target_div.remove()
+
+        assert.ok(1)
     })
 })

@@ -9,13 +9,11 @@ export default class WebC__Chat_Messages extends Web_Component {
     }
 
     add_event_hooks() {
-        console.log("configuring event hooks in WebC__Chat_Messages")
+        //console.log("configuring event hooks in WebC__Chat_Messages")
 
         var current_message = null
         window.addEventListener('streamStart', (e)=>{
-            //console.log('>>>>> streamStart:")', e)
             current_message = this.add_message_received('')
-            console.log(current_message)
         });
 
         window.addEventListener('streamComplete', (e)=>{
@@ -61,6 +59,7 @@ export default class WebC__Chat_Messages extends Web_Component {
 
         return message_sent
     }
+
     add_message_received(message) {
         return this.add_message(message, 'received')
     }
