@@ -20,63 +20,45 @@ QUnit.module('Chat_Bot', function(hooks) {
         webc_chat_bot.parent_element().remove()
     })
 
-
-    //todo refactor to
-    QUnit.test('_using Dynamic_Rows_Cols',  (assert)=> {
-
+    QUnit.test('.create_in_element (using Dynamic_Rows_Cols)',  (assert)=> {
+        const ctor_style = {top:"100px", left:"75%"}
         const dynamic_row_cols = Dynamic_Rows_Cols.create()
         document.body.appendChild(dynamic_row_cols);
-        dynamic_row_cols.create_target_div()
+        dynamic_row_cols.create_target_div(ctor_style)
         dynamic_row_cols.build()
         const cells = dynamic_row_cols.shadowRoot.querySelectorAll('.flex-col')
         assert.equal(cells.length, 8)
 
-        //dynamic_row_cols.remove()
-        const webc__chat_bot      = this.chat_bot.create_element_in_document_body()
-
-        const css_rules__chat_bot = webc__chat_bot.css_rules__chat_bot()
-        const styleSheet          = webc__chat_bot.create_stylesheet_from_css_rules(css_rules__chat_bot)
-        dynamic_row_cols.add_adopted_stylesheet(styleSheet)
-
         cells[0].parentNode.style.height = '30%'
-        cells[0].style.width = '30%'
-        cells[0].style.flex = 'auto'
-        cells[1].style.width = '70%'
-        cells[1].style.flex = 'auto'
-        cells[5].parentNode.style.height = '15%'
-        cells[5].style.width = '80%'
-        cells[5].style.flex = 'auto'
-        cells[7].parentNode.style.height = '40%'
+        cells[0].style.width                = '30%'
+        cells[0].style.flex                 = 'auto'
+        cells[1].style.width                = '70%'
+        cells[1].style.flex                 = 'auto'
+        cells[5].parentNode.style.height    = '15%'
+        cells[5].style.width                = '80%'
+        cells[5].style.flex                 = 'auto'
+        cells[7].parentNode.style.height    = '40%'
 
-        window.cell = cells[0]
-        window.webc__chat_bot = webc__chat_bot
-        //webc__chat_bot.add_chat_bot_to_element(cells[0])
+        const web_chat_bot_1 = this.chat_bot.create_in_element(cells[0])
+        const web_chat_bot_2 = this.chat_bot.create_in_element(cells[1])
+        const web_chat_bot_3 = this.chat_bot.create_in_element(cells[5])
+        const web_chat_bot_4 = this.chat_bot.create_in_element(cells[7])
 
-
-        const element = webc__chat_bot.add_chat_bot_to_element(cells[0])
-        webc__chat_bot.add_chat_bot_to_element(cells[1])
-        webc__chat_bot.add_chat_bot_to_element(cells[5])
-        webc__chat_bot.add_chat_bot_to_element(cells[7])
-
-        console.log(element)
+        web_chat_bot_1.messages.add_message_sent('sent 1')
+        web_chat_bot_2.messages.add_message_sent('sent 2')
+        web_chat_bot_3.messages.add_message_sent('sent 3')
+        web_chat_bot_4.messages.add_message_sent('sent 4')
 
         // tweak styles
-
         const div_right_style = dynamic_row_cols.shadowRoot.querySelector('.right-div').style
-        const chatbox_ui_style = dynamic_row_cols.shadowRoot.querySelector('.chatbot-ui').style
-
-        div_right_style.top   = '0px'
-        div_right_style.right = '10px'
-        div_right_style.left  = 'unset'
-        div_right_style.width  = '70%'
+        div_right_style.bottom   = '0%'
+        div_right_style.top      = '0%'
+        div_right_style.right    = '20px'
+        div_right_style.left     = 'unset'
+        div_right_style.width    = '50%'
         div_right_style.fontSize = '6px'
-        div_right_style.border = 'unset'
-        chatbox_ui_style.border = '2px solid blue'                                                      // this will impact on
-        dynamic_row_cols.shadowRoot.adoptedStyleSheets[1].cssRules[1].style.border = '3px solid green'  // this will impact all
-        dynamic_row_cols.shadowRoot.adoptedStyleSheets[0].cssRules[4].style.border = '1px dashed red'
-        dynamic_row_cols.shadowRoot.adoptedStyleSheets[1].insertRule('input { font-size: 5px }')       // dynamically adding a rule
+        div_right_style.border   = '2px solid purple'
 
-        //webc__chat_bot.remove()
         //dynamic_row_cols.remove()
     });
 

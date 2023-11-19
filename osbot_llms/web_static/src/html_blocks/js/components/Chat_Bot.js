@@ -19,11 +19,19 @@ export default class Chat_Bot {
         //return  element_chat_bot.build(...kwrags)
     }
 
-    create_element_in_document_body(...kwargs) {
-        const new_element = WebC__Chat_Bot.create()
+    create_in_document_body(...kwargs) {
+        const webc_chat_bot = WebC__Chat_Bot.create(...kwargs)
         // const new_element = document.createElement(this.webc_name)
-        document.body.appendChild(new_element);
-        return new_element
+        document.body.appendChild(webc_chat_bot);
+        return webc_chat_bot
+    }
+
+    create_in_element(element, ...kwargs) {
+        const webc_chat_bot = WebC__Chat_Bot.create(...kwargs)
+        element.innerHTML =''
+        webc_chat_bot.style.display = 'contents'    // allow display to propagete via the main webc_chat_bot object
+        element.appendChild(webc_chat_bot)
+        return webc_chat_bot
     }
 
 }

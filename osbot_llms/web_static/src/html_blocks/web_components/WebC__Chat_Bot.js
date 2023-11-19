@@ -28,25 +28,26 @@ export default class WebC__Chat_Bot extends Web_Component {
         return this.query_selector('#chat_messages')        //todo: refactor chat_messages
     }
 
-    get style() {
-        return this.target_element.style
+    get target_element_style() {
+        return this.target_element?.style
     }
 
-    get style_computed() {
+    get target_element_style_computed() {
         return getComputedStyle(this.target_element)
     }
 
     // instance methods
 
     // todo: refactor to use new web components tech stack
-    add_chat_bot_to_element(element) {
-        const css_rules__chat_bot = this.css_rules__chat_bot()
-        this.add_css_rules(css_rules__chat_bot)
-        const div_chatbot_ui = this.div_chatbot_ui()
-        element.innerHTML    = div_chatbot_ui.html()
-        this.set_target_element(element)
-        return element
-    }
+    // add_chat_bot_to_element(element) {
+    //     const css_rules__chat_bot = this.css_rules__chat_bot()
+    //
+    //     //this.add_css_rules(css_rules__chat_bot)
+    //     const div_chatbot_ui = this.div_chatbot_ui()
+    //     element.innerHTML    = div_chatbot_ui.html()
+    //     this.set_target_element(element)
+    //     return element
+    // }
 
     set_target_element(element){
         this.target_element     = element
