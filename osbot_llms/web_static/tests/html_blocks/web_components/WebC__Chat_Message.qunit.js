@@ -60,7 +60,7 @@ QUnit.module('WebC__Chat_Message', function(hooks) {
         target_div.remove()
     })
 
-    QUnit.only('.show_message', async (assert) => {
+    QUnit.test('.show_message', async (assert) => {
         const div_setup = {top: "200px"}
         const target_div        = WebC__Target_Div.add_to_body().build(div_setup)
         const web_chat_messages = target_div.append_child(WebC__Chat_Messages)

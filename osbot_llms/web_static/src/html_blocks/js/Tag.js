@@ -7,7 +7,7 @@ export default class Tag {
         this.element_parent = null
         this.elements       = [];
         this.html_config    = this.default_html_config();         // set default html config
-        this.id             = id || this.generate_random_id();    // ensure there is alwasys an id
+        this.id             = id // || this.generate_random_id();    // ensure there is alwasys an id
         this.parent_dom     = null
         this.styles         = this.default_styles();              // set default styles
         this.value          = value
@@ -29,14 +29,14 @@ export default class Tag {
         return true
     }
 
-    clone({...kwargs}={}) {
+    clone({id=null, ...kwargs}={}) {
         const prototype = Object.getPrototypeOf(this)
         const obj       = Object.create(prototype)
         Object.assign(obj, this);                                   // clone this object
         Object.assign(obj, kwargs);                                 // except
         obj.html_config = { ...this.html_config   }                 //   - html_config (create a copy of the current html_config object)
         obj.elements    = []                                        //   - elements    (i.e. the tag children)
-        obj.id          = this.generate_random_id()                 //   - id          (which needs to be unique)
+        obj.id          = id                                        //   - id          (reset id or set to the provided value)
         obj.styles      = { ...this.styles        }                 //   - styles      (create a copy of the current styles object)
         return obj
     }
@@ -185,7 +185,7 @@ export default class Tag {
         let html = ''
         if (this.html_config.include_tag) {
             html = indent + `<${this.tag}`
-            if (this.html_config.include_id) {
+            if (this.html_config.include_id && this.id) {
                 html += ` id="${this.id}"` }
 
             html += attributes

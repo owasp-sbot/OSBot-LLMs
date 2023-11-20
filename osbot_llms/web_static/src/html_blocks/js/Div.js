@@ -10,6 +10,12 @@ export default class Div extends Tag {
         this.add_element(div)
         return div
     }
+    add_tag({...kwargs}={}) {
+        const tag = new Tag({...kwargs})
+        this.add_element(tag)
+        return tag
+    }
+
     add_text(value) {
         const text = new Text({value:value})
         this.add_element(text)

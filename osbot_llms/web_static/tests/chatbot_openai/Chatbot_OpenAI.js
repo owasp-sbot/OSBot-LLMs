@@ -8,7 +8,7 @@ QUnit.module('Chatbot_OpenAI', function(hooks) {
     hooks.before(() =>{
         this.target_div    = WebC__Target_Div.add_to_body().build({width:"50%"})
         this.chatbot_openai = this.target_div.append_child(Chatbot_OpenAI)
-        this.remove_target_div = false
+        this.remove_target_div = true
     })
     hooks.after(() =>{
         if (this.remove_target_div) {
@@ -39,13 +39,13 @@ QUnit.module('Chatbot_OpenAI', function(hooks) {
     //     assert.ok(1)
     // })
 
-    QUnit.only('.add_event_listeners',   async (assert)=>{
-        //calculate_histories
-        // this.chatbot_openai.messages.add_message_sent('ping')
-        // this.chatbot_openai.messages.add_message_received('pong')
-        console.log(this.chatbot_openai.calculate_histories())
-        assert.ok(1)
-    })
+    // QUnit.test('.add_event_listeners',   async (assert)=>{
+    //     //calculate_histories
+    //     // this.chatbot_openai.messages.add_message_sent('ping')
+    //     // this.chatbot_openai.messages.add_message_received('pong')
+    //     //console.log(this.chatbot_openai.calculate_histories())
+    //     assert.ok(1)
+    // })
 
 
 

@@ -73,7 +73,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
                        user_prompt      : user_prompt            ,
                        system_prompts   : []                     ,
                        histories        : histories              }
-        console.log(data)
+        //console.log(data)
 
         this.messages.messages_div_scroll_to_end()
 
