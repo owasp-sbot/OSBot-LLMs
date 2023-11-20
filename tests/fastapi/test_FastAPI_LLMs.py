@@ -90,7 +90,8 @@ class test_FastAPI_LLMs(TestCase):
         question = 'count to 10'
         data = { 'model'         : 'gpt-3.5-turbo',
                  'user_prompt'   : question       ,
-                 'system_prompts': system_prompts }
+                 'system_prompts': system_prompts ,
+                 'histories'     : []             }
 
 
         streamed_responses = []

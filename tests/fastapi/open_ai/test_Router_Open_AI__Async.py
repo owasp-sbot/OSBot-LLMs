@@ -7,7 +7,8 @@ from osbot_utils.testing.Duration                   import duration
 from osbot_utils.utils.Dev                          import pprint
 from osbot_llms.apis.open_ai.Mock_API_Open_AI       import mock_api_open_ai
 from osbot_llms.fastapi.open_ai.Router_Open_AI      import Router_Open_AI
-from osbot_llms.fastapi.open_ai.models.GPT_Prompt import GPT_Prompt_Simple, GPT_Answer, GPT_Prompt_With_System
+from osbot_llms.fastapi.open_ai.models.GPT_Prompt import GPT_Prompt_Simple, GPT_Answer, GPT_Prompt_With_System, \
+    GPT_Prompt_With_System_And_History
 
 
 class Test_Router_Open_AI__Async:
@@ -46,8 +47,9 @@ class Test_Router_Open_AI__Async:
         question           = 'count to 10'
         kwargs             = dict(model          ='gpt-3.5-turbo'   ,
                                   user_prompt    = question         ,
-                                  system_prompts = system_prompts   )
-        prompt             = GPT_Prompt_With_System(**kwargs)
+                                  system_prompts = system_prompts   ,
+                                  histories      = []               )
+        prompt             = GPT_Prompt_With_System_And_History(**kwargs)
         streaming_response = await self.router.prompt_with_system__stream(prompt)
 
         answers = []
