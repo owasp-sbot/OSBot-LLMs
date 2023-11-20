@@ -6,7 +6,11 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
     constructor() {
         super()
         this.innial_message = 'Good morning, how can I help you'
-        this.initial_prompt = 'Hi'
+        this.openai_model       = "gpt-4-1106-preview" //
+        //this.openai_model       = "gpt-3.5-turbo"
+        this.openai_seed        = 42
+        this.openai_temperature = 0.0
+        this.initial_prompt     = 'Hi'
     }
 
     connectedCallback() {
@@ -28,6 +32,14 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
     }
 
     apply_ui_tweaks () {
+        this.messages.innerHTML =
+`<i>
+  date       : <b>${new Date().toLocaleString()}</b>   
+| temperature: <b>${this.openai_temperature}</b>
+| seed       : <b>${this.openai_seed}</b>
+| model      : <b>${this.openai_model}</b>
+</i><hr/>
+`
         //this.messages.add_message_received(this.innial_message)
         this.input.value                 = this.initial_prompt
     }
@@ -35,7 +47,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
     //todo refactor into separate Openai helper class
     async post_openai_prompt_simple(user_prompt) {
         const url    = '/open_ai/prompt_simple';
-        const data   = { model      : "gpt-4-1106-preview",
+        const data   = { model      : this.openai_model,
                          user_prompt: user_prompt    }
 
         const response = await fetch(url, {
@@ -55,10 +67,15 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
     async post_openai_prompt_with_stream(user_prompt) {
         const url = '/open_ai/prompt_with_system__stream';
         const histories = this.calculate_histories()
-        const data = { model            : "gpt-4-1106-preview",
-                       user_prompt      : user_prompt         ,
-                       system_prompts   : []                  ,
-                       histories        : histories           }
+        const data = { model            : this.openai_model      ,
+                       temperature      : this.openai_temperature,
+                       seed             : this.openai_seed       ,
+                       user_prompt      : user_prompt            ,
+                       system_prompts   : []                     ,
+                       histories        : histories              }
+        console.log(data)
+
+        this.messages.messages_div_scroll_to_end()
 
         try {
           this.dispatchEvent(new CustomEvent('streamStart', {
@@ -81,12 +98,15 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
           const reader = response.body.getReader();                     // Handling the stream
           const decoder = new TextDecoder('utf-8');
 
+          this.messages.messages_div_scroll_to_end()
+
           const processStream = async ({done, value}) => {
             if (done) {
               this.dispatchEvent(new CustomEvent('streamComplete', {
                     bubbles : true    ,                         // allows the event to bubble up through the DOM
                     composed: true    ,                         // allows the event to cross shadow DOM boundaries
               }));
+              this.messages.messages_div_scroll_to_end()
               return;
             }
 
@@ -116,11 +136,11 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         }
     }
 
+    // todo refactor this code to use the Data__Chat_Bot class which has proper support for storing messages
     calculate_histories() {
         const histories = []
         let question = null
-        let answer = null
-        console.log(this.messages.childNodes.length)
+        let answer   = null
         this.messages.childNodes.forEach(message => {
             if (message.message_raw) {
                 if (question === null) {
@@ -132,10 +152,8 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
                 }
             }
 
-        //     const question = message.text
-        //     const answer   = message.text
-        //     histories.push({question, answer})
         })
+        console.log(histories)
         return histories
     }
 

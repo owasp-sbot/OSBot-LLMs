@@ -18,21 +18,23 @@ class API_Open_AI:
 
     def __init__(self):
         self.stream              = True
-        self.temperature         = 1.0
+        self.seed                = 42
+        self.temperature         = 0.0
         self.model               = 'gpt-3.5-turbo' #'gpt-4' #
-        self.print_create_kwargs = False
+        self.print_create_kwargs = True
 
     @cache_on_self
     def api_key(self):
         load_dotenv()
         return getenv(OPEN_AI__API_KEY)
 
-    def create(self, messages, model=None):
+    def create(self, messages, model=None, temperature=None, seed=None):
         openai.api_key = self.api_key()
-        kwargs = dict(model       = model or self.model  ,
-                      messages    = messages             ,
-                      temperature = self.temperature     ,
-                      stream      = self.stream          )
+        kwargs = dict(model       = model       or self.model      ,
+                      messages    = messages                       ,
+                      temperature = temperature or self.temperature,
+                      seed        = seed        or self.seed       ,
+                      stream      = self.stream                    )
         if self.print_create_kwargs:                            # todo : remove
             pprint(kwargs)
         client = OpenAI(api_key=self.api_key())
@@ -59,8 +61,8 @@ class API_Open_AI:
         messages    = [{"role": "user", "content": question}]
         return self.ask_using_messages(messages, model=model, async_mode=async_mode)
 
-    def ask_using_messages(self, messages, model=None, async_mode=False):
-        generator    = self.create(messages, model=model)
+    def ask_using_messages(self, messages, model=None, temperature=None, seed=None, async_mode=False):
+        generator    = self.create(messages, model=model, temperature=temperature,seed=seed)
         if async_mode:
             return generator
         full_answer = ""
@@ -70,7 +72,7 @@ class API_Open_AI:
                 full_answer += item
         return full_answer
 
-    def ask_using_system_prompts(self, user_prompt, system_prompts=None, histories=None, async_mode=False):
+    def ask_using_system_prompts(self, user_prompt, system_prompts=None, histories=None, model=None, temperature=None, seed=None ,async_mode=False):
         messages = []
         if system_prompts:
             for system_prompt in system_prompts:
@@ -84,7 +86,7 @@ class API_Open_AI:
         messages.append({"role": "user", "content": user_prompt})
 
         #pprint(messages)
-        return self.ask_using_messages(messages, async_mode=async_mode)
+        return self.ask_using_messages(messages, model=model, temperature=temperature, seed=seed,  async_mode=async_mode)
 
     def ask_question_with_user_data_and_prompt(self,user_question, user_data, system_prompt, user_history):
         messages = [{"role": "system", "content": system_prompt},

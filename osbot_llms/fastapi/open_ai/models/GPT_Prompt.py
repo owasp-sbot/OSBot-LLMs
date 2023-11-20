@@ -18,10 +18,14 @@ class GPT_History(BaseModel):
 
 DEFAULT_GPT_ENGINE  = GPT_Modules.gpt_3_5_turbo
 DEFAULT_USER_PROMPT = 'Hi'
+DEFAULT_TEMPERATURE = 0.0
+DEFAULT_SEED        = 42
 
 class GPT_Prompt_Simple(BaseModel):
     model       : GPT_Modules = DEFAULT_GPT_ENGINE
     user_prompt : str         = DEFAULT_USER_PROMPT
+    temperature : float       = DEFAULT_TEMPERATURE
+    seed        : int         = DEFAULT_SEED
 
 class GPT_Prompt_With_System(GPT_Prompt_Simple):
     system_prompts: list[str]

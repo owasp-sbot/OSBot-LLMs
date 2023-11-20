@@ -35,12 +35,22 @@ class Router_Open_AI(FastAPI_Router):
         from osbot_utils.utils.Misc import str_to_bytes
         async def streamer():
             #yield str_to_bytes(f"[#{i}] This is streaming from Lambda \n")
+            from osbot_utils.utils.Dev import pprint
+            pprint(gpt_prompt_with_system_and_history)
             user_prompt    = gpt_prompt_with_system_and_history.user_prompt
             system_prompts = gpt_prompt_with_system_and_history.system_prompts
             histories      = gpt_prompt_with_system_and_history.histories
+            model          = gpt_prompt_with_system_and_history.model.value
+            temperature    = gpt_prompt_with_system_and_history.temperature
+            seed           = gpt_prompt_with_system_and_history.seed
             async_mode     = True
-            #model          = gpt_prompt_with_system.model
-            generator      = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt, system_prompts=system_prompts, histories=histories, async_mode=async_mode)
+            generator      = self.api_open_ai.ask_using_system_prompts( user_prompt=user_prompt,
+                                                                        system_prompts=system_prompts,
+                                                                        histories=histories,
+                                                                        model=model,
+                                                                        temperature=temperature,
+                                                                        seed=seed,
+                                                                        async_mode=async_mode)
             for answer in generator:
                 if answer:
                     yield f"{answer}\n"

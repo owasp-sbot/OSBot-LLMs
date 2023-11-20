@@ -24,6 +24,7 @@ export default class WebC__Chat_Messages extends Web_Component {
             current_message.append(chunk)
         });
     }
+
     connectedCallback() {
         this.build()
         this.add_event_hooks()
@@ -74,6 +75,15 @@ export default class WebC__Chat_Messages extends Web_Component {
 
     messages () {
         return this.childNodes
+    }
+
+    messages_div () {
+        return this.query_selector('.messages')
+
+    }
+    messages_div_scroll_to_end() {
+        const messages_div = this.messages_div()
+        messages_div.scrollTop = messages_div.scrollHeight
     }
 }
 
