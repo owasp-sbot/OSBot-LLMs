@@ -94,9 +94,8 @@ QUnit.module('WebC__Chat_Bot', function(hooks) {
     <div class="chat-header">Chatbot</div>
     <webc-chat-messages id="chat_messages" class="chat-messages">
     </webc-chat-messages>
-    <div class="chat-input">
-        <input type="text" placeholder="Enter a message..."/>
-    </div>
+    <webc-chat-input id="chat_input">
+    </webc-chat-input>
 </div>`
         const html_code = webc_chat_bot.div_chatbot_ui().html()
         assert.equal(html_code, expected_html_code)
@@ -123,7 +122,7 @@ QUnit.module('WebC__Chat_Bot', function(hooks) {
         target_div.remove()
     })
 
-    QUnit.test('.hook_events',   (assert) => {
+    QUnit.test('.hook_events',    (assert) => {
         const target_div        = WebC__Target_Div.add_to_body().build({width:"50%"})
         const web_chat_bot      = target_div.append_child(WebC__Chat_Bot)
         const message_to_send   = 'an sent message'
@@ -132,6 +131,7 @@ QUnit.module('WebC__Chat_Bot', function(hooks) {
         keyevent._key ='Enter'          // todo: replace with proper event dispatch
 
         web_chat_bot.messages.add_message_received(received_message)
+        assert.ok(1)
         web_chat_bot.input.value = message_to_send
         web_chat_bot.input.dispatchEvent(keyevent)
 
@@ -142,6 +142,13 @@ QUnit.module('WebC__Chat_Bot', function(hooks) {
         assert.equal(web_chat_bot.messages.childNodes[2].message(), message_to_send)
 
         target_div.remove()
+    })
+
+    QUnit.test('main UI workflow',   (assert) => {
+        const target_div        = WebC__Target_Div.add_to_body().build({width:"50%"})
+        const web_chat_bot      = target_div.append_child(WebC__Chat_Bot)
+        target_div.remove()
+        assert.ok(1)
     })
 })
 

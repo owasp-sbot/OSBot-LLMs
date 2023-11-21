@@ -42,6 +42,7 @@ class Router_Open_AI(FastAPI_Router):
             model          = gpt_prompt_with_system_and_history.model.value
             temperature    = gpt_prompt_with_system_and_history.temperature
             seed           = gpt_prompt_with_system_and_history.seed
+            max_tokens     = gpt_prompt_with_system_and_history.max_tokens
             async_mode     = True
             generator      = self.api_open_ai.ask_using_system_prompts( user_prompt=user_prompt,
                                                                         system_prompts=system_prompts,
@@ -49,6 +50,7 @@ class Router_Open_AI(FastAPI_Router):
                                                                         model=model,
                                                                         temperature=temperature,
                                                                         seed=seed,
+                                                                        max_tokens=max_tokens,
                                                                         async_mode=async_mode)
             for answer in generator:
                 if answer:

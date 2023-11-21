@@ -31,7 +31,7 @@ class API_Open_AI:
                       seed        = seed        or self.seed       ,
                       stream      = self.stream                    )
         if max_tokens:
-            kwargs[max_tokens]  = max_tokens
+            kwargs['max_tokens']  = max_tokens
 
         if self.print_create_kwargs:                            # todo : remove
             pprint(kwargs)
@@ -59,8 +59,8 @@ class API_Open_AI:
         messages    = [{"role": "user", "content": question}]
         return self.ask_using_messages(messages, model=model, async_mode=async_mode)
 
-    def ask_using_messages(self, messages, model=None, temperature=None, seed=None, async_mode=False):
-        generator    = self.create(messages, model=model, temperature=temperature,seed=seed)
+    def ask_using_messages(self, messages, model=None, temperature=None, seed=None, max_tokens=None,  async_mode=False):
+        generator    = self.create(messages, model=model, temperature=temperature,seed=seed, max_tokens=max_tokens)
         if async_mode:
             return generator
         full_answer = ""
@@ -71,7 +71,7 @@ class API_Open_AI:
         return full_answer
 
 
-    def ask_using_system_prompts(self, user_prompt, system_prompts=None, histories=None, model=None, temperature=None, seed=None ,async_mode=False):
+    def ask_using_system_prompts(self, user_prompt, system_prompts=None, histories=None, model=None, temperature=None, seed=None, max_tokens=None, async_mode=False):
         messages = []
         if system_prompts:
             for system_prompt in system_prompts:
@@ -85,7 +85,7 @@ class API_Open_AI:
         messages.append({"role": "user", "content": user_prompt})
 
         #pprint(messages)
-        return self.ask_using_messages(messages, model=model, temperature=temperature, seed=seed,  async_mode=async_mode)
+        return self.ask_using_messages(messages, model=model, temperature=temperature, seed=seed, max_tokens=max_tokens,  async_mode=async_mode)
 
     def ask_question_with_user_data_and_prompt(self,user_question, user_data, system_prompt, user_history):
         messages = [{"role": "system", "content": system_prompt},

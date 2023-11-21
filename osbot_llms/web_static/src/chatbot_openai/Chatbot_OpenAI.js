@@ -11,6 +11,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         this.openai_model       = 'gpt-4-vision-preview'
         this.openai_seed        = 42
         this.openai_temperature = 0.0
+        this.max_tokens         = 2048
         this.initial_prompt     = 'Hi'
     }
 
@@ -71,6 +72,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         const data = { model            : this.openai_model      ,
                        temperature      : this.openai_temperature,
                        seed             : this.openai_seed       ,
+                       max_tokens       : this.max_tokens        ,
                        user_prompt      : user_prompt            ,
                        system_prompts   : []                     ,
                        histories        : histories              }

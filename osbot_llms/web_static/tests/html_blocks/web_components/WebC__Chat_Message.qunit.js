@@ -99,7 +99,7 @@ QUnit.module('WebC__Chat_Message', function(hooks) {
             assert.equal(chat_message_with_marked_streamed.message_html ,message_streamed_html_marked[i])
         }
 
-        //todo add test to check that table is loaded ok using the code below 
+        //todo add test to check that table is loaded ok using the code below
 //         const message_with_marked_table_raw =
 // `| Subject | Answer |
 // |-----------|------------------------------------|
@@ -113,4 +113,14 @@ QUnit.module('WebC__Chat_Message', function(hooks) {
         assert.equal(window.marked, undefined, "maked api is not available anymore")
         assert.ok(1)
     })
+
+        // QUnit.only('.add_image_support',  async (assert) => {
+        //     const div_setup = {top: "200px"}
+        //     const target_div = WebC__Target_Div.add_to_body().build(div_setup)
+        //     const web_chat_messages = target_div.append_child(WebC__Chat_Messages)
+        //
+        //     const message_text = 'this is just some text'
+        //     web_chat_messages.add_message_sent(message_text)
+        //     assert.ok(1)
+        // });
 })

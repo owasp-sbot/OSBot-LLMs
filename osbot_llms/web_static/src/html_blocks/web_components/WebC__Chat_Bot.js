@@ -1,7 +1,8 @@
-import Data__Chat_Bot      from "../data/Data__Chat_Bot.js";
-import Web_Component       from "./Web_Component.js";
-import WebC__Chat_Messages from "./WebC__Chat_Messages.js";
-import Tag                 from "../js/Tag.js";
+import Web_Component       from "./Web_Component.js"        ;
+import Data__Chat_Bot      from "../data/Data__Chat_Bot.js" ;
+import WebC__Chat_Input    from "./WebC__Chat_Input.js"     ;
+import WebC__Chat_Messages from "./WebC__Chat_Messages.js"  ;
+import Tag                 from "../js/Tag.js"              ;
 
 export default class WebC__Chat_Bot extends Web_Component {
     constructor() {
@@ -11,21 +12,10 @@ export default class WebC__Chat_Bot extends Web_Component {
         this.data_chat_bot      = new Data__Chat_Bot()
     }
 
-    connectedCallback() {
-        this.build()
-    }
-
-    build() {
-        this.add_css_rules(this.css_rules__chat_bot())
-        const html = this.div_chatbot_ui().html()
-        this.set_inner_html(html)
-        this.add_event_hooks()
-    }
-
     // properties
 
     get input() {
-        return this.query_selector('input')
+        return this.query_selector('#chat_input').input
     }
 
     get messages() {
@@ -43,15 +33,13 @@ export default class WebC__Chat_Bot extends Web_Component {
     // instance methods
 
     add_event_hooks() {
-        this.input.addEventListener('keydown',(e) => this.on_input_keydown(e))
+        window.addEventListener('new_input_message', (e)=>{
+             this.messages.add_message_sent(e.detail)
+        });
     }
 
-    on_input_keydown(e) {
-        // todo: remove e_.key once test event trigger is working
-        if(e.key === "Enter" || e._key === "Enter") {         //  todo: add this when we have support for textarea as the bot input:    && !e.shiftKey
-            this.messages.add_message_sent(this.input.value)
-            this.input.value  =''
-        }
+    connectedCallback() {
+        this.build()
     }
 
     css_rules__chat_bot() {
@@ -88,25 +76,36 @@ export default class WebC__Chat_Bot extends Web_Component {
     div_chatbot_ui() {
 
         const tag = new Tag()
-        const chat_messages__element_name = WebC__Chat_Messages.element_name
-        const chat_messages__id           = 'chat_messages'
+        const tag_chat_messages = WebC__Chat_Messages.element_name
+        const tag_chat_input    = WebC__Chat_Input   .element_name
+        const chat_messages__id = 'chat_messages'
+        const chat_input__id    = 'chat_input'
 
         tag.html_config.include_id=false
 
-        const div_chatbot_ui     = tag.clone({tag:'div'                      , class:'chatbot-ui'                           })
-        const div_chat_header    = tag.clone({tag:'div'                      , class:'chat-header'  , value:'Chatbot'       })
-        const webc_chat_messages = new Tag  ({tag:chat_messages__element_name, class:'chat-messages', id: chat_messages__id })
-        const div_chat_input     = tag.clone({tag:'div'                      , class:'chat-input'                           })
-        const input_chat_input   = tag.clone({tag:'input'                    , attributes:{type:'text', placeholder:'Enter a message...'}})
+        const div_chatbot_ui     = tag.clone({tag:'div'            , class:'chatbot-ui'                           })
+        const div_chat_header    = tag.clone({tag:'div'            , class:'chat-header'  , value:'Chatbot'       })
+        const webc_chat_messages = new Tag  ({tag:tag_chat_messages, class:'chat-messages', id: chat_messages__id })
+        const webc_chat_input    = new Tag  ({tag:tag_chat_input   ,                        id: chat_input__id    })
+        //const div_chat_input     = tag.clone({tag:'div'            , class:'chat-input'                           })
+        //const input_chat_input   = tag.clone({tag:'input'          , attributes:{type:'text', placeholder:'Enter a message...'}})
 
         div_chatbot_ui.add(div_chat_header  )
         div_chatbot_ui.add(webc_chat_messages)
-        div_chatbot_ui.add(div_chat_input)
-        div_chat_input.add(input_chat_input)
+        div_chatbot_ui.add(webc_chat_input)
+        //div_chatbot_ui.add(div_chat_input)
+        //div_chat_input.add(input_chat_input)
 
         div_chatbot_ui  .html_config.trim_final_html_code = true
-        input_chat_input.html_config.include_end_tag    = false
+        //input_chat_input.html_config.include_end_tag    = false
         return div_chatbot_ui
+    }
+
+    build() {
+        this.add_css_rules(this.css_rules__chat_bot())
+        const html = this.div_chatbot_ui().html()
+        this.set_inner_html(html)
+        this.add_event_hooks()
     }
 
     hide() {

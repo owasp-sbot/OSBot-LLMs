@@ -67,7 +67,7 @@ class test_API_Open_AI(TestCase):
 
     def test_ask_using_system_prompts(self):
         user_prompt_1 = '40+2 , only reply with the answer'
-        answer_1 = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt_1)
+        answer_1 = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt_1, max_tokens=2048)
         assert answer_1 == '42'
 
         kwargs = { "model"       :  'gpt-4-vision-preview'                      ,
