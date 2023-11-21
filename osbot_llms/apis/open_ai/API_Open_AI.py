@@ -3,15 +3,10 @@ from os import getenv
 import openai
 from dotenv import load_dotenv
 from openai import OpenAI
-from openai.types.chat import ChatCompletion
-
-#from openai import ChatCompletion
-
 from osbot_utils.decorators.methods.cache_on_self import cache_on_self
 from osbot_utils.utils.Dev import pprint
 
-OPEN_AI__API_KEY = 'OPEN_AI__API_KEY'
-
+OPEN_AI__API_KEY   = 'OPEN_AI__API_KEY'
 
 
 class API_Open_AI:
@@ -28,13 +23,16 @@ class API_Open_AI:
         load_dotenv()
         return getenv(OPEN_AI__API_KEY)
 
-    def create(self, messages, model=None, temperature=None, seed=None):
+    def create(self, messages, model=None, temperature=None, seed=None, max_tokens=None):
         openai.api_key = self.api_key()
         kwargs = dict(model       = model       or self.model      ,
                       messages    = messages                       ,
                       temperature = temperature or self.temperature,
                       seed        = seed        or self.seed       ,
                       stream      = self.stream                    )
+        if max_tokens:
+            kwargs[max_tokens]  = max_tokens
+
         if self.print_create_kwargs:                            # todo : remove
             pprint(kwargs)
         client = OpenAI(api_key=self.api_key())
@@ -71,6 +69,7 @@ class API_Open_AI:
             if item is not None:
                 full_answer += item
         return full_answer
+
 
     def ask_using_system_prompts(self, user_prompt, system_prompts=None, histories=None, model=None, temperature=None, seed=None ,async_mode=False):
         messages = []

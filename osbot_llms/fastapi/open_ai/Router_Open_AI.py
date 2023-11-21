@@ -27,7 +27,6 @@ class Router_Open_AI(FastAPI_Router):
     async def prompt_with_system(self,gpt_prompt_with_system: GPT_Prompt_With_System):# = Depends()):
         user_prompt    = gpt_prompt_with_system.user_prompt
         system_prompts = gpt_prompt_with_system.system_prompts
-        #model          = gpt_prompt_with_system.model
         answer         = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt, system_prompts=system_prompts)
         return GPT_Answer(answer=answer)
 

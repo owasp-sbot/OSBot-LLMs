@@ -29,6 +29,29 @@ class test_API_Open_AI(TestCase):
         for item in response:
             print(item)
 
+    def test_create__with_images(self):
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "What’s in this image?"},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": "https://open-security-summit.org/img/logo.png",
+                        },
+                    },
+                ],
+            },
+        ]
+        self.api_open_ai.model = 'gpt-4-vision-preview'
+        result = self.api_open_ai.create(messages)
+        answer = ""
+        for chunck in result:
+            if chunck:
+                answer += chunck
+        assert 'OPEN SECURITY SUMMIT' in answer
+
     def test_ask_one_question_no_history(self):
         question = '2+2 , only reply with the answer'
         answer = self.api_open_ai.ask_one_question_no_history(question)
@@ -41,6 +64,20 @@ class test_API_Open_AI(TestCase):
         for answer in generator:
             answers.append(answer)
         assert answers == ['', '123', '456', '789', '10', None]
+
+    def test_ask_using_system_prompts(self):
+        user_prompt_1 = '40+2 , only reply with the answer'
+        answer_1 = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt_1)
+        assert answer_1 == '42'
+
+        kwargs = { "model"       :  'gpt-4-vision-preview'                      ,
+                   "user_prompt" : [ { "type"      : "text"                     ,
+                                       "text"      : "What’s in this image?"}   ,
+                                      { "type"     : "image_url"                ,
+                                        "image_url": { "url": "https://open-security-summit.org/img/logo.png", },
+                                      }]}
+        answer_2 = self.api_open_ai.ask_using_system_prompts(**kwargs)
+        assert 'OPEN SECURITY SUMMIT' in answer_2
 
     def test__multiple_models(self):
         def invoke_model(model):

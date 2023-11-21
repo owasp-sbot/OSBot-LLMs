@@ -6,8 +6,9 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
     constructor() {
         super()
         this.innial_message = 'Good morning, how can I help you'
-        this.openai_model       = "gpt-4-1106-preview" //
+        //this.openai_model       = "gpt-4-1106-preview" //
         //this.openai_model       = "gpt-3.5-turbo"
+        this.openai_model       = 'gpt-4-vision-preview'
         this.openai_seed        = 42
         this.openai_temperature = 0.0
         this.initial_prompt     = 'Hi'
