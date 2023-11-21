@@ -14,7 +14,7 @@ QUnit.module('Html_Tag', function(hooks) {
     });
 
     QUnit.test('.clone', function (assert) {
-        const tag = new Tag({class:'an_class'})
+        const tag = new Tag({class:'an_class', id:'clone'})
         const tag_cloned_1 = tag.clone()
         assert.equal(tag.class , tag_cloned_1.class )
 
@@ -41,12 +41,11 @@ QUnit.module('Html_Tag', function(hooks) {
     })
 
     QUnit.test('.constructor', function (assert) {
-        const tag           = new Tag()
+        const tag           = new Tag({id:'constuctor_with_random_id'})
         const random_id     = tag.id
         const expected_html = `<tag id="${random_id}">\n</tag>\n`
 
         assert.equal(tag.tag, 'tag')
-        assert.ok(tag.id.startsWith('tag_'), 'tag.id should start with "tag_"');
         assert.ok(tag instanceof Tag)
         assert.equal(tag.tag, 'tag')
         assert.propEqual(tag.styles, { background_color: null,
@@ -232,7 +231,7 @@ const expected_html_3 =
             expected_styles += `${attr}: ${value}; `;
         }
         expected_styles = expected_styles.trim()
-        let expected_html = `<tag id="${tag.id}" style="${expected_styles}">\n</tag>\n`;
+        let expected_html = `<tag style="${expected_styles}">\n</tag>\n`;
 
         const actual_html = tag.html();
         assert.equal(actual_html, expected_html, "Html generated with all attributes matches the expected output");
@@ -241,7 +240,7 @@ const expected_html_3 =
     QUnit.test('.html.html_config.include_tag', function (assert) {
         const tag = new Tag()
         assert.equal(tag.html_config.include_tag, true)
-        assert.equal(tag.html(), `<tag id="${tag.id}">\n</tag>\n`)
+        assert.equal(tag.html(), `<tag>\n</tag>\n`)
 
         tag.html_config.include_tag = false
         assert.equal(tag.html_config.include_tag, false)
@@ -251,11 +250,11 @@ const expected_html_3 =
     QUnit.test('.html.html_config.include_end_tag', function (assert) {
         const tag = new Tag()
         assert.equal(tag.html_config.include_end_tag, true)
-        assert.equal(tag.html(), `<tag id="${tag.id}">\n</tag>\n`)
+        assert.equal(tag.html(), `<tag>\n</tag>\n`)
 
         tag.html_config.include_end_tag = false
         assert.equal(tag.html_config.include_end_tag, false)
-        assert.equal(tag.html(), `<tag id="${tag.id}"/>\n`)
+        assert.equal(tag.html(), `<tag/>\n`)
     })
 
     QUnit.test('.html - with no id', function (assert) {
@@ -268,7 +267,7 @@ const expected_html_3 =
     QUnit.test('.html - extra attributes',  function (assert) {
         const key   = 'an key'
         const value = 'an value'
-        const tag = new Tag({attributes: {key, value}})
+        const tag = new Tag({id:'html-extra-attributes', attributes: {key, value}})
         const expected_html = `<tag id="${tag.id}" key="${key}" value="${value}">\n</tag>\n`
         assert.equal(tag.html(), expected_html)
     })
@@ -286,7 +285,7 @@ const expected_html_3 =
 
     QUnit.test('.html - with value',  function (assert) {
         const value = 'an value'
-        const tag = new Tag({value: value})
+        const tag = new Tag({value: value, id:'html-with-value'})
         assert.equal(tag.value, value)
         const expected_html = `<tag id="${tag.id}">${value}</tag>\n`
         assert.equal(tag.html(), expected_html)                             // when value is set, the html should just be the value
@@ -301,7 +300,7 @@ const expected_html_3 =
     })
 
     QUnit.test('.dom_set_styles',  function (assert) {
-        const tag        =   new Tag()
+        const tag        =   new Tag({id:'dom_set_styles'})
         assert.equal(tag.dom_add       ()        , true  )
         assert.equal(tag.dom_styles    ().opacity, 1     )
         assert.equal(tag.dom_styles    ().top    , 'auto')
@@ -313,7 +312,7 @@ const expected_html_3 =
     })
 
     QUnit.test('.dom_apply_styles',  function (assert) {
-        const tag        =   new Tag()
+        const tag  =   new Tag({id:'dom_apply_styles'})
         tag.set_style('top', '10px')
         tag.dom_add()
         assert.equal(tag.dom_styles().top, '10px')

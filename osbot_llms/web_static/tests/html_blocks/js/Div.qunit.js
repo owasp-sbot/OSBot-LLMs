@@ -15,10 +15,10 @@ QUnit.module('Div', function(hooks) {
         assert.ok(Div.prototype instanceof Tag, 'Div.prototype is an instance of Html_Tag');
     });
 
-    QUnit.test('.dom , dom_add',  function (assert) {
+    QUnit.test('.dom , dom_add', function (assert) {
         const margin = 40
         const border = '10px solid blue'
-        const div = new Div()
+        const div = new Div({id:'dom_add'})
         div.set_styles({'top'    : `${margin}px`   ,
                         'bottom' : `${margin}px`   ,
                         'right'  : `${margin}px`   ,
@@ -26,7 +26,7 @@ QUnit.module('Div', function(hooks) {
                         'border' : border          ,
                         'position': 'absolute'     })
 
-        const expected_html = `<div id="${div.id}" style="border: 10px solid blue; bottom: 40px; left: 40px; position: absolute; right: 40px; top: 40px;">\n</div>\n`
+        const expected_html = `<div id="dom_add" style="border: 10px solid blue; bottom: 40px; left: 40px; position: absolute; right: 40px; top: 40px;">\n</div>\n`
         const actual_html = div.html()
         assert.equal(actual_html, expected_html, "html matches expected")
         assert.equal(document.querySelectorAll('#'+div.id).length, 0, "there are no divs with div.id on the page")

@@ -31,7 +31,7 @@ QUnit.module('div components', function(hooks) {
 
     QUnit.test('div_box', (assert)=>{
         assert.ok (typeof div_box === 'function')
-        const div = div_box()
+        const div = div_box({id:'div-box'})
         assert.equal(div.dom().style.border,'5px solid blue')
         assert.ok(true, 'first assert')
         assert.equal(div.dom_remove(),true )

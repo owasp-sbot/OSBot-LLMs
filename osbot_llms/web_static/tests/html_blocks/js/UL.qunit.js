@@ -10,7 +10,7 @@ QUnit.module('UL', function(hooks) {
     QUnit.test('.constructor', function(assert) {
         const ul_1 = new UL()
         assert.equal(ul_1.tag, 'ul')
-        assert.equal(ul_1.html(), `<ul id="${ul_1.id}">\n</ul>\n`)
+        assert.equal(ul_1.html(), `<ul>\n</ul>\n`)
         const ul_2 = new UL({id:'an_id', class:'an_class'})
         assert.equal(ul_2.html(), '<ul id="an_id" class="an_class">\n</ul>\n')
     })

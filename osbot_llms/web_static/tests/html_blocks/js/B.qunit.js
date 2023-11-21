@@ -17,9 +17,9 @@ QUnit.module('B', function(hooks) {
   });
 
 
-    QUnit.test('.html',  function (assert) {
+    QUnit.test('.html', function (assert) {
         const b = new B();
-        const expected_html = `<b id="${b.id}">\n</b>\n`
+        const expected_html = `<b>\n</b>\n`
         assert.equal(b.html(), expected_html)
 
     })

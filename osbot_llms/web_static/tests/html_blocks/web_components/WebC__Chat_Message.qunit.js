@@ -60,7 +60,7 @@ QUnit.module('WebC__Chat_Message', function(hooks) {
         target_div.remove()
     })
 
-    QUnit.test('.show_message', async (assert) => {
+    QUnit.test('.show_message',  async (assert) => {
         const div_setup = {top: "200px"}
         const target_div        = WebC__Target_Div.add_to_body().build(div_setup)
         const web_chat_messages = target_div.append_child(WebC__Chat_Messages)
@@ -75,7 +75,11 @@ QUnit.module('WebC__Chat_Message', function(hooks) {
         assert.equal(chat_message_without_marked.message_raw , message_raw      )
         assert.equal(chat_message_without_marked.message_html ,message_html_lite)
 
+        // load marked js and eval it
+        assert.equal(window.marked, undefined, "maked api is not loaded")
         await fetch(url_markdown).then(response => response.text().then(text => eval(text)))
+        assert.notEqual(window.marked, undefined, "maked api is now loaded")
+
         const chat_message_with_marked = web_chat_messages.add_message_sent(message_raw)
         assert.equal(chat_message_with_marked.message_raw , message_raw        )
         assert.equal(chat_message_with_marked.message_html ,message_html_marked)
@@ -95,17 +99,18 @@ QUnit.module('WebC__Chat_Message', function(hooks) {
             assert.equal(chat_message_with_marked_streamed.message_html ,message_streamed_html_marked[i])
         }
 
+        //todo add test to check that table is loaded ok using the code below 
+//         const message_with_marked_table_raw =
+// `| Subject | Answer |
+// |-----------|------------------------------------|
+// | Markdown | Yes, I can help you with Markdown. |`
 
-        const message_with_marked_table_raw =
-`| Subject | Answer |
-|-----------|------------------------------------|
-| Markdown | Yes, I can help you with Markdown. |`
-
-        const received_chat_message_with_marked_table = web_chat_messages.add_message_sent    (message_with_marked_table_raw)
-        const sent_chat_message_with_marked_table     = web_chat_messages.add_message_received(message_with_marked_table_raw)
+        //const received_chat_message_with_marked_table = web_chat_messages.add_message_sent    (message_with_marked_table_raw)
+        //const sent_chat_message_with_marked_table     = web_chat_messages.add_message_received(message_with_marked_table_raw)
 
         target_div.remove()
-
+        delete window.marked
+        assert.equal(window.marked, undefined, "maked api is not available anymore")
         assert.ok(1)
     })
 })

@@ -23,10 +23,10 @@ QUnit.module('OpenAI_Config', function(hooks) {
     })
 
 
-    QUnit.only('html',    (assert)=>{
+    QUnit.test('html',    (assert)=>{
         const html = this.openai_config.html()
         //console.log(html)
-        window.openai_config = this.openai_config
+        ///window.openai_config = this.openai_config
         assert.ok(1)
     })
 

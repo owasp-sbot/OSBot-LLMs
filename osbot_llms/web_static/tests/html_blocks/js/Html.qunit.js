@@ -8,7 +8,7 @@ QUnit.module('Html', function(hooks) {
         assert.equal(html_1.tag  , 'html')
         assert.equal(html_1.value, ''    )
         assert.equal(html_1.class, null  )
-        assert.ok   (html_1.id.includes('html_'))
+        assert.equal(html_1.id   , null  )
         assert.equal(html_1.html_config.include_tag, false)
         const html_2 = new Html({id:'an_id', 'class':'an_class'});
         assert.equal(html_2.tag  , 'html'    )
@@ -51,8 +51,7 @@ QUnit.module('Html', function(hooks) {
         const html_3 = new Html();                                          // .html() use case 3
         html_3.html_config.include_tag = true
         assert.equal(html_3.html_config.include_tag, true)
-        const expected_html_3 =
-`<html id="${html_3.id}"></html>`
+        const expected_html_3 = `<html></html>`
         assert.equal(html_3.html(), expected_html_3)
 
         const html_4  = new Html();                                         // .html() use case 4
@@ -60,8 +59,7 @@ QUnit.module('Html', function(hooks) {
         html_4.html_config.include_tag = true
         html_4.value = value_2
         assert.equal(html_4.html_config.include_tag, true)
-        const expected_html_4 =
-`<html id="${html_4.id}">${html_4.value}</html>`
+        const expected_html_4 = `<html>${html_4.value}</html>`
         assert.equal(html_4.html(), expected_html_4)
     })
 

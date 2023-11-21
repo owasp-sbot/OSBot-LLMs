@@ -14,12 +14,12 @@ QUnit.module('H', function(hooks) {
     })
 
 
-    QUnit.test('.html',  function (assert) {
+    QUnit.test('.html', function (assert) {
         const h1 = new H();
-        assert.equal(h1.html(), `<h1 id="${h1.id}"></h1>\n`)
+        assert.equal(h1.html(), `<h1></h1>\n`)
 
         const h2 = new H({level:2, value:'abc'});
-        assert.equal(h2.html(), `<h2 id="${h2.id}">abc</h2>\n`)
+        assert.equal(h2.html(), `<h2>abc</h2>\n`)
     })
 
     QUnit.test('_should be an instance and inherit from Html_Tag', function(assert) {

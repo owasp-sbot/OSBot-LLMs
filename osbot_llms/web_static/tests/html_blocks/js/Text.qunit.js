@@ -2,7 +2,6 @@ import Text  from '../../../src/html_blocks/js/Text.js';
 import Tag from '../../../src/html_blocks/js/Tag.js';
 
 QUnit.module('Text', function(hooks) {
-
     hooks.before(function (assert) {
         //window.Div = Div                                    // expose the Div object in the browser's window (to make it easier to test and debug from a browser)
     })
@@ -24,13 +23,13 @@ QUnit.module('Text', function(hooks) {
         assert.equal(text.add_element(), false)
     })
 
-    QUnit.test('.html',  function (assert) {
+    QUnit.test('.html', function (assert) {
         const text = new Text();
-        const expected_html_1 = `<text id="${text.id}"></text>`
+        const expected_html_1 = `<text></text>`
         assert.equal(text.html(), expected_html_1)
         const value_1 = 'aaaa'
         text.value = value_1
-        const expected_html_2 = `<text id="${text.id}">${text.value}</text>`
+        const expected_html_2 = `<text>${text.value}</text>`
         assert.equal(text.html(), expected_html_2)
     })
 
