@@ -24,6 +24,7 @@ DEFAULT_SEED        = 42
 class GPT_Prompt_Simple(BaseModel):
     model       : GPT_Modules   = DEFAULT_GPT_ENGINE
     user_prompt : str           = DEFAULT_USER_PROMPT
+    images      : list[str]     = []
     temperature : float         = DEFAULT_TEMPERATURE
     seed        : int           = DEFAULT_SEED
     max_tokens  : Optional[int] = None

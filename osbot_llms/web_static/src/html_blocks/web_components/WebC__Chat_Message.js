@@ -43,19 +43,36 @@ export default class WebC__Chat_Message extends Web_Component {
         return this
     }
 
-    // todo: add markdown support
     create_message_html(message) {
         if (window.marked === undefined) {
             return message.replace(/\n/g, '<br>');
         }
         else {
             return marked.marked(message)
+            // if (message instanceof String) {                // todo: fix this support since it broke when adding image support
+            //     return marked.marked(message) }
+            // return {
+            //     message
+            // }
         }
 
     }
-
+    images(images){
+        if (images) {
+            const hr = document.createElement('hr');
+            this.appendChild(hr)
+            for (let index in images) {
+                const image_url = images[index]
+                const img = document.createElement('img');
+                img.src = image_url
+                img.style="width:250px; height:250px; margin:10px"
+                this.appendChild(img)
+            }
+        }
+    }
     //todo see if this assigment is better done using a property
     message(value) {
+        console.log('message', value)
         if (value){
             this.message_raw = value
             this.show_message()

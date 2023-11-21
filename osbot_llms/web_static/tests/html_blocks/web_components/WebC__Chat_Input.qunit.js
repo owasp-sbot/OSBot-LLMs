@@ -5,10 +5,6 @@ import Web_Component        from "../../../src/html_blocks/web_components/Web_Co
 
 QUnit.module('WebC__Chat_Input', function(hooks) {
 
-    // hooks.before((assert) => { });
-    //
-    // hooks.after((assert) => { });
-
     QUnit.test('constructor', (assert) => {
         assert.equal(WebC__Chat_Input.element_name, 'webc-chat-input'         , 'WebC__Chat_Message element name was correctly set'           )
         assert.ok   (WebC__Chat_Input.prototype instanceof Web_Component      , 'WebC__Chat_Message.prototype is an instance of Web_Component');
@@ -50,4 +46,50 @@ QUnit.module('WebC__Chat_Input', function(hooks) {
         window.web_chat_input = web_chat_input
         target_div.remove()
     })
+
+    QUnit.only('Create test image', (assert) => {
+        var base64Image      = create_test_img_base64(200,500);
+        const div_setup      = {top: "200px"}
+        const target_div     = WebC__Target_Div.add_to_body().build(div_setup)
+        const web_chat_input = target_div.append_child(WebC__Chat_Input)
+        assert.equal(web_chat_input.images.children.length, 0)
+        web_chat_input.displayImage(base64Image)
+        assert.equal(web_chat_input.images.children.length, 1)
+        assert.equal(web_chat_input.images.children[0].src,base64Image)
+        window.web_chat_input = web_chat_input
+
+        // trigger an sendmessage event
+
+        window.addEventListener('new_input_message', (e)=>{
+             //console.log(e.detail)
+        });
+
+        const keyevent           = new KeyboardEvent('keydown')
+        keyevent._key            ='Enter'          // todo: replace with proper event dispatch
+        web_chat_input.input.value = 'now with an image'
+        web_chat_input.input.dispatchEvent(keyevent)
+        assert.equal(web_chat_input.images.children.length, 0)
+        target_div.remove()
+
+    })
+    // QUnit.only('.add_image_support',  async (assert) => {
+        //     const div_setup = {top: "200px"}
+        //     const target_div = WebC__Target_Div.add_to_body().build(div_setup)
+        //     const web_chat_messages = target_div.append_child(WebC__Chat_Messages)
+        //
+        //     const message_text = 'this is just some text'
+        //     web_chat_messages.add_message_sent(message_text)
+        //     assert.ok(1)
+        // });
 })
+
+//todo: move to util class
+function create_test_img_base64(width=50, height=30, color='#496D89') {
+    var canvas    = document.createElement('canvas');       // Create a canvas element
+    canvas.width  = width;
+    canvas.height = height;
+    var ctx       = canvas.getContext('2d');                // Get the context of the canvas
+    ctx.fillStyle = color;                                  // Fill the canvas with the specified color
+    ctx.fillRect(0, 0, width, height);
+    return canvas.toDataURL();                              // Convert the canvas to a base64 encoded image
+}

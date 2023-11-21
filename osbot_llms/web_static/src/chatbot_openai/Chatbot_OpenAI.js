@@ -29,7 +29,11 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
     add_event_listeners() {
         this.addEventListener('messageSent', async (event) => {
             const message = event.detail.message
-            await this.post_openai_prompt_with_stream(message)
+            const user_prompt = message.user_prompt
+            const images      = message.images
+            console.log(user_prompt)
+            console.log(images)
+            await this.post_openai_prompt_with_stream(user_prompt, images)
         });
     }
 
@@ -66,7 +70,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         return answer                                            // todo: convert this to events
     }
 
-    async post_openai_prompt_with_stream(user_prompt) {
+    async post_openai_prompt_with_stream(user_prompt, images) {
         const url = '/open_ai/prompt_with_system__stream';
         const histories = this.calculate_histories()
         const data = { model            : this.openai_model      ,
@@ -74,6 +78,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
                        seed             : this.openai_seed       ,
                        max_tokens       : this.max_tokens        ,
                        user_prompt      : user_prompt            ,
+                       images           : images                 ,
                        system_prompts   : []                     ,
                        histories        : histories              }
         //console.log(data)
@@ -156,7 +161,6 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
             }
 
         })
-        console.log(histories)
         return histories
     }
 

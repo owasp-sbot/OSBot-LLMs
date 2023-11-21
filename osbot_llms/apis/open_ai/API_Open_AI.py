@@ -15,7 +15,7 @@ class API_Open_AI:
         self.stream              = True
         self.seed                = 42
         self.temperature         = 0.0
-        self.model               = 'gpt-3.5-turbo' #'gpt-4' #
+        self.model               = 'gpt-4-vision-preview' # gpt-3.5-turbo' #'gpt-4' #
         self.print_create_kwargs = True
 
     @cache_on_self
@@ -71,7 +71,7 @@ class API_Open_AI:
         return full_answer
 
 
-    def ask_using_system_prompts(self, user_prompt, system_prompts=None, histories=None, model=None, temperature=None, seed=None, max_tokens=None, async_mode=False):
+    def ask_using_system_prompts(self, user_prompt, images=None, system_prompts=None, histories=None, model=None, temperature=None, seed=None, max_tokens=None, async_mode=False):
         messages = []
         if system_prompts:
             for system_prompt in system_prompts:
@@ -82,9 +82,15 @@ class API_Open_AI:
                 answer   = item.answer
                 messages.append({"role": "user"     , "content": question})
                 messages.append({"role": "assistant", "content": answer})
+        if images:
+            user_prompt  = [ { "type"      : "text"      ,
+                               "text"      : user_prompt }]
+            for image_url in images:
+                image = { "type"     : "image_url"       ,
+                         "image_url": { "url": image_url }}
+                user_prompt.append(image)
         messages.append({"role": "user", "content": user_prompt})
 
-        #pprint(messages)
         return self.ask_using_messages(messages, model=model, temperature=temperature, seed=seed, max_tokens=max_tokens,  async_mode=async_mode)
 
     def ask_question_with_user_data_and_prompt(self,user_question, user_data, system_prompt, user_history):

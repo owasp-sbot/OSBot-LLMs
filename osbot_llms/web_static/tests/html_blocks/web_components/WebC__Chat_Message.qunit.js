@@ -111,16 +111,28 @@ QUnit.module('WebC__Chat_Message', function(hooks) {
         target_div.remove()
         delete window.marked
         assert.equal(window.marked, undefined, "maked api is not available anymore")
-        assert.ok(1)
+
     })
 
-        // QUnit.only('.add_image_support',  async (assert) => {
-        //     const div_setup = {top: "200px"}
-        //     const target_div = WebC__Target_Div.add_to_body().build(div_setup)
-        //     const web_chat_messages = target_div.append_child(WebC__Chat_Messages)
-        //
-        //     const message_text = 'this is just some text'
-        //     web_chat_messages.add_message_sent(message_text)
-        //     assert.ok(1)
-        // });
+    QUnit.only('.show_message with images',  async (assert) => {
+        const target_div        = WebC__Target_Div.add_to_body().build()
+        const web_chat_messages = target_div.append_child(WebC__Chat_Messages)
+        const test_image        = create_test_img_base64()
+        const message = {user_prompt: 'this is a message with an image',images:[test_image]}
+        web_chat_messages.add_message_sent(message)
+        assert.ok(1)
+        //target_div.remove()
+
+    })
 })
+
+//todo: move to util class
+function create_test_img_base64(width=50, height=30, color='#496D89') {
+    var canvas    = document.createElement('canvas');       // Create a canvas element
+    canvas.width  = width;
+    canvas.height = height;
+    var ctx       = canvas.getContext('2d');                // Get the context of the canvas
+    ctx.fillStyle = color;                                  // Fill the canvas with the specified color
+    ctx.fillRect(0, 0, width, height);
+    return canvas.toDataURL();                              // Convert the canvas to a base64 encoded image
+}

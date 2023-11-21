@@ -37,6 +37,7 @@ class Router_Open_AI(FastAPI_Router):
             from osbot_utils.utils.Dev import pprint
             pprint(gpt_prompt_with_system_and_history)
             user_prompt    = gpt_prompt_with_system_and_history.user_prompt
+            images         = gpt_prompt_with_system_and_history.images
             system_prompts = gpt_prompt_with_system_and_history.system_prompts
             histories      = gpt_prompt_with_system_and_history.histories
             model          = gpt_prompt_with_system_and_history.model.value
@@ -44,14 +45,15 @@ class Router_Open_AI(FastAPI_Router):
             seed           = gpt_prompt_with_system_and_history.seed
             max_tokens     = gpt_prompt_with_system_and_history.max_tokens
             async_mode     = True
-            generator      = self.api_open_ai.ask_using_system_prompts( user_prompt=user_prompt,
-                                                                        system_prompts=system_prompts,
-                                                                        histories=histories,
-                                                                        model=model,
-                                                                        temperature=temperature,
-                                                                        seed=seed,
-                                                                        max_tokens=max_tokens,
-                                                                        async_mode=async_mode)
+            generator      = self.api_open_ai.ask_using_system_prompts( user_prompt    = user_prompt    ,
+                                                                        images         = images         ,
+                                                                        system_prompts = system_prompts ,
+                                                                        histories      = histories      ,
+                                                                        model          = model          ,
+                                                                        temperature    = temperature    ,
+                                                                        seed           = seed           ,
+                                                                        max_tokens     = max_tokens     ,
+                                                                        async_mode     = async_mode     )
             for answer in generator:
                 if answer:
                     yield f"{answer}\n"

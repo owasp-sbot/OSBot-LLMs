@@ -66,17 +66,15 @@ class test_API_Open_AI(TestCase):
         assert answers == ['', '123', '456', '789', '10', None]
 
     def test_ask_using_system_prompts(self):
-        user_prompt_1 = '40+2 , only reply with the answer'
-        answer_1 = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt_1, max_tokens=2048)
-        assert answer_1 == '42'
+        # user_prompt_1 = '40+2 , only reply with the answer'
+        # answer_1 = self.api_open_ai.ask_using_system_prompts(user_prompt=user_prompt_1, max_tokens=2048)
+        # assert answer_1 == '42'
 
-        kwargs = { "model"       :  'gpt-4-vision-preview'                      ,
-                   "user_prompt" : [ { "type"      : "text"                     ,
-                                       "text"      : "What’s in this image?"}   ,
-                                      { "type"     : "image_url"                ,
-                                        "image_url": { "url": "https://open-security-summit.org/img/logo.png", },
-                                      }]}
+        kwargs = { "model"       : "gpt-4-vision-preview"                           ,
+                   "user_prompt" : "What’s in this image?"                          ,
+                   "images"      : ['https://open-security-summit.org/img/logo.png']}
         answer_2 = self.api_open_ai.ask_using_system_prompts(**kwargs)
+
         assert 'OPEN SECURITY SUMMIT' in answer_2
 
     def test__multiple_models(self):

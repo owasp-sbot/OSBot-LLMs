@@ -43,15 +43,16 @@ export default class WebC__Chat_Messages extends Web_Component {
                                            "padding"        : "10px"    }}
     }
 
-    add_message(message, type) {
+    add_message(message, type, images) {
         const new_message =  WebC__Chat_Message.create({type:type})
         this.appendChild(new_message)
         new_message.message(message)
+        new_message.images(images)
         return new_message
     }
 
     add_message_sent    (message) {
-        const message_sent = this.add_message(message, 'sent'   )
+        const message_sent = this.add_message(message.user_prompt, 'sent' , message.images  )
         const event = new CustomEvent('messageSent', {
             bubbles : true    ,                         // allows the event to bubble up through the DOM
             composed: true    ,                         // allows the event to cross shadow DOM boundaries
