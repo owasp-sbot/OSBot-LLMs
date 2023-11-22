@@ -6,6 +6,7 @@ export default class WebC__Chat_Messages extends Web_Component {
 
     constructor() {
         super();
+        this.dom_spinner = null
     }
 
     add_event_hooks() {
@@ -20,6 +21,9 @@ export default class WebC__Chat_Messages extends Web_Component {
             //console.log('>>>>> streamComplete:")', e)
         });
         window.addEventListener('streamData', (e)=>{
+            if (this.dom_spinner) {
+                this.dom_spinner.remove();
+                this.dom_spinner = null }
             const chunk = e.detail
             current_message.append(chunk)
         });
@@ -53,6 +57,7 @@ export default class WebC__Chat_Messages extends Web_Component {
 
     add_message_sent    (message) {
         const message_sent = this.add_message(message.user_prompt, 'sent' , message.images  )
+        this.dom_spinner = message_sent.show_spinner()
         const event = new CustomEvent('messageSent', {
             bubbles : true    ,                         // allows the event to bubble up through the DOM
             composed: true    ,                         // allows the event to cross shadow DOM boundaries

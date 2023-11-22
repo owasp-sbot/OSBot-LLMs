@@ -40,6 +40,7 @@ export default class Tag {
         obj.styles      = { ...this.styles        }                 //   - styles      (create a copy of the current styles object)
         return obj
     }
+
     default_html_config() { return { include_id               : true ,
                                      include_tag              : true ,
                                      include_end_tag          : true ,
@@ -96,14 +97,19 @@ export default class Tag {
           const style = document.createElement('style');
           document.head.appendChild(style);
           style.sheet.insertRule(`.${className} { ${styleString} }`, 0);
-
-
     }
 
     dom_apply_styles() {
         this.dom_set_styles(this.styles)
         return self
     }
+
+    dom_create() {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(this.html(), 'text/html');
+        return doc.body.firstChild;
+    }
+
     dom_set_style(property, value) {
         if (this.dom()) {
             this.dom().style[property] = value;

@@ -98,7 +98,7 @@ export default class WebC__Chat_Input extends Web_Component {
     }
 
     async process_paste(event) {
-        console.log('paste event')
+        //console.log('paste event')
         const items = (event.clipboardData || event.originalEvent.clipboardData).items;
 
 
@@ -122,7 +122,9 @@ export default class WebC__Chat_Input extends Web_Component {
     }
 
     displayImage(base64Image) {
-        const img = new Tag({tag: 'img', attributes: {src: base64Image, style: "width:50px; height:50px; margin:10px"}})
+        const style = "width:auto; height:auto; margin:10px;max-width:150px;max-height:150px"
+        //"width:50px; height:50px; margin:10px"
+        const img = new Tag({tag: 'img', attributes: {src: base64Image, style: style}})
         img.html_config.include_end_tag = false
         var parser = new DOMParser();
         var doc = parser.parseFromString(img.html(), 'text/html');
@@ -133,7 +135,7 @@ export default class WebC__Chat_Input extends Web_Component {
             const realWidth = dom_img.naturalWidth;
             const realHeight = dom_img.naturalHeight;
             const sizeInBytes = this.calculateImageSize(base64Image);  // Calculate the size of the base64 string in bytes
-            console.log(`Real Width: ${realWidth}px, Real Height: ${realHeight}px, Size: ${sizeInBytes} bytes`);    // Log the statistics or do something with them
+            //console.log(`Real Width: ${realWidth}px, Real Height: ${realHeight}px, Size: ${sizeInBytes} bytes`);    // Log the statistics or do something with them
             //this.resizeImage(dom_img,512)
 
         };

@@ -31,8 +31,6 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
             const message = event.detail.message
             const user_prompt = message.user_prompt
             const images      = message.images
-            console.log(user_prompt)
-            console.log(images)
             await this.post_openai_prompt_with_stream(user_prompt, images)
         });
     }
@@ -121,8 +119,6 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
 
             const chunk = decoder.decode(value, {stream: true});                            // Decode and process chunk
 
-            //console.log(chunk.replace(/\n/g, '\\n'));
-
             let fixed_chunk = chunk.replace(/\n\n/g, '{{DOUBLE_NEWLINE}}');
             fixed_chunk = fixed_chunk.replace(/\n/g, '');
             fixed_chunk = fixed_chunk.replace(/{{DOUBLE_NEWLINE}}/g, '\n\n');
@@ -143,7 +139,6 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
           this.events.dispatchEvent(new CustomEvent('streamError', { detail: error.message }));
         }
     }
-
     // todo refactor this code to use the Data__Chat_Bot class which has proper support for storing messages
     calculate_histories() {
         const histories = []

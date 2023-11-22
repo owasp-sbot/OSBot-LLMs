@@ -112,6 +112,10 @@ export default class Web_Component extends HTMLElement {
         return this.shadowRoot
     }
 
+    shadow_root_append(child) {
+        return this.shadowRoot.appendChild(child)
+    }
+
     stylesheets(include_root=true, include_shadow=true) {
         const all_stylesheets =[]
         if (include_root) {
@@ -132,7 +136,7 @@ export default class Web_Component extends HTMLElement {
         }
     }
 
-    async wait_for(duration) {
+    async wait_for(duration=1000) {
         return new Promise(resolve => setTimeout(resolve, duration));
     }
 }
