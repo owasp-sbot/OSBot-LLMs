@@ -35,7 +35,7 @@ class Router_Open_AI(FastAPI_Router):
         async def streamer():
             #yield str_to_bytes(f"[#{i}] This is streaming from Lambda \n")
             from osbot_utils.utils.Dev import pprint
-            pprint(gpt_prompt_with_system_and_history)
+            #pprint(gpt_prompt_with_system_and_history)
             user_prompt    = gpt_prompt_with_system_and_history.user_prompt
             images         = gpt_prompt_with_system_and_history.images
             system_prompts = gpt_prompt_with_system_and_history.system_prompts

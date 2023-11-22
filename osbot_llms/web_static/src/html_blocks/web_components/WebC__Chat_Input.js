@@ -20,7 +20,7 @@ export default class WebC__Chat_Input extends Web_Component {
 
     add_event_hooks() {
         this.input.addEventListener('keydown', (event) => this.on_input_keydown(event))
-        this.input.addEventListener('paste'  , (event) => this.process_paste   (event))
+        this.input.addEventListener('paste', (event) => this.process_paste(event))
     }
 
     connectedCallback() {
@@ -29,30 +29,39 @@ export default class WebC__Chat_Input extends Web_Component {
     }
 
     build() {
-        this.add_css_rules (this.css_rules())
-        this.set_inner_html(this.html     ())
+        this.add_css_rules(this.css_rules())
+        this.set_inner_html(this.html())
     }
 
-    css_rules() { return { "*"                : { "font-family"    : "Verdana" },
-                           ".chat-input"      : { padding: "10px",
-                                                  background: "#fff",
-                                                  "box-shadow": "0 -2px 10px rgba(0,0,0,0.1)" },
-                           ".chat-input input": { width: "96%",
-                                                  padding: "10px",
-                                                  "border-radius": "20px",
-                                                  border: "1px solid #ccc",
-                                                }};
+    css_rules() {
+        return {
+            "*": {"font-family": "Verdana"},
+            ".chat-input": {
+                padding: "10px",
+                background: "#fff",
+                "box-shadow": "0 -2px 10px rgba(0,0,0,0.1)"
+            },
+            ".chat-input input": {
+                width: "96%",
+                padding: "10px",
+                "border-radius": "20px",
+                border: "1px solid #ccc",
+            }
+        };
     }
 
     html() {
         const tag = new Tag()
-        const div_chat_input     = tag.clone({tag:'div'   , class:'chat-input'                                        })
-        const div_images         = tag.clone({tag:'div'   , class:'chat-images'                                       })
-        const input_chat_input   = tag.clone({tag:'input' , attributes:{type:'text', placeholder:'Enter a message...'}})
+        const div_chat_input = tag.clone({tag: 'div', class: 'chat-input'})
+        const div_images = tag.clone({tag: 'div', class: 'chat-images'})
+        const input_chat_input = tag.clone({
+            tag: 'input',
+            attributes: {type: 'text', placeholder: 'Enter a message...'}
+        })
 
         div_chat_input.add(div_images)
         div_chat_input.add(input_chat_input)
-        input_chat_input.html_config.include_end_tag  = false
+        input_chat_input.html_config.include_end_tag = false
         return div_chat_input.html()
     }
 
@@ -60,29 +69,30 @@ export default class WebC__Chat_Input extends Web_Component {
         const images_urls = []
         if (this.images.children.length) {
             for (let image of this.images.children) {
-                images_urls.push(image.src )
+                images_urls.push(image.src)
             }
         }
         return images_urls
     }
+
     async on_input_keydown(event) {
         // todo: remove e_.key once test event trigger is working
-        if(event.key === "Enter" || event._key === "Enter") {         //  todo: add this when we have support for textarea as the bot input:    && !e.shiftKey
+        if (event.key === "Enter" || event._key === "Enter") {         //  todo: add this when we have support for textarea as the bot input:    && !e.shiftKey
 
             const user_prompt = this.input.value
-            const images      = this.input_images_urls()
+            const images = this.input_images_urls()
             const event_detail = {"user_prompt": user_prompt, 'images': images}
             this.event_dispatch('new_input_message', event_detail)
-            this.input.value  =''
+            this.input.value = ''
             this.images.innerHTML  =''
         }
     }
 
     event_dispatch(event_name, detail) {
         const event_data = {
-            bubbles : true      ,                         // allows the event to bubble up through the DOM
-            composed: true      ,                         // allows the event to cross shadow DOM boundaries
-            detail  : detail
+            bubbles: true,                         // allows the event to bubble up through the DOM
+            composed: true,                         // allows the event to cross shadow DOM boundaries
+            detail: detail
         }
         this.dispatchEvent(new CustomEvent(event_name, event_data))
     }
@@ -103,22 +113,61 @@ export default class WebC__Chat_Input extends Web_Component {
 
     // Converts an image file to a base64-encoded string
     convertImageToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
     }
 
     displayImage(base64Image) {
-        const div_chat_input = this.query_selector('.chat-input')
-        const img = document.createElement('img');
-        img.src = base64Image
-        img.style="width:50px; height:50px; margin:10px"
-        //div_chat_input.insertBefore(img, this.input)
-        this.images.appendChild(img)
+        const img = new Tag({tag: 'img', attributes: {src: base64Image, style: "width:50px; height:50px; margin:10px"}})
+        img.html_config.include_end_tag = false
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(img.html(), 'text/html');
+        var dom_img = doc.body.firstChild;
+
+
+        dom_img.onload = () => {
+            const realWidth = dom_img.naturalWidth;
+            const realHeight = dom_img.naturalHeight;
+            const sizeInBytes = this.calculateImageSize(base64Image);  // Calculate the size of the base64 string in bytes
+            console.log(`Real Width: ${realWidth}px, Real Height: ${realHeight}px, Size: ${sizeInBytes} bytes`);    // Log the statistics or do something with them
+            //this.resizeImage(dom_img,512)
+
+        };
+        this.images.appendChild(dom_img)
     }
+
+    calculateImageSize(base64String) {
+        const base64WithoutHeader = base64String.split(',')[1];      // Remove the header from the base64 string and calculate the size
+        return base64WithoutHeader.length * 0.75;                    // Each base64 character represents 6 bits of data
+    }
+    //todo implement a resize image function
+    // resizeImage(image, maxSize) {
+    //     let width = image.naturalWidth;
+    //     let height = image.naturalHeight;
+    //     // Check if the image needs to be resized
+    //     console.log(`resizeImage: width: ${width} height: ${height} maxSize: ${maxSize}`)
+    //     if (width > maxSize || height > maxSize) {      // Calculate the new dimensions
+    //         if (width > height) {                       // Landscape
+    //             height *= maxSize / width;
+    //             width = maxSize;
+    //         } else {                                    // Portrait or square
+    //             width *= maxSize / height;
+    //             height = maxSize;
+    //         }
+    //
+    //         const canvas = document.createElement('canvas');    // Create a canvas and get the context
+    //         canvas.width = width;
+    //         canvas.height = height;
+    //         const ctx = canvas.getContext('2d');
+    //         ctx.drawImage(image, 0, 0, width, height);          // Draw the resized image on the canvas
+    //         const resizedDataUrl = canvas.toDataURL('image/jpeg');  // Get the resized image data
+    //         image.src = resizedDataUrl;                                 // Set the image source to the resized image
+    //     }
+    // }
 }
 
 WebC__Chat_Input.define()

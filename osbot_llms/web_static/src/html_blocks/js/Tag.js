@@ -74,6 +74,7 @@ export default class Tag {
         return this.dom_add_to_element(element)
     }
 
+    //todo: solve bug that happens when id is not set
     dom_add_to_element(dom_element) {
         if (dom_element && this.dom() === null) {
             dom_element.insertAdjacentHTML('beforeend', this.html());
@@ -84,6 +85,7 @@ export default class Tag {
         return false
     }
 
+    // todo: see if this is still needed
     dom_add_class(className, styles) {
           let styleString = '';
           for (const property in styles) {

@@ -63,9 +63,10 @@ export default class WebC__Chat_Message extends Web_Component {
             this.appendChild(hr)
             for (let index in images) {
                 const image_url = images[index]
+                //todo refactor to creating with Tag (and into utils class)
                 const img = document.createElement('img');
                 img.src = image_url
-                img.style="width:250px; height:250px; margin:10px"
+                img.style="width:auto; height:auto; margin:10px;max-width:350px;max-height:350px"
                 this.appendChild(img)
             }
         }
