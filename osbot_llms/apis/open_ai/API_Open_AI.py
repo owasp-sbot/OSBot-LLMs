@@ -7,6 +7,7 @@ from osbot_utils.decorators.methods.cache_on_self import cache_on_self
 from osbot_utils.utils.Dev import pprint
 
 OPEN_AI__API_KEY   = 'OPEN_AI__API_KEY'
+DEFAULT_MAX_TOKENS = 2048
 
 
 class API_Open_AI:
@@ -29,9 +30,8 @@ class API_Open_AI:
                       messages    = messages                       ,
                       temperature = temperature or self.temperature,
                       seed        = seed        or self.seed       ,
-                      stream      = self.stream                    )
-        if max_tokens:
-            kwargs['max_tokens']  = max_tokens
+                      stream      = self.stream                    ,
+                      max_tokens  = max_tokens  or DEFAULT_MAX_TOKENS)
 
         if self.print_create_kwargs:                            # todo : remove
             pprint(kwargs)

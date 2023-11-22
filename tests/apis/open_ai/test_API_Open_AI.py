@@ -62,8 +62,9 @@ class test_API_Open_AI(TestCase):
         generator = self.api_open_ai.ask_one_question_no_history(question, async_mode=True)
         answers = []
         for answer in generator:
-            answers.append(answer)
-        assert answers == ['', '123', '456', '789', '10', None]
+            if answer:
+                answers.append(answer)
+        assert answers == ['345', '678', '910']
 
     def test_ask_using_system_prompts(self):
         # user_prompt_1 = '40+2 , only reply with the answer'
