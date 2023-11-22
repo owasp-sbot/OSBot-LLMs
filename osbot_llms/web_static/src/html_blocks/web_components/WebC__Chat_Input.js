@@ -9,7 +9,7 @@ export default class WebC__Chat_Input extends Web_Component {
 
     // properties
     get input() {
-        return this.query_selector('input')
+        return this.query_selector('#user-prompt')
     }
 
     get images() {
@@ -31,38 +31,66 @@ export default class WebC__Chat_Input extends Web_Component {
     build() {
         this.add_css_rules(this.css_rules())
         this.set_inner_html(this.html())
+        this.setup_upload_button()
     }
 
     css_rules() {
-        return {
-            "*": {"font-family": "Verdana"},
-            ".chat-input": {
-                padding: "10px",
-                background: "#fff",
-                "box-shadow": "0 -2px 10px rgba(0,0,0,0.1)"
-            },
-            ".chat-input input": {
-                width: "96%",
-                padding: "10px",
-                "border-radius": "20px",
-                border: "1px solid #ccc",
-            }
-        };
+        return { "*": {"font-family": "Verdana"},
+                 ".chat-input"       : { "padding":       "10px"                         ,
+                                         "background"    : "#fff"                        ,
+                                         "box-shadow"    : "0 -2px 10px rgba(0,0,0,0.1)" ,
+                                         "display"       : "flex"                        ,
+                                         "align-items"   : "center"                      },
+                 ".chat-input input" : { "width"         : "96%"                         ,
+                                         "padding"       : "10px"                        ,
+                                         "border-radius" : "20px"                        ,
+                                         "border"        : "1px solid #ccc"              },
+                 "#file-input"       : { "opacity"       : "0px"                         ,   /* Hide the file input */
+                                         "position"      : "absolute"                    ,
+                                         "z-index"       : "-1"                          },  /* Place it behind the scene */
+                 ".file-input-label" : { "margin-right"  : "8px"                         ,   /* Spacing between button and input box */
+                                         "cursor"        : "pointer"                     }}  /* Change cursor on hover over the label */
     }
 
     html() {
-        const tag = new Tag()
-        const div_chat_input = tag.clone({tag: 'div', class: 'chat-input'})
-        const div_images = tag.clone({tag: 'div', class: 'chat-images'})
-        const input_chat_input = tag.clone({
-            tag: 'input',
-            attributes: {type: 'text', placeholder: 'Enter a message...'}
-        })
+        //todo add back this HTML mode
+        // const tag = new Tag()
+        // const div_chat_input = tag.clone({tag: 'div', class: 'chat-input'})
+        // const div_images = tag.clone({tag: 'div', class: 'chat-images'})
+        // const input_chat_input = tag.clone({
+        //     tag: 'input',
+        //     attributes: {type: 'text', placeholder: 'Enter a message...'}
+        // })
+        //
+        // div_chat_input.add(div_images)
+        // div_chat_input.add(input_chat_input)
+        // input_chat_input.html_config.include_end_tag = false
+        //return div_chat_input.html()
+        const new_html = `
+<div class="chat-images"></div>
+<div class="chat-input">    
+    <input id='file-input' type="file" />
+    <label for="file-input" class="file-input-label">+</label>
+    <input id='user-prompt' type="text" placeholder="Enter a message..."/>
+</div>
+`
+        return new_html
+    }
 
-        div_chat_input.add(div_images)
-        div_chat_input.add(input_chat_input)
-        input_chat_input.html_config.include_end_tag = false
-        return div_chat_input.html()
+    setup_upload_button() {
+        const element = this.query_selector('#file-input')
+        window.element = element
+        element.addEventListener('change', () => {
+              var reader = new FileReader();
+              reader.onloadend = () => {
+                    var base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
+                    //console.log(`got image of size ${base64String.length}`)
+                    const image_prefix = 'data:image/png;base64,'
+                    this.displayImage(image_prefix + base64String);
+              }
+              reader.readAsDataURL(element.files[0]);
+            });
+
     }
 
     input_images_urls() {

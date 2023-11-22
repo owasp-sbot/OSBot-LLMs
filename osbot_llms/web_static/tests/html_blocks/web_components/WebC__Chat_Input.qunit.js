@@ -62,33 +62,33 @@ QUnit.module('WebC__Chat_Input', function(hooks) {
         assert.equal(img.outerHTML,`<img src="${base64Image}" style="${style}">`)
         assert.equal(web_chat_input.images.children.length, 1)
         assert.equal(img.src,base64Image)
-
-
         window.web_chat_input = web_chat_input
 
         // trigger an sendmessage event
-
         window.addEventListener('new_input_message', (e)=>{
              //console.log(e.detail)
         });
-
         const keyevent           = new KeyboardEvent('keydown')
         keyevent._key            ='Enter'          // todo: replace with proper event dispatch
         web_chat_input.input.value = 'now with an image'
         web_chat_input.input.dispatchEvent(keyevent)
-        //assert.equal(web_chat_input.images.children.length, 0)
+        assert.equal(web_chat_input.images.children.length, 0)
         target_div.remove()
-
     })
-    // QUnit.only('.add_image_support',  async (assert) => {
-        //     const div_setup = {top: "200px"}
-        //     const target_div = WebC__Target_Div.add_to_body().build(div_setup)
-        //     const web_chat_messages = target_div.append_child(WebC__Chat_Messages)
-        //
-        //     const message_text = 'this is just some text'
-        //     web_chat_messages.add_message_sent(message_text)
-        //     assert.ok(1)
-        // });
+
+    //todo: fixing this test
+    QUnit.only('Add button to upload image', (assert) => {
+        //var base64Image      = create_test_img_base64(200,500);
+        const target_div     = WebC__Target_Div.add_to_body().build({top: "200px"})
+        const web_chat_input = target_div.append_child(WebC__Chat_Input)
+        const chat_input = web_chat_input.query_selector('.chat-input')
+        //chat_input.innerHTML = html
+
+        //console.log(input)
+        //console.log(html)
+        target_div.remove()
+        assert.ok(1)
+    })
 })
 
 //todo: move to util class
