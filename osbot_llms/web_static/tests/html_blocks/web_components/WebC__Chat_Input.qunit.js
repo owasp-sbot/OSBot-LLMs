@@ -38,10 +38,12 @@ QUnit.module('WebC__Chat_Input', function(hooks) {
         const target_div = WebC__Target_Div.add_to_body().build(div_setup)
         const web_chat_input = target_div.append_child(WebC__Chat_Input)
         const expected_html =
-`<div class="chat-input">
-    <div class="chat-images">
-    </div>
-    <input type="text" placeholder="Enter a message..."/>
+`
+<div class="chat-images"></div>
+<div class="chat-input">    
+    <input id='file-input' type="file" />
+    <label for="file-input" class="file-input-label">+</label>
+    <input id='user-prompt' type="text" placeholder="Enter a message..."/>
 </div>
 `
         assert.equal(web_chat_input.html(), expected_html)
@@ -77,7 +79,7 @@ QUnit.module('WebC__Chat_Input', function(hooks) {
     })
 
     //todo: fixing this test
-    QUnit.only('Add button to upload image', (assert) => {
+    QUnit.test('Add button to upload image', (assert) => {
         //var base64Image      = create_test_img_base64(200,500);
         const target_div     = WebC__Target_Div.add_to_body().build({top: "200px"})
         const web_chat_input = target_div.append_child(WebC__Chat_Input)
