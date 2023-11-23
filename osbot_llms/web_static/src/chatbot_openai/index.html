@@ -8,6 +8,11 @@
 </head>
 <body>
     <script type="module" src="./Chatbot_OpenAI.js"></script>
-    <chatbot-openai></chatbot-openai>
+    <template id="system_prompt">
+        Act like a helpful assistant call John, you are talking with Steve
+    </template>
+    <chatbot-openai url="https://athena.thecyberboardroom.com/prompt_with_system__stream">
+                    name="OSBot Bot"
+    </chatbot-openai>
 </body>
 </html>

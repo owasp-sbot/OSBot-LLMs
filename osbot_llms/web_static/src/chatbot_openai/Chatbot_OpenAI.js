@@ -8,11 +8,14 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         this.innial_message = 'Good morning, how can I help you'
         //this.openai_model       = "gpt-4-1106-preview" //
         //this.openai_model       = "gpt-3.5-turbo"
-        this.openai_model       = 'gpt-4-vision-preview'
-        this.openai_seed        = 42
-        this.openai_temperature = 0.0
-        this.max_tokens         = 2048
-        this.initial_prompt     = 'Hi'
+        this.openai_model       = this.getAttribute('model'         ) || 'gpt-4-1106-preview' //'gpt-4-vision-preview' // Nov 2023 - reaching daily limit of 100 requests
+        this.openai_seed        = this.getAttribute('seed'          ) || 42
+        this.openai_temperature = this.getAttribute('temperature'   ) || 0.0
+        this.max_tokens         = this.getAttribute('max_tokens'    ) || 2048
+        this.initial_prompt     = this.getAttribute('initial_prompt') || 'Hi'
+        this.url                = this.getAttribute('url'           ) || '/open_ai/prompt_with_system__stream';
+        this.bot_name           = this.getAttribute('name'          ) || 'OpenAI ChatBot'
+        window.chatbot = this
     }
 
     connectedCallback() {
@@ -36,14 +39,14 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
     }
 
     apply_ui_tweaks () {
-        this.messages.innerHTML =
-`<i>
-  date       : <b>${new Date().toLocaleString()}</b>   
-| temperature: <b>${this.openai_temperature}</b>
-| seed       : <b>${this.openai_seed}</b>
-| model      : <b>${this.openai_model}</b>
-</i><hr/>
-`
+//         this.messages.innerHTML =
+// `<i>
+//   date       : <b>${new Date().toLocaleString()}</b>
+// | temperature: <b>${this.openai_temperature}</b>
+// | seed       : <b>${this.openai_seed}</b>
+// | model      : <b>${this.openai_model}</b>
+// </i><hr/>
+// `
         //this.messages.add_message_received(this.innial_message)
         this.input.value                 = this.initial_prompt
     }
@@ -68,8 +71,17 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         return answer                                            // todo: convert this to events
     }
 
+    system_prompts() {
+        const dom_system_prompt = document.querySelector('#system_prompt')
+        if (dom_system_prompt !== null) {
+            const system_prompt = dom_system_prompt.innerHTML
+            window.dom_system_prompt = dom_system_prompt
+            return [system_prompt]
+        }
+        return []
+    }
     async post_openai_prompt_with_stream(user_prompt, images) {
-        const url = '/open_ai/prompt_with_system__stream';
+
         const histories = this.calculate_histories()
         const data = { model            : this.openai_model      ,
                        temperature      : this.openai_temperature,
@@ -77,7 +89,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
                        max_tokens       : this.max_tokens        ,
                        user_prompt      : user_prompt            ,
                        images           : images                 ,
-                       system_prompts   : []                     ,
+                       system_prompts   : this.system_prompts()  ,
                        histories        : histories              }
         //console.log(data)
 
@@ -89,7 +101,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
                     composed: true    ,                         // allows the event to cross shadow DOM boundaries
               }));
 
-          const response = await fetch(url, {
+          const response = await fetch(this.url, {
             method : 'POST',
             headers: { 'Accept': 'application/json',
                        'Content-Type': 'application/json' },
@@ -97,7 +109,12 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
           });
 
           if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+              // todo : refator to raise event method
+              this.dispatchEvent(new CustomEvent('streamData', {
+                bubbles : true    ,                         // allows the event to bubble up through the DOM
+                composed: true    ,                         // allows the event to cross shadow DOM boundaries
+                detail: `HTTP error! Status: ${response.status}` }));                          // Emit an event with the chunk
+            //throw new Error(`HTTP error! Status: ${response.status}`);
           }
 
 
@@ -135,7 +152,13 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
           reader.read().then(processStream);
 
         } catch (error) {
-          console.error('Error:', error);
+          //console.error('Error:', error);
+          // todo : refator to raise event method
+              this.dispatchEvent(new CustomEvent('streamData', {
+                bubbles : true    ,                         // allows the event to bubble up through the DOM
+                composed: true    ,                         // allows the event to cross shadow DOM boundaries
+                detail: `streamError: ${error.message}` }));                          // Emit an event with the chunk
+
           this.events.dispatchEvent(new CustomEvent('streamError', { detail: error.message }));
         }
     }

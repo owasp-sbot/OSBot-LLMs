@@ -10,6 +10,7 @@ export default class WebC__Chat_Bot extends Web_Component {
         this.target_element     = null
         //this.div_chat_messages  = null
         this.data_chat_bot      = new Data__Chat_Bot()
+        this.bot_name           = 'ChatBot'
     }
 
     // properties
@@ -84,7 +85,7 @@ export default class WebC__Chat_Bot extends Web_Component {
         tag.html_config.include_id=false
 
         const div_chatbot_ui     = tag.clone({tag:'div'            , class:'chatbot-ui'                           })
-        const div_chat_header    = tag.clone({tag:'div'            , class:'chat-header'  , value:'Chatbot'       })
+        const div_chat_header    = tag.clone({tag:'div'            , class:'chat-header'  , value:this.bot_name   })
         const webc_chat_messages = new Tag  ({tag:tag_chat_messages, class:'chat-messages', id: chat_messages__id })
         const webc_chat_input    = new Tag  ({tag:tag_chat_input   ,                        id: chat_input__id    })
         //const div_chat_input     = tag.clone({tag:'div'            , class:'chat-input'                           })

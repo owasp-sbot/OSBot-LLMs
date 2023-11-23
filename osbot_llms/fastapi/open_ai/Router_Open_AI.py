@@ -31,11 +31,7 @@ class Router_Open_AI(FastAPI_Router):
         return GPT_Answer(answer=answer)
 
     async def prompt_with_system__stream(self,gpt_prompt_with_system_and_history: GPT_Prompt_With_System_And_History):# = Depends()):
-        from osbot_utils.utils.Misc import str_to_bytes
         async def streamer():
-            #yield str_to_bytes(f"[#{i}] This is streaming from Lambda \n")
-            from osbot_utils.utils.Dev import pprint
-            #pprint(gpt_prompt_with_system_and_history)
             user_prompt    = gpt_prompt_with_system_and_history.user_prompt
             images         = gpt_prompt_with_system_and_history.images
             system_prompts = gpt_prompt_with_system_and_history.system_prompts
@@ -59,7 +55,6 @@ class Router_Open_AI(FastAPI_Router):
                     yield f"{answer}\n"
 
         return StreamingResponse(streamer(), media_type="text/plain; charset=utf-8")
-        #return StreamingResponse(generator, media_type="text/plain; charset=utf-8")
 
     def setup_routes(self):
         self.router.post("/prompt_simple"              )(self.prompt_simple)
