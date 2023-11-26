@@ -91,7 +91,7 @@ QUnit.module('WebC__Chat_Bot', function(hooks) {
 
         const expected_html_code =
 `<div class="chatbot-ui">
-    <div class="chat-header">Chatbot</div>
+    <div class="chat-header">ChatBot</div>
     <webc-chat-messages id="chat_messages" class="chat-messages">
     </webc-chat-messages>
     <webc-chat-input id="chat_input">

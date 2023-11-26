@@ -8,13 +8,14 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         this.innial_message = 'Good morning, how can I help you'
         //this.openai_model       = "gpt-4-1106-preview" //
         //this.openai_model       = "gpt-3.5-turbo"
-        this.openai_model       = this.getAttribute('model'         ) || 'gpt-4-1106-preview' //'gpt-4-vision-preview' // Nov 2023 - reaching daily limit of 100 requests
-        this.openai_seed        = this.getAttribute('seed'          ) || 42
-        this.openai_temperature = this.getAttribute('temperature'   ) || 0.0
-        this.max_tokens         = this.getAttribute('max_tokens'    ) || 2048
-        this.initial_prompt     = this.getAttribute('initial_prompt') || 'Hi'
-        this.url                = this.getAttribute('url'           ) || '/open_ai/prompt_with_system__stream';
-        this.bot_name           = this.getAttribute('name'          ) || 'OpenAI ChatBot'
+        this.openai_model       = this.getAttribute('model'          ) || 'gpt-4-1106-preview' //'gpt-4-vision-preview' // Nov 2023 - reaching daily limit of 100 requests
+        this.openai_seed        = this.getAttribute('seed'           ) || 42
+        this.openai_temperature = this.getAttribute('temperature'    ) || 0.0
+        this.max_tokens         = this.getAttribute('max_tokens'     ) || 2048
+        this.initial_prompt     = this.getAttribute('initial_prompt' ) || 'Hi'
+        this.initial_message    = this.getAttribute('initial_message') || null
+        this.url                = this.getAttribute('url'            ) || '/open_ai/prompt_with_system__stream';
+        this.bot_name           = this.getAttribute('name'           ) || 'OpenAI ChatBot'
         window.chatbot = this
     }
 
@@ -49,6 +50,9 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
 // `
         //this.messages.add_message_received(this.innial_message)
         this.input.value                 = this.initial_prompt
+        if (this.initial_message !== null) {
+            this.messages.add_message_received(this.initial_message)
+        }
     }
 
     //todo refactor into separate Openai helper class

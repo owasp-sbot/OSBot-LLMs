@@ -42,7 +42,7 @@ QUnit.module('WebC__Chat_Input', function(hooks) {
 <div class="chat-images"></div>
 <div class="chat-input">    
     <input id='file-input' type="file" />
-    <label for="file-input" class="file-input-label">+</label>
+    <!--<label for="file-input" class="file-input-label">+</label>-->
     <input id='user-prompt' type="text" placeholder="Enter a message..."/>
 </div>
 `
