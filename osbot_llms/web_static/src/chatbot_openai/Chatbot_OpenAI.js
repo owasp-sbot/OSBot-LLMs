@@ -12,7 +12,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         this.openai_seed        = this.getAttribute('seed'           ) || 42
         this.openai_temperature = this.getAttribute('temperature'    ) || 0.0
         this.max_tokens         = this.getAttribute('max_tokens'     ) || 2048
-        this.initial_prompt     = this.getAttribute('initial_prompt' ) || 'Hi'
+        this.initial_prompt     = this.getAttribute('initial_prompt' ) || ''
         this.initial_message    = this.getAttribute('initial_message') || null
         this.url                = this.getAttribute('url'            ) || '/open_ai/prompt_with_system__stream';
         this.bot_name           = this.getAttribute('name'           ) || 'OpenAI ChatBot'
