@@ -16,8 +16,8 @@ class API_Open_AI:
         self.stream              = True
         self.seed                = 42
         self.temperature         = 0.0
-        # self.model              = 'gpt-4-vision-preview'  # in Nov 2023 is there is a limit of 100 images per day
-        self.model = 'gpt-4-1106-preview'  # gpt-3.5-turbo' #'gpt-4' #
+        self.model              = 'gpt-4-vision-preview'  # in Nov 2023 is there is a limit of 100 images per day
+        #self.model             = 'gpt-4-turbo-preview'  # gpt-3.5-turbo' #'gpt-4' #
         self.print_create_kwargs = True
 
     @cache_on_self
