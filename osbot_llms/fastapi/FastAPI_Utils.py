@@ -1,7 +1,4 @@
-from osbot_utils.utils.Misc import obj_info
 from starlette.routing import Mount
-
-from osbot_utils.utils.Dev import pprint
 
 FAST_API_DEFAULT_ROUTES_PATHS   = ['/docs', '/docs/oauth2-redirect', '/openapi.json', '/redoc']
 FAST_API_DEFAULT_ROUTES         = [ { 'http_methods': ['GET','HEAD'], 'http_path': '/openapi.json'         , 'method_name': 'openapi'              },

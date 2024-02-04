@@ -3,11 +3,14 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+with open("osbot_llms/version", "r") as file_version:
+    version = file_version.read().strip()
+
 setuptools.setup(
-    version                       = "0.1.0"               , # change this on every release
+    version                       = version       ,
     name                          = "osbot_llms"  ,
 
-    author                        = "Dinis Cruz",
+    author                        = "Dinis Cruz"    ,
     author_email                  = "dinis.cruz@owasp.org",
     description                   = "OWASP Security Bot - LLMs",
     long_description              = long_description,

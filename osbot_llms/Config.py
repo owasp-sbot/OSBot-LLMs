@@ -14,4 +14,4 @@ class Config:
         return path_combine(self.path_root_code(), self.FILE_NAME_VERSION)
 
     def version(self):
-        return file_contents(self.path_version_file())
+        return file_contents(self.path_version_file()).strip()

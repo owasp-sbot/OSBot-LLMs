@@ -1,7 +1,4 @@
 from unittest import TestCase
-
-from osbot_utils.utils.Dev import pprint
-
 from osbot_llms.apis.open_ai.Mock_API_Open_AI import Mock_API_Open_AI, HARD_CODED_MESSAGES
 
 
