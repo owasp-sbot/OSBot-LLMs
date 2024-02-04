@@ -17,5 +17,5 @@ class test_Config(TestCase):
         assert file_exists(path_version_file)
 
     def test_version(self):
-        assert self.config.version() == file_contents(self.config.path_version_file())
+        assert self.config.version() == file_contents(self.config.path_version_file()).strip()
 
