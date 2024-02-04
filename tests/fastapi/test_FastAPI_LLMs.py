@@ -78,7 +78,7 @@ class test_FastAPI_LLMs(TestCase):
 
         response = self.test_client.post("/open_ai/prompt_with_system", json=data)
         assert response.status_code == 200
-        assert response.json()      in [{"model":None,"answer":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10"}, {'answer': '1', 'model': None}]
+        assert response.json()      in [{"model":None,"answer":"12345678910"}, {'answer': '1', 'model': None}]
 
     def test_prompt_with_system__stream(self):
         system_prompts = [ 'act like a counter, only reply with the numbers, without any spaces or commands, like this 12']
