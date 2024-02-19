@@ -67,6 +67,10 @@ export default class WebC__Chat_Messages extends Web_Component {
         return message_sent
     }
 
+    add_message_initial(message) {
+        return this.add_message(message, 'initial')
+    }
+
     add_message_received(message) {
         return this.add_message(message, 'received')
     }

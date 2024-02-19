@@ -51,7 +51,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         //this.messages.add_message_received(this.innial_message)
         this.input.value                 = this.initial_prompt
         if (this.initial_message !== null) {
-            this.messages.add_message_received(this.initial_message)
+            this.messages.add_message_initial(this.initial_message)
         }
     }
 
@@ -178,7 +178,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         let question = null
         let answer   = null
         this.messages.childNodes.forEach(message => {
-            if (message.message_raw) {
+            if (message.message_raw && message.type !=='initial') {
                 if (question === null) {
                     question = message.message_raw
                 } else if (answer === null) {
@@ -191,12 +191,6 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         })
         return histories
     }
-
-    // "histories": [
-    //     {
-    //       "question": "My name is John",
-    //       "answer": "Hi John"
-    //     }
 }
 
 Chatbot_OpenAI.define()
