@@ -95,7 +95,13 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
                        images           : images                 ,
                        system_prompts   : this.system_prompts()  ,
                        histories        : histories              }
-        //console.log(data)
+
+        const event = new CustomEvent('promptSent', {
+            bubbles : true    ,
+            composed: true    ,
+            detail  : { data } });
+        this.dispatchEvent(event);
+
 
         this.messages.messages_div_scroll_to_end()
 
