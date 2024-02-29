@@ -19,8 +19,10 @@ export default class WebC__Chat_Input extends Web_Component {
     // methods
 
     add_event_hooks() {
-        this.input.addEventListener('keydown', (event) => this.on_input_keydown(event))
-        this.input.addEventListener('paste', (event) => this.process_paste(event))
+        this.input.addEventListener('keydown'       , (event) => this.on_input_keydown(event))
+        this.input.addEventListener('paste'         , (event) => this.process_paste(event))
+        window.addEventListener('promptSent'    , (event) => this.on_prompt_sent(event))
+        window.addEventListener('streamComplete', (event) => this.on_stream_complete(event))
     }
 
     connectedCallback() {
@@ -115,6 +117,13 @@ export default class WebC__Chat_Input extends Web_Component {
             this.images.innerHTML  =''
         }
     }
+    async on_prompt_sent(event){
+        this.input.disabled = true
+    }
+    async on_stream_complete(event){
+        this.input.disabled = false
+    }
+
 
     event_dispatch(event_name, detail) {
         const event_data = {
