@@ -85,6 +85,8 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         return []
     }
     async post_openai_prompt_with_stream(user_prompt, images) {
+        var storedData = localStorage.getItem('user_data');
+        var user_data = storedData ? JSON.parse(storedData) : {};
 
         const histories = this.calculate_histories()
         const data = { model            : this.openai_model      ,
@@ -94,7 +96,8 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
                        user_prompt      : user_prompt            ,
                        images           : images                 ,
                        system_prompts   : this.system_prompts()  ,
-                       histories        : histories              }
+                       histories        : histories              ,
+                       user_data        : user_data              }
 
         const event = new CustomEvent('promptSent', {
             bubbles : true    ,
