@@ -16,6 +16,7 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         this.initial_message    = this.getAttribute('initial_message') || null
         this.url                = this.getAttribute('url'            ) || '/open_ai/prompt_with_system__stream';
         this.bot_name           = this.getAttribute('name'           ) || 'OpenAI ChatBot'
+        this.chat_thread_id     = this.random_uuid()
         window.chatbot = this
     }
 
@@ -89,15 +90,16 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
         var user_data = storedData ? JSON.parse(storedData) : {};
 
         const histories = this.calculate_histories()
-        const data = { model            : this.openai_model      ,
-                       temperature      : this.openai_temperature,
-                       seed             : this.openai_seed       ,
-                       max_tokens       : this.max_tokens        ,
-                       user_prompt      : user_prompt            ,
-                       images           : images                 ,
-                       system_prompts   : this.system_prompts()  ,
-                       histories        : histories              ,
-                       user_data        : user_data              }
+        const data = { chat_thread_id   : this.chat_thread_id    ,
+                          model            : this.openai_model      ,
+                          temperature      : this.openai_temperature,
+                          seed             : this.openai_seed       ,
+                          max_tokens       : this.max_tokens        ,
+                          user_prompt      : user_prompt            ,
+                          images           : images                 ,
+                          system_prompts   : this.system_prompts()  ,
+                          histories        : histories              ,
+                          user_data        : user_data              }
 
         const event = new CustomEvent('promptSent', {
             bubbles : true    ,
@@ -193,6 +195,11 @@ export default class Chatbot_OpenAI extends WebC_Chat_Bot{
 
         })
         return histories
+    }
+    random_uuid() {
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
     }
 }
 
