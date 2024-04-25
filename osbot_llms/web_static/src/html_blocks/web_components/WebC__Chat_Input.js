@@ -33,7 +33,7 @@ export default class WebC__Chat_Input extends Web_Component {
     build() {
         this.add_css_rules(this.css_rules())
         this.set_inner_html(this.html())
-        this.setup_upload_button()
+        //this.setup_upload_button()
     }
 
     css_rules() {
@@ -71,7 +71,7 @@ export default class WebC__Chat_Input extends Web_Component {
         const new_html = `
 <div class="chat-images"></div>
 <div class="chat-input">    
-    <input id='file-input' type="file" />
+<!--    <input id='file-input' type="file" />-->
     <!--<label for="file-input" class="file-input-label">+</label>-->
     <input id='user-prompt' type="text" placeholder="Enter a message..."/>
 </div>
