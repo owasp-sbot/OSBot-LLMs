@@ -12,11 +12,13 @@ repository  = "https://github.com/owasp-sbot/OSBot-LLMs"
 
 [tool.poetry.dependencies]
 python          = "^3.11"
+osbot-aws       = "*"
 osbot-fast-api  = "*"
 mangum          = "*"
 uvicorn         = "*"
 httpx           = "*"
 openai          = "*"
+numpy           = "*"       # this adds 40Mbs of dependencies (and it is only used at the moment in the RAG experiment in RAG__DB__Sqlite)
 
 
 [build-system]

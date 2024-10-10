@@ -1,27 +1,27 @@
-from osbot_utils.testing.Logging import Logging
-from starlette.responses import StreamingResponse, Response
-
-from fastapi import Request, UploadFile, File
-
+from osbot_utils.testing.Logging                            import Logging
+from starlette.responses                                    import StreamingResponse, Response
+from fastapi                                                import Request, UploadFile, File
 from osbot_utils.utils.Misc                                 import base64_to_bytes, bytes_to_base64
+from osbot_llms.fast_api.Fast_API_Route                     import Fast_API__Routes
+from osbot_llms.llms.API_Open_AI                            import API_Open_AI
+from osbot_llms.llms.storage.Chats_Storage__S3_Minio        import Chats_Storage__S3_Minio
+from osbot_llms.models.GPT_Audio_To_Text                    import GPT_Audio_To_Text
+from osbot_llms.models.GPT_Prompt_With_System_And_History   import GPT_Prompt_With_System_And_History
+from osbot_llms.models.GPT_Text_To_Audio                    import GPT_Text_To_Audio
+from osbot_llms.models.LLMs__Chat_Completion                import LLMs__Chat_Completion
 
-from osbot_llms.fast_api.Fast_API_Route import Fast_API__Routes
-from osbot_llms.fast_api.llms.API_Open_AI import API_Open_AI
-from osbot_llms.models.GPT_Audio_To_Text import GPT_Audio_To_Text
-from osbot_llms.models.GPT_Prompt_With_System_And_History import GPT_Prompt_With_System_And_History
-from osbot_llms.models.GPT_Text_To_Audio import GPT_Text_To_Audio
-from osbot_llms.models.LLMs__Chat_Completion import LLMs__Chat_Completion
+HEADER_NAME__CHAT_ID        = 'osbot-llms-chat-id'
+HEADER_NAME__CHAT_THREAD_ID = 'osbot-llms-thread-id'
 
-
+# todo: refactor this out since this is current only used by the Routes__Chat (via the chat/completions endpoint)
 class Routes__OpenAI(Fast_API__Routes):
     path_prefix             : str = 'open_ai'
-    #cbr_chats_storage_s3    : CBR__Chats_Storage__S3
+    chats_storage_s3_minio  : Chats_Storage__S3_Minio
 
     def __init__(self):
         super().__init__()
         self.api_open_ai = API_Open_AI().setup()
         self.logging     = Logging()
-        #self.dydb_chat_threads = DyDB__CBR_Chat_Threads()
 
 
     async def prompt_with_system__not_stream(self, gpt_prompt_with_system_and_history: GPT_Prompt_With_System_And_History, request: Request):
@@ -60,7 +60,7 @@ class Routes__OpenAI(Fast_API__Routes):
 
     async def prompt_with_system__stream(self, gpt_prompt_with_system_and_history: GPT_Prompt_With_System_And_History, request: Request):
         request_id       = self.request_id(request)
-        #chat_save_result = self.cbr_chats_storage_s3.save_user_request(gpt_prompt_with_system_and_history,request_id)
+        chat_save_result = self.chats_storage_s3_minio.save_user_request(gpt_prompt_with_system_and_history,request_id)
 
         async def streamer():
             if self.api_open_ai.open_ai_not_available():
@@ -100,7 +100,7 @@ class Routes__OpenAI(Fast_API__Routes):
             llm_chat_completion = LLMs__Chat_Completion(**gpt_prompt_with_system_and_history.model_dump())
             llm_chat_completion.llm_answer = gpt_response
 
-            #self.cbr_chats_storage_s3.save_user_response(llm_chat_completion, request_id)
+            self.chats_storage_s3_minio.save_user_response(llm_chat_completion, request_id)
 
             request_headers = {key: value for key, value in request.headers.items()}
             #log_llm_chat(gpt_prompt_with_system_and_history, gpt_response, request_headers)
@@ -109,8 +109,8 @@ class Routes__OpenAI(Fast_API__Routes):
             #self.logging          .add_prompt_request(gpt_prompt_with_system_and_history, gtp_response, request_headers)  # todo: remove this one once the dydb_chat_threads is working
 
         response = StreamingResponse(streamer(), media_type='text/event-stream"; charset=utf-8')
-        #response.headers.append('cbr__chat_id'       , chat_save_result.get('public_chat_id'        , ''))
-        #response.headers.append('cbr__chat_thread_id', chat_save_result.get('public_chat_thread__id', ''))
+        response.headers.append(HEADER_NAME__CHAT_ID       , chat_save_result.get('public_chat_id'        , ''))
+        response.headers.append(HEADER_NAME__CHAT_THREAD_ID, chat_save_result.get('public_chat_thread__id', ''))
         return response
 
     def request_id(self, request: Request):

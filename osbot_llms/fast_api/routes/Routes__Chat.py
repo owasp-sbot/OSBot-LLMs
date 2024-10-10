@@ -5,18 +5,19 @@ from fastapi                                                                impo
 from starlette.responses                                                    import StreamingResponse
 from osbot_fast_api.api.Fast_API_Routes                                     import Fast_API_Routes
 from osbot_utils.context_managers.capture_duration                          import capture_duration
-
-from osbot_llms.fast_api.llms.chats.LLM__Chat_Completion__Resolve_Engine    import LLM__Chat_Completion__Resolve_Engine
+from osbot_llms.OSBot_LLMs__Shared_Objects                                  import osbot_llms__shared_objects
 from osbot_llms.fast_api.routes.Routes__OpenAI                              import Routes__OpenAI
+from osbot_llms.llms.chats.LLM__Chat_Completion__Resolve_Engine             import LLM__Chat_Completion__Resolve_Engine
+from osbot_llms.llms.storage.Chats_Storage__S3_Minio                        import Chats_Storage__S3_Minio
 from osbot_llms.models.LLMs__Chat_Completion                                import LLMs__Chat_Completion
 
-ROUTES_PATHS__CONFIG = ['/config/status', '/config/version']
-
+ROUTES_PATHS__CONFIG        = ['/config/status', '/config/version']
+HEADER_NAME__CHAT_ID        = 'osbot-llms-chat-id'
+HEADER_NAME__CHAT_THREAD_ID = 'osbot-llms-thread-id'
 
 class Routes__Chat(Fast_API_Routes):
     tag                     : str = 'chat'
-    #cbr_chats_storage_local: CBR__Chats_Storage__Local
-    #cbr_chats_storage_s3   : CBR__Chats_Storage__S3
+    chats_storage_s3_minio  : Chats_Storage__S3_Minio
 
     def execute_llm_request(self, llm_chat_completion):
         llm_platform_engine = LLM__Chat_Completion__Resolve_Engine().map_provider(llm_chat_completion)
@@ -34,10 +35,8 @@ class Routes__Chat(Fast_API_Routes):
     async def handle_other_llms__no_stream(self, llm_chat_completion: LLMs__Chat_Completion, request: Request, request_id: str):
         complete_answer =  self.execute_llm_request(llm_chat_completion)
         try:
-            request_headers = {key: value for key, value in request.headers.items()}
-            #log_llm_chat(llm_chat_completion, complete_answer, request_headers)
+            #request_headers = {key: value for key, value in request.headers.items()}
             llm_chat_completion.llm_answer = complete_answer
-            self.cbr_chats_storage_local.chat_save(llm_chat_completion, request_id)
         except:
             pass
         return complete_answer
@@ -60,13 +59,8 @@ class Routes__Chat(Fast_API_Routes):
                     yield f"{answer}\n"
 
         try:
-            request_headers = {key: value for key, value in request.headers.items()}
-            #log_llm_chat(llm_chat_completion, complete_answer, request_headers)
             llm_chat_completion.llm_answer = complete_answer
-
-            self.cbr_chats_storage_s3.save_user_response(llm_chat_completion, request_id)
-            #self.cbr_chats_storage_local.chat_save(llm_chat_completion, request_id)
-
+            self.chats_storage_s3_minio.save_user_response(llm_chat_completion, request_id)
             # if hasattr(request.state, "http_events"):                                 # todo: see if this is still needed (originaly this handled the case when the trace_calls did not handled ok the streamed responses
             #     http_events : Fast_API__Http_Events = request.state.http_events
             #     http_events.on_response_stream_completed(request)             # todo: rewrite this
@@ -78,7 +72,8 @@ class Routes__Chat(Fast_API_Routes):
 
     async def completion(self, llm_chat_completion: LLMs__Chat_Completion, request: Request):
         request_id       = self.request_id(request)
-        chat_save_result = self.cbr_chats_storage_s3.save_user_request(llm_chat_completion, request_id)
+        chat_save_result = self.chats_storage_s3_minio.save_user_request(llm_chat_completion, request_id)
+
         routes_open_ai   = Routes__OpenAI()
         user_data        = llm_chat_completion.user_data
 
@@ -86,8 +81,9 @@ class Routes__Chat(Fast_API_Routes):
         if user_data and 'selected_platform' in user_data and user_data.get('selected_platform') != 'OpenAI (Paid)':
             response = await self.handle_other_llms(llm_chat_completion, request, request_id)
             if type(response) == StreamingResponse:
-                response.headers.append('cbr__chat_id'       , chat_save_result.get('public_chat_id'        ,''))
-                response.headers.append('cbr__chat_thread_id', chat_save_result.get('public_chat_thread__id',''))
+                pass
+                response.headers.append(HEADER_NAME__CHAT_ID       , chat_save_result.get('public_chat_id'        ,''))
+                response.headers.append(HEADER_NAME__CHAT_THREAD_ID, chat_save_result.get('public_chat_thread__id',''))
             return response
         else:
             stream = llm_chat_completion.stream
@@ -101,5 +97,13 @@ class Routes__Chat(Fast_API_Routes):
             if hasattr(request.state, "request_id"):
                 return request.state.request_id
 
+    # todo: refactor this method into a new Routes class (one focused on viewing chat threads)
+    async def view(self, chat_id: str):
+        s3_db_chat_threads = osbot_llms__shared_objects.s3_db_chat_threads()
+        server_name = s3_db_chat_threads.server_name
+        s3_key = f'chat-threads/{server_name}/{chat_id}/user-response.json.gz'
+        return osbot_llms__shared_objects.s3_db_chat_threads().s3_file_data(s3_key)
+
     def setup_routes(self):
         self.router.post("/completion")(self.completion )
+        self.router.get("/view"       )(self.view)
