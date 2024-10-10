@@ -11,8 +11,12 @@ homepage    = "https://github.com/owasp-sbot/OSBot-LLMs"
 repository  = "https://github.com/owasp-sbot/OSBot-LLMs"
 
 [tool.poetry.dependencies]
-python          = "^3.7"
-osbot-utils     = "*"
+python          = "^3.11"
+osbot-fast-api  = "*"
+mangum          = "*"
+uvicorn         = "*"
+httpx           = "*"
+openai          = "*"
 
 
 [build-system]

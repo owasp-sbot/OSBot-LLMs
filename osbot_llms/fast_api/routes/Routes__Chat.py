@@ -1,24 +1,22 @@
 import asyncio
 import traceback
 
-from fastapi                                                            import Request
-from starlette.responses                                                import StreamingResponse
-from cbr_athena.athena__fastapi.routes.Routes__OpenAI                   import Routes__OpenAI
-from cbr_athena.aws.dynamo_db.DyDB__CBR_Chat_Threads                    import log_llm_chat
-from cbr_athena.llms.chats.LLM__Chat_Completion__Resolve_Engine         import LLM__Chat_Completion__Resolve_Engine
-from cbr_athena.llms.storage.CBR__Chats_Storage__Local                  import CBR__Chats_Storage__Local
-from cbr_athena.llms.storage.CBR__Chats_Storage__S3                     import CBR__Chats_Storage__S3
-from cbr_shared.schemas.base_models.chat_threads.LLMs__Chat_Completion  import LLMs__Chat_Completion
-from osbot_fast_api.api.Fast_API_Routes                                 import Fast_API_Routes
-from osbot_utils.context_managers.capture_duration                      import capture_duration
+from fastapi                                                                import Request
+from starlette.responses                                                    import StreamingResponse
+from osbot_fast_api.api.Fast_API_Routes                                     import Fast_API_Routes
+from osbot_utils.context_managers.capture_duration                          import capture_duration
+
+from osbot_llms.fast_api.llms.chats.LLM__Chat_Completion__Resolve_Engine    import LLM__Chat_Completion__Resolve_Engine
+from osbot_llms.fast_api.routes.Routes__OpenAI                              import Routes__OpenAI
+from osbot_llms.models.LLMs__Chat_Completion                                import LLMs__Chat_Completion
 
 ROUTES_PATHS__CONFIG = ['/config/status', '/config/version']
 
-# todo: refactor this class to other classes since this is now a very large class with lots of responsibilities and long methods
+
 class Routes__Chat(Fast_API_Routes):
     tag                     : str = 'chat'
-    cbr_chats_storage_local: CBR__Chats_Storage__Local
-    cbr_chats_storage_s3   : CBR__Chats_Storage__S3
+    #cbr_chats_storage_local: CBR__Chats_Storage__Local
+    #cbr_chats_storage_s3   : CBR__Chats_Storage__S3
 
     def execute_llm_request(self, llm_chat_completion):
         llm_platform_engine = LLM__Chat_Completion__Resolve_Engine().map_provider(llm_chat_completion)
@@ -37,7 +35,7 @@ class Routes__Chat(Fast_API_Routes):
         complete_answer =  self.execute_llm_request(llm_chat_completion)
         try:
             request_headers = {key: value for key, value in request.headers.items()}
-            log_llm_chat(llm_chat_completion, complete_answer, request_headers)
+            #log_llm_chat(llm_chat_completion, complete_answer, request_headers)
             llm_chat_completion.llm_answer = complete_answer
             self.cbr_chats_storage_local.chat_save(llm_chat_completion, request_id)
         except:
@@ -63,7 +61,7 @@ class Routes__Chat(Fast_API_Routes):
 
         try:
             request_headers = {key: value for key, value in request.headers.items()}
-            log_llm_chat(llm_chat_completion, complete_answer, request_headers)
+            #log_llm_chat(llm_chat_completion, complete_answer, request_headers)
             llm_chat_completion.llm_answer = complete_answer
 
             self.cbr_chats_storage_s3.save_user_response(llm_chat_completion, request_id)
