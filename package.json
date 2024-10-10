@@ -1,7 +1,0 @@
-{
-  "name": "owasp-llms",
-  "version": "v0.1.8",
-  "devDependencies": {
-    "jquery": "*"
-  }
-}

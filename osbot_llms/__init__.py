@@ -1,1 +1,1 @@
-path = __path__[0]
+path=__path__[0]
