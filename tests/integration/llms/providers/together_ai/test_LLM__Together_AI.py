@@ -31,6 +31,7 @@ class test_LLM__Together_AI(TestCase):
 
             assert _.api_key is not None
 
+    @pytest.mark.skip("was hanging in GH Actions")
     def test_send_user_prompt(self):
         user_prompt = "2+2"
         self.llm_together_ai.add_message__system('reply in one word only')
