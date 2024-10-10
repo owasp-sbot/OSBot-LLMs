@@ -29,7 +29,7 @@ jobs:
         with:
           release_type: ${{ env.RELEASE_TYPE }}
     needs:
-      - start-prefect-server__and-run-tests
+      - run-tests
 
   publish-to-pypi:
     if: False
