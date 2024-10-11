@@ -2,4 +2,4 @@
 
 ## Repo details
 
-![Current Release](https://img.shields.io/badge/release-v0.2.9-blue)
+![Current Release](https://img.shields.io/badge/release-v0.2.10-blue)
