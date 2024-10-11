@@ -17,8 +17,8 @@ class test_API_Perplexity(TestCase):
     def test_ask_using_messages__async_mode(self):
         model             = "mistral-7b-instruct"
         system_prompt     = "act like a calculator, just reply with the answer"
-        user_prompt       = "40+2"
-        expected_response = ['', '42', '']
+        user_prompt       = "2+1"
+        #expected_response = ['', '42', '']
         async_mode        = True
         # expected_response = ['Sure', '! ', '40', ' + ', '2 =', ' 4', '2.', '']     for #'llama-2-70b-chat' #
         messages = [ { "role"    : "system"      ,
@@ -27,7 +27,7 @@ class test_API_Perplexity(TestCase):
                        "content" : user_prompt}]
         generator = self.api_perplexity.ask_using_messages(messages, model=model, async_mode=async_mode)
 
-        assert '42' in list(generator)
+        assert '3' in list(generator)
 
 
     def test_ask_using_messages__sync_mode(self):
