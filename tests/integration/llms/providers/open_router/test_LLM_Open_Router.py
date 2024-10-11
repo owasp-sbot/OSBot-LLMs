@@ -1,5 +1,7 @@
 from os                                                     import getenv
 from unittest                                               import TestCase
+
+from osbot_utils.utils.Dev                                  import pformat
 from osbot_utils.utils.Env                                  import load_dotenv
 from osbot_utils.utils.Misc                                 import list_set
 from osbot_utils.utils.Objects                              import dict_to_obj
@@ -28,6 +30,8 @@ class test_LLM_Open_Router(TestCase):
         user_prompt = "2+2"
         self.llm_open_router.add_message__system('reply in one word only')
         response = self.llm_open_router.send_user_prompt(user_prompt=user_prompt)
+        if response.get('status') == 'error':
+            raise Exception(f"Error: {pformat(response)}")
         assert dict_to_obj(response).choices[0].message.content == '4'
         assert list_set(response) == ['choices', 'created', 'id', 'model', 'object', 'provider','usage']
 
