@@ -61,7 +61,7 @@ class Deploy_Lambda__OSBot_LLMs(Type_Safe):
 
 if __name__ == '__main__':
     print("****************************************************")
-    print("****   Deploy_Lambda__OSBot_Serverless_Flows    ****")
+    print("****   Deploy_Lambda__OSBot_LLMs                ****")
     print("****************************************************")
     print()
     with Deploy_Lambda__OSBot_LLMs() as _:
