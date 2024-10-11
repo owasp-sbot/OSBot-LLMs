@@ -2,7 +2,7 @@
 # pip install prefect did work
 [tool.poetry]
 name        = "osbot_llms"
-version     = "v0.2.8"
+version     = "v0.2.9"
 description = "OWASP Security Bot - LLM"
 authors     = ["Dinis Cruz <dinis.cruz@owasp.org>"]
 license     = "MIT"
