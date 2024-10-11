@@ -97,7 +97,7 @@ class Routes__OpenAI(Fast_API__Routes):
                     gpt_response += answer
                     yield f"{answer}\n"
 
-            llm_chat_completion = LLMs__Chat_Completion(**gpt_prompt_with_system_and_history.model_dump())
+            llm_chat_completion = LLMs__Chat_Completion(**gpt_prompt_with_system_and_history.json())
             llm_chat_completion.llm_answer = gpt_response
 
             self.chats_storage_s3_minio.save_user_response(llm_chat_completion, request_id)

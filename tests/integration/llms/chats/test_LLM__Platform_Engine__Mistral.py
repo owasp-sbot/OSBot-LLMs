@@ -15,7 +15,7 @@ class test_LLM__Platform_Engine__Mistral(TestCase):
         cls.llm_model              = MISTRAL__DEFAULT_MODEL
         cls.system_prompt          = 'just reply with the answer in one word'
         cls.user_prompt            = '1+2'
-        cls.llm_chat_completion    = LLMs__Chat_Completion(user_prompt=cls.user_prompt, system_prompt=cls.system_prompt)
+        cls.llm_chat_completion    = LLMs__Chat_Completion(user_prompt=cls.user_prompt, system_prompts=[cls.system_prompt])
         cls.kwargs                 = dict(llm_platform=cls.llm_platform, llm_provider=cls.llm_provider, llm_model=cls.llm_model, llm_chat_completion=cls.llm_chat_completion)
         cls.llm_engine_groq        = LLM__Platform_Engine__Mistral(**cls.kwargs)
 

@@ -5,7 +5,7 @@ from osbot_llms.llms.API_Perplexity import API_Perplexity
 from osbot_llms.models.GPT_History import GPT_History
 
 
-#@pytest.mark.skip("Re-enable when adding offical support to TCB to the Perplexity API")
+#@pytest.mark.skip("Re-enable when adding ofical support to TCB to the Perplexity API")
 class test_API_Perplexity(TestCase):
 
     def setUp(self):
@@ -33,15 +33,14 @@ class test_API_Perplexity(TestCase):
     def test_ask_using_messages__sync_mode(self):
         model             = "mistral-7b-instruct"
         system_prompt     = "act like a calculator, just reply with the answer"
-        user_prompt       = "40+2"
-        expected_response = '42'
+        user_prompt       = "1+2"
         async_mode        = False
         messages = [ { "role"    : "system"      ,
                        "content" : system_prompt },
                      { "role"    : "user",
                        "content" : user_prompt}]
         response  = self.api_perplexity.ask_using_messages(messages, model=model, async_mode=async_mode)
-        assert '42' in response
+        assert '3' in response
 
 
     def test_ask_using_system_prompts(self):

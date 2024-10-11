@@ -1,1 +1,1 @@
-uvicorn server:app --reload
+uvicorn server__fastapi__llms:app --reload --host 0.0.0.0 --port 5010

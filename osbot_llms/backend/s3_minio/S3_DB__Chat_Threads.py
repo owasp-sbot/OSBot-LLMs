@@ -42,7 +42,7 @@ class S3_DB__Chat_Threads(S3_DB_Base):
                                       chat_thread_id      = chat_thread_id                   ,
                                       llm_request_id      = llm_request_id                   ,
                                       timestamp           =  timestamp_utc_now()             ,
-                                      llm_chat_completion =  llm_chat_completion.model_dump())
+                                      llm_chat_completion =  llm_chat_completion.json())
         s3_key                 = self.s3_key(chat_thread_id=chat_thread_id, llm_request_id=llm_request_id, request_type=request_type)
         s3_key_items           = s3_key.split('/')
         public_chat_id         = '/'.join(s3_key_items[2:6])
@@ -62,7 +62,7 @@ class S3_DB__Chat_Threads(S3_DB_Base):
         chat_thread_id = llm_chat_completion.chat_thread_id
         llm_request_id = request_id
         s3_key         = self.s3_key(chat_thread_id=chat_thread_id, llm_request_id=llm_request_id, request_type=request_type)
-        data           = llm_chat_completion.model_dump()
+        data           = llm_chat_completion.json()
         metadata = {'request_id'    : request_id    ,
                     'request_type'  : request_type  }
         if self.s3_save_data(data=data, s3_key=s3_key, metadata=metadata):

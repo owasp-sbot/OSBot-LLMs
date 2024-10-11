@@ -43,7 +43,7 @@ class test_Chats_Storage__S3(TestCase__S3_Minio__Temp_Chat_Threads):
             assert s3_file_contents.chat_thread_id                  == chat_thread_id
             assert s3_file_contents.llm_request_id                  == request_id
             assert s3_file_contents.llm_chat_completion.images      == []
-            assert s3_file_contents.llm_chat_completion.temperature == '0'
+            assert s3_file_contents.llm_chat_completion.temperature == 0.0
             assert s3_file_contents.llm_chat_completion.seed        == 42
             assert s3_file_contents.llm_chat_completion.user_prompt == user_prompt
 

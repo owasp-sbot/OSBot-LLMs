@@ -27,7 +27,7 @@ class test__api__Routes__Chat(TestCase__S3_Minio__Temp_Chat_Threads):
                                 "selected_model"    : "llama3-70b-8192" }
         server_name         = osbot_llms__server_config.server_name
         llm_chat_completion = LLMs__Chat_Completion(user_prompt=user_prompt, chat_thread_id=chat_thread_id, user_data=user_data)
-        json_data           = json_load(llm_chat_completion.model_dump_json())
+        json_data           = llm_chat_completion.json()
         response            = self.client.post('/chat/completion', json=json_data)      # submit chat request
         request_id          = response.headers.get('fast-api-request-id')
         when_str            = self.s3_db_chat_threads.s3_key_generator.path__for_date_time__now_utc()
@@ -63,7 +63,7 @@ class test__api__Routes__Chat(TestCase__S3_Minio__Temp_Chat_Threads):
                                     'seed': 42,
                                     'stream': True,
                                     'system_prompts': None,
-                                    'temperature': '0',
+                                    'temperature': 0.0,
                                     'user_data': None,
                                     'user_prompt': user_prompt}
 

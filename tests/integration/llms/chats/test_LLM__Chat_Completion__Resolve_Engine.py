@@ -18,7 +18,7 @@ class test_LLM__Chat_Completion__Resolve_Engine(TestCase):
 
         llm_chat_completion = LLMs__Chat_Completion(**kwargs)
         response = self.llm_resolve_engine.map_provider(llm_chat_completion)
-        assert response.json() == { 'llm_chat_completion': { 'chat_thread_id': None,
+        assert response.json() == { 'llm_chat_completion': { 'chat_thread_id': '',
                                                              'histories': None,
                                                              'images': [],
                                                              'llm_answer': None,
@@ -29,7 +29,7 @@ class test_LLM__Chat_Completion__Resolve_Engine(TestCase):
                                                              'seed': 42,
                                                              'stream': True,
                                                              'system_prompts': None,
-                                                             'temperature': Decimal('0'),
+                                                             'temperature': 0.0,
                                                              'user_data': { 'selected_model': 'phi3',
                                                                             'selected_platform': 'Ollama (Local)',
                                                                             'selected_provider': 'Microsoft'},

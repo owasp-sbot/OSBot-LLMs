@@ -2,6 +2,8 @@ import asyncio
 import traceback
 
 from fastapi                                                                import Request
+from fastapi.params import Header, Body
+from osbot_utils.utils.Dev import pprint
 from starlette.responses                                                    import StreamingResponse
 from osbot_fast_api.api.Fast_API_Routes                                     import Fast_API_Routes
 from osbot_utils.context_managers.capture_duration                          import capture_duration
@@ -9,7 +11,7 @@ from osbot_llms.OSBot_LLMs__Shared_Objects                                  impo
 from osbot_llms.fast_api.routes.Routes__OpenAI                              import Routes__OpenAI
 from osbot_llms.llms.chats.LLM__Chat_Completion__Resolve_Engine             import LLM__Chat_Completion__Resolve_Engine
 from osbot_llms.llms.storage.Chats_Storage__S3_Minio                        import Chats_Storage__S3_Minio
-from osbot_llms.models.LLMs__Chat_Completion                                import LLMs__Chat_Completion
+from osbot_llms.models.LLMs__Chat_Completion import LLMs__Chat_Completion, SWAGGER_EXAMPLE__LLMs__Chat_Completion
 
 ROUTES_PATHS__CONFIG        = ['/config/status', '/config/version']
 HEADER_NAME__CHAT_ID        = 'osbot-llms-chat-id'
@@ -70,7 +72,7 @@ class Routes__Chat(Fast_API_Routes):
             traceback.print_exc()
 
 
-    async def completion(self, llm_chat_completion: LLMs__Chat_Completion, request: Request):
+    async def completion(self, request: Request, llm_chat_completion: LLMs__Chat_Completion = SWAGGER_EXAMPLE__LLMs__Chat_Completion):
         request_id       = self.request_id(request)
         chat_save_result = self.chats_storage_s3_minio.save_user_request(llm_chat_completion, request_id)
 

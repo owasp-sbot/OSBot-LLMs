@@ -97,7 +97,7 @@ class test_S3_DB__Chat_Threads(TestCase__S3_Minio__Temp_Chat_Threads):
                                                             'seed'            : 42            ,
                                                             'stream'          : True          ,
                                                             'system_prompts'  : None          ,
-                                                            'temperature'     : '0'           ,
+                                                            'temperature'     : 0.0           ,
                                                             'user_data'       : None          ,
                                                             'user_prompt'     : user_prompt   },
                                    "llm_request_id"     : llm_request_id                       ,

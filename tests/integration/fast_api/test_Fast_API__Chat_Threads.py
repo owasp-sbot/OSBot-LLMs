@@ -37,7 +37,7 @@ class test_Fast_API__Chat_Threads(TestCase__S3_Minio__Temp_Chat_Threads):
 
         llm_chat_completion = LLMs__Chat_Completion(user_prompt=user_prompt, chat_thread_id=chat_thread_id,
                                                     user_data=user_data)
-        json_data           = json_load(llm_chat_completion.model_dump_json())
+        json_data           = llm_chat_completion.json()
         response            = self.client.post('chat/completion', json=json_data)
 
         assert response.status_code == 200

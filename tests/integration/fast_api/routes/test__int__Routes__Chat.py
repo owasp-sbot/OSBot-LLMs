@@ -58,7 +58,7 @@ class test__int__Routes__Chat(TestCase):
 
     def test_completion(self):
         self.llm_chat_completion.stream = True
-        streaming_response              = invoke_async_function(self.routes_chat.completion(self.llm_chat_completion, self.request))
+        streaming_response              = invoke_async_function(self.routes_chat.completion(self.request, self.llm_chat_completion))
         items                           = invoke_async_function(self.collect_body_iterator(streaming_response.body_iterator))
         answer                          = ''.join(items)
 
@@ -67,7 +67,7 @@ class test__int__Routes__Chat(TestCase):
         assert '42'                           in answer
 
         self.llm_chat_completion.stream = False
-        response_str                    = invoke_async_function(self.routes_chat.completion(self.llm_chat_completion, self.request))
+        response_str                    = invoke_async_function(self.routes_chat.completion(self.request, self.llm_chat_completion))
         assert type(response_str) is str
         assert '42' in response_str
 
@@ -75,12 +75,12 @@ class test__int__Routes__Chat(TestCase):
         user_data = dict(selected_platform = 'Groq (Free)'     ,
                          selected_provider = '1. Meta'         ,
                          selected_model    = 'llama3-70b-8192')
-        self.llm_chat_completion.llm_platform = None
-        self.llm_chat_completion.llm_provider = None
-        self.llm_chat_completion.llm_model    = None
+        # self.llm_chat_completion.llm_platform = None
+        # self.llm_chat_completion.llm_provider = None
+        # self.llm_chat_completion.llm_model    = None
         self.llm_chat_completion.user_data    = user_data
         self.llm_chat_completion.stream       = True
-        streaming_response                    = invoke_async_function(self.routes_chat.completion(self.llm_chat_completion, self.request))
+        streaming_response                    = invoke_async_function(self.routes_chat.completion(self.request, self.llm_chat_completion))
         items                                 = invoke_async_function(self.collect_body_iterator(streaming_response.body_iterator))
         answer                                = ''.join(items)
 
