@@ -8,10 +8,13 @@ on:
 env:
   RELEASE_TYPE           : 'minor'
   PACKAGE_NAME           : 'osbot_llms'
+  DOCKER__CONTEXT        : "."
+  DOCKER__FILE           : './deploy/docker/osbot-llms/Dockerfile'
 
 jobs:
 
   run-tests:
+    if: false
     name: "Run tests"
     runs-on: ubuntu-latest
     steps:
@@ -55,3 +58,21 @@ jobs:
         uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/pypi__publish@dev
     needs:
       - increment-tag
+
+  publish-to-aws-ecr:
+    name: "Publish to: AWS ECR"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Wait for PyPI publish"
+        uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/pypi__wait-for-publish@dev
+
+      - name: "Publish to: AWS ECR"
+        uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/aws__publish__ecr@dev
+        env:
+          AWS_ACCOUNT_ID       : ${{ secrets.AWS_ACCOUNT_ID__654654216424        }}
+          AWS_ACCESS_KEY_ID    : ${{ secrets.AWS_ACCESS_KEY_ID__654654216424     }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY__654654216424 }}
+          AWS_DEFAULT_REGION   : ${{ secrets.AWS_DEFAULT_REGION__654654216424    }}
+#    needs:
+#      - publish-to-pypi

@@ -4,7 +4,7 @@ from osbot_llms.fast_api.routes.Routes__Chat import Routes__Chat
 from osbot_llms.fast_api.routes.Routes__Info import Routes__Info
 
 
-class LLMs__Fast_API(Fast_API):
+class Fast_API__LLMs(Fast_API):
     base_path : str  = '/llms'
 
     def setup_routes(self):

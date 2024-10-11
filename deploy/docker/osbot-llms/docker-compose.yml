@@ -1,0 +1,13 @@
+services:
+  serverless_flows:
+    build:
+      context: ../../..
+      dockerfile: ./deploy/docker/osbot-llms/Dockerfile
+      args:
+        VERSION: 0.4.0
+    platform: linux/amd64
+    container_name: osbot-llms-web
+    ports:
+      - "5012:8080"
+    env_file:
+      - ../../../.env
