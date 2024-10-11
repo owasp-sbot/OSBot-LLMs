@@ -29,6 +29,7 @@ class test_Live_Server(TestCase):
         assert getattr(response.paths, '/').get.summary == 'Redirect To Docs'
 
     def test__chat__completion(self):
-        llms_chat_completion = LLMs__Chat_Completion(stream=False)
+        llms_chat_completion = LLMs__Chat_Completion(stream=True)
         response = requests.post(self.live_server + '/chat/completion', json=llms_chat_completion.json())
-        assert response.text == '"no engine"'
+        #assert response.text == '"no engine"'
+        assert response.text == 'n\no\n \ne\nn\ng\ni\nn\ne\n'
