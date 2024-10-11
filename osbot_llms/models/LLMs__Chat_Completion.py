@@ -5,11 +5,14 @@ from fastapi.params import Body
 
 from osbot_llms.models.GPT_Prompt_With_System_And_History import GPT_Prompt_With_System_And_History
 
-SWAGGER_EXAMPLE__LLMs__Chat_Completion  = Body(..., example=dict(user_prompt    ='Good morning, what is 44-2?',
+SWAGGER_EXAMPLE__LLMs__Chat_Completion  = Body(..., example=dict(user_prompt    ='Good morning, what is 44-2?' ,
                                                                         system_prompts = ['use emojis in the answer' ],
                                                                         #temperature    = 0.0                         ,
-                                                                        seed           = 42                           ,
-                                                                        stream         = False                        ))
+                                                                        seed            = 42                          ,
+                                                                        stream          = False                       ,
+                                                                        llm_platform    = "Groq (Free)"               ,
+                                                                        llm_provider    = "1. Meta"                   ,
+                                                                        llm_model       = "llama-3.1-70b-versatile"   ))
 
 @dataclass
 class LLMs__Chat_Completion(GPT_Prompt_With_System_And_History):

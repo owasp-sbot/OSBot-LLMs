@@ -4,7 +4,8 @@ from osbot_utils.utils.Misc                                     import list_set
 from osbot_llms.OSBot_LLMs__Server_Config                       import osbot_llms__server_config
 from osbot_llms.OSBot_LLMs__Shared_Objects                      import osbot_llms__shared_objects
 from osbot_llms.backend.s3_minio.S3_DB__Chat_Threads            import CHAT__REQUEST_TYPE__USER_RESPONSE
-from osbot_llms.fast_api.routes.Routes__Chat                    import HEADER_NAME__CHAT_THREAD_ID, HEADER_NAME__CHAT_ID
+from osbot_llms.fast_api.routes.Routes__Chat                    import HEADER_NAME__CHAT_THREAD_ID, HEADER_NAME__CHAT_ID, \
+    HEADER_NAME__CHAT_PLATFORM, HEADER_NAME__CHAT_PROVIDER, HEADER_NAME__CHAT_MODEL
 from osbot_llms.models.LLMs__Chat_Completion                    import LLMs__Chat_Completion
 from osbot_llms.testing.TestCase__S3_Minio__Temp_Chat_Threads   import TestCase__S3_Minio__Temp_Chat_Threads
 from tests.llm_fast_api__for_tests                              import llm_fast_api__client
@@ -36,7 +37,9 @@ class test__api__Routes__Chat(TestCase__S3_Minio__Temp_Chat_Threads):
         s3_key              = f'{s3_folder}{request_type}.json.gz'
         file_data           = self.s3_db_chat_threads.s3_file_data(s3_key)
 
-        assert list_set(dict(response.headers))                   == [ 'content-type', 'fast-api-request-id', HEADER_NAME__CHAT_ID, HEADER_NAME__CHAT_THREAD_ID]
+        assert list_set(dict(response.headers))                   == sorted([ 'content-type', 'fast-api-request-id',
+                                                                              HEADER_NAME__CHAT_ID, HEADER_NAME__CHAT_THREAD_ID,
+                                                                              HEADER_NAME__CHAT_PLATFORM, HEADER_NAME__CHAT_PROVIDER, HEADER_NAME__CHAT_MODEL])
         assert self.s3_db_chat_threads.s3_folder_files(s3_folder) == [ 'user-request.json.gz', 'user-response.json.gz']
         assert list_set(file_data)                                == [ 'chat_thread_id', 'histories', 'images', 'llm_answer',
                                                                        'llm_model', 'llm_platform', 'llm_provider', 'max_tokens',

@@ -38,8 +38,14 @@ class test_Fast_API__via_Http(TestCase):
 
     def test__chat__completion(self):
         with self.llm_fast_api as _:
-            llm_chat_completion = LLMs__Chat_Completion(user_prompt='51-9')
+            kwargs = dict(llm_platform = "Groq (Free)"               ,
+                          llm_provider = "1. Meta"                   ,
+                          llm_model    = "llama-3.1-70b-versatile"   ,
+                          user_prompt  = '51-9'                     )
+            llm_chat_completion = LLMs__Chat_Completion(**kwargs)
             response = self.fast_api_server.requests_post('/chat/completion', data=llm_chat_completion)
+            #pprint(dict(response.headers))
+            #pprint(response.text)
             assert '42' in response.text
 
 

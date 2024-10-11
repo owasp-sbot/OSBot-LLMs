@@ -16,6 +16,9 @@ from osbot_llms.models.LLMs__Chat_Completion import LLMs__Chat_Completion, SWAGG
 ROUTES_PATHS__CONFIG        = ['/config/status', '/config/version']
 HEADER_NAME__CHAT_ID        = 'osbot-llms-chat-id'
 HEADER_NAME__CHAT_THREAD_ID = 'osbot-llms-thread-id'
+HEADER_NAME__CHAT_PLATFORM  = 'osbot-llms-platform'
+HEADER_NAME__CHAT_PROVIDER  = 'osbot-llms-provider'
+HEADER_NAME__CHAT_MODEL     = 'osbot-llms-model'
 
 class Routes__Chat(Fast_API_Routes):
     tag                     : str = 'chat'
@@ -78,6 +81,11 @@ class Routes__Chat(Fast_API_Routes):
 
         routes_open_ai   = Routes__OpenAI()
         user_data        = llm_chat_completion.user_data
+        if user_data is None:
+            user_data = dict(selected_platform = llm_chat_completion.llm_platform ,
+                             selected_provider = llm_chat_completion.llm_provider ,
+                             selected_model    = llm_chat_completion.llm_model    )
+            llm_chat_completion.user_data = user_data
 
         # for now use the code in routes_open_ai.prompt_with_system__stream which is already working for OpenAI
         if user_data and 'selected_platform' in user_data and user_data.get('selected_platform') != 'OpenAI (Paid)':
@@ -86,6 +94,9 @@ class Routes__Chat(Fast_API_Routes):
                 pass
                 response.headers.append(HEADER_NAME__CHAT_ID       , chat_save_result.get('public_chat_id'        ,''))
                 response.headers.append(HEADER_NAME__CHAT_THREAD_ID, chat_save_result.get('public_chat_thread__id',''))
+                response.headers.append(HEADER_NAME__CHAT_PLATFORM , user_data.get('selected_platform'            ,''))
+                response.headers.append(HEADER_NAME__CHAT_PROVIDER , user_data.get('selected_provider'            ,''))
+                response.headers.append(HEADER_NAME__CHAT_MODEL    , user_data.get('selected_model'               ,''))
             return response
         else:
             stream = llm_chat_completion.stream
