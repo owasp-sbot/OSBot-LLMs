@@ -4,6 +4,8 @@ from osbot_aws.AWS_Config                   import aws_config
 from osbot_utils.base_classes.Type_Safe     import Type_Safe
 from osbot_aws.deploy.Deploy_Lambda         import Deploy_Lambda
 
+from osbot_llms.utils.Version import version__osbot_llms
+
 
 class Deploy_Lambda__OSBot_LLMs(Type_Safe):
     lambda_name : str = 'osbot_llms'
@@ -38,7 +40,7 @@ class Deploy_Lambda__OSBot_LLMs(Type_Safe):
         account_id  = aws_config.account_id()
         region_name = aws_config.region_name()
         image_name  = self.lambda_name
-        image_tag   = version__osbot_serverless_flows
+        image_tag   = version__osbot_llms
         return f'{account_id}.dkr.ecr.{region_name}.amazonaws.com/{image_name}:{image_tag}'
 
     def setup_aws_credentials(self):
@@ -54,7 +56,7 @@ if __name__ == '__main__':
     print("****   Deploy_Lambda__OSBot_Serverless_Flows    ****")
     print("****************************************************")
     print()
-    with Deploy_Lambda__OSBot_Serverless_Flows() as _:
+    with Deploy_Lambda__OSBot_LLMs() as _:
         print(f"... deploying lambda function: {_.lambda_name}")
         _.deploy()
         response = _.invoke()
