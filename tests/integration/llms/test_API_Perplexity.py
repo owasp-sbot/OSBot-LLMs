@@ -27,7 +27,7 @@ class test_API_Perplexity(TestCase):
                        "content" : user_prompt}]
         generator = self.api_perplexity.ask_using_messages(messages, model=model, async_mode=async_mode)
 
-        assert '3' in list(generator)
+        assert '3' in ' '.join(list(generator))
 
 
     def test_ask_using_messages__sync_mode(self):
