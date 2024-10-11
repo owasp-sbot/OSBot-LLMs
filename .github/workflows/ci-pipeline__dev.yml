@@ -14,7 +14,6 @@ env:
 jobs:
 
   run-tests:
-    if: false
     name: "Run tests"
     runs-on: ubuntu-latest
     steps:
@@ -95,5 +94,5 @@ jobs:
           MISTRAL_API_KEY                    : ${{ secrets.MISTRAL_API_KEY                     }}
           TOGETHER_AI_API_KEY                : ${{ secrets.TOGETHER_AI_API_KEY                 }}
           PERPLEXITY_API                     : ${{ secrets.PERPLEXITY_API                      }}
-#    needs:
-#      - publish-to-aws-ecr
+    needs:
+      - publish-to-aws-ecr

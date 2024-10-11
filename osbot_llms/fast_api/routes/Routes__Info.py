@@ -9,5 +9,9 @@ class Routes__Info(Fast_API_Routes):
     def version(self):
         return {"version" : version__osbot_llms }
 
+    def ping(self):
+        return {"it_is" : "pong" }
+
     def setup_routes(self):
         self.add_route_get(self.version)
+        self.add_route_get(self.ping   )
