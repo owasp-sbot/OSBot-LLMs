@@ -28,6 +28,14 @@ class Deploy_Lambda__OSBot_LLMs(Type_Safe):
 
     def lambda_setup(self):
         self.deploy_lambda.set_container_image(self.ecr_image_uri())
+        env_variables = {'IP_DATA__API_KEY'       : get_env('IP_DATA__API_KEY'   , ''),
+                         'OPEN_AI__API_KEY'       : get_env('OPEN_AI__API_KEY'   , ''),
+                         'OPEN_ROUTER_API_KEY'    : get_env('OPEN_ROUTER_API_KEY', ''),
+                         'GROQ_API_KEY'           : get_env('GROQ_API_KEY'       , ''),
+                         'TOGETHER_AI_API_KEY'    : get_env('TOGETHER_AI_API_KEY', ''),
+                         'MISTRAL_API_KEY'        : get_env('MISTRAL_API_KEY'    , ''),
+                         'SAMBANOVA_API_KEY'      : get_env('SAMBANOVA_API_KEY'  , '')}
+        self.deploy_lambda.set_env_variables(env_variables)
 
     def lambda_setup_post_update(self):
         with self.lambda_function as _:
