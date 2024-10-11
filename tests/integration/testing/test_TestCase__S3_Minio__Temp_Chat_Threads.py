@@ -31,7 +31,7 @@ class test_TestCase__S3_Minio__Temp_Chat_Threads(TestCase__S3_Minio__Temp_Chat_T
         assert type(self.s3_db_chat_threads)             is S3_DB__Chat_Threads
         assert self.s3_db_chat_threads.bucket_exists()   is True
         assert aws_config.account_id()                   == self.random_aws_creds.env_vars['AWS_ACCOUNT_ID']
-        assert self.s3_db_chat_threads.s3_bucket()       == f'{S3_DB_BASE__BUCKET_NAME__PREFIX}-{aws_config.account_id()}-chat-threads'
+        assert self.s3_db_chat_threads.s3_bucket()       == f'{S3_DB_BASE__BUCKET_NAME__PREFIX}-chat-threads'
         assert self.s3_db_chat_threads.use_minio         is True
         assert self.s3_db_chat_threads.server_name       == 'osbot-llms'
 

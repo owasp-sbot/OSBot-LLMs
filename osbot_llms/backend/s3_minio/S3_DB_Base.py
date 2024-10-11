@@ -178,11 +178,6 @@ class S3_DB_Base(Type_Safe):
 
         if self.s3().bucket_not_exists(bucket_name):
             result = self.s3().bucket_create(**kwargs)
-            # print("========= S3_DB_Base setup=======")
-            # pprint(kwargs)
-            # pprint(self.json())
-            # pprint(result)
-            # print("========= S3_DB_Base setup=======")
             if result.get('status') != 'ok':
                 message = f"""Catastrophic error: Failed to create bucket:
                 

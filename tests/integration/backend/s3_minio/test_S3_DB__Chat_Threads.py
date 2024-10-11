@@ -37,10 +37,10 @@ class test_S3_DB__Chat_Threads(TestCase__S3_Minio__Temp_Chat_Threads):
     def test__check_setup(self):
         with self.s3_db_chat_threads as _:
             assert _.bucket_exists() is True
-            assert _.s3_bucket() == f'{S3_DB_BASE__BUCKET_NAME__PREFIX}-{aws_config.account_id()}-chat-threads'
-            assert _.json() == { 'bucket_name__insert_account_id': True,
-                                 'bucket_name__prefix'           : S3_DB_BASE__BUCKET_NAME__PREFIX,
-                                 'bucket_name__suffix'           : S3_BUCKET_SUFFIX__CHAT_THREADS ,
+            assert _.s3_bucket() == f'{S3_DB_BASE__BUCKET_NAME__PREFIX}-chat-threads'
+            assert _.json() == { 'bucket_name__insert_account_id': False                                ,
+                                 'bucket_name__prefix'           : S3_DB_BASE__BUCKET_NAME__PREFIX      ,
+                                 'bucket_name__suffix'           : S3_BUCKET_SUFFIX__CHAT_THREADS       ,
                                  's3_key_generator'              : {'root_folder'       : 'chat-threads',
                                                                     's3_path_block_size': 5,
                                                                     'save_as_gz'        : True,
