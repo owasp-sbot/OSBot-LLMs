@@ -1,7 +1,6 @@
 from osbot_aws.AWS_Config                                     import aws_config
+from osbot_aws.aws.s3.S3__DB_Base                             import S3_DB_BASE__BUCKET_NAME__PREFIX
 from osbot_utils.utils.Misc                                   import list_set
-
-from osbot_llms.backend.s3_minio.S3_DB_Base import S3_DB_BASE__BUCKET_NAME__PREFIX
 from osbot_llms.backend.s3_minio.S3_DB__Chat_Threads          import S3_DB__Chat_Threads
 from osbot_llms.testing.TestCase__S3_Minio__Temp_Chat_Threads import TestCase__S3_Minio__Temp_Chat_Threads
 

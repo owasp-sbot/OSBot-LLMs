@@ -1,7 +1,11 @@
-from osbot_aws.AWS_Config                                     import aws_config
-from osbot_utils.utils.Misc                                   import list_set
-from osbot_llms.backend.s3_minio.S3_DB_Base                   import S3_DB_Base,S3_DB_BASE__BUCKET_NAME__PREFIX, S3_DB_BASE__SERVER_NAME
-from osbot_llms.testing.TestCase__S3_Minio__Temp_S3_Bucket    import TestCase__S3_Minio__Temp_S3_Bucket
+from osbot_aws.AWS_Config                                       import aws_config
+from osbot_aws.aws.s3.S3__DB_Base import S3__DB_Base, S3_DB_BASE__BUCKET_NAME__PREFIX, S3_DB_BASE__SERVER_NAME, \
+    S3_DB_BASE__BUCKET_NAME__SUFFIX
+from osbot_aws.testing.TestCase__S3_Minio__Temp_S3_Bucket       import TestCase__S3_Minio__Temp_S3_Bucket
+from osbot_utils.utils.Misc                                     import list_set
+
+from osbot_llms.OSBot_LLMs__Server_Config import DEFAULT__SERVER_CONFIG__SERVER_NAME
+
 
 class test_TestCase__S3_Minio__Temp_Chat_Threads(TestCase__S3_Minio__Temp_S3_Bucket):
 
@@ -25,10 +29,10 @@ class test_TestCase__S3_Minio__Temp_Chat_Threads(TestCase__S3_Minio__Temp_S3_Buc
                                                               'AWS_DEFAULT_REGION'   : None ,
                                                               'AWS_SECRET_ACCESS_KEY': None ,
                                                               'USE_MINIO_AS_S3'      : None }
-        assert type(self.s3_db_base)                     is S3_DB_Base
+        assert type(self.s3_db_base)             is S3__DB_Base
         assert self.s3_db_base.bucket_exists()   is True
-        assert aws_config.account_id()                   == self.random_aws_creds.env_vars['AWS_ACCOUNT_ID']
-        assert self.s3_db_base.s3_bucket()       == f'{S3_DB_BASE__BUCKET_NAME__PREFIX}-{aws_config.account_id()}-osbot-llms'
+        assert aws_config.account_id()           == self.random_aws_creds.env_vars['AWS_ACCOUNT_ID']
+        assert self.s3_db_base.s3_bucket()       == f'{S3_DB_BASE__BUCKET_NAME__PREFIX}-{aws_config.account_id()}-{S3_DB_BASE__BUCKET_NAME__SUFFIX}'
         assert self.s3_db_base.use_minio         is True
         assert self.s3_db_base.server_name       == S3_DB_BASE__SERVER_NAME
 

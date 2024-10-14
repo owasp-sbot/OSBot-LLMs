@@ -1,9 +1,9 @@
 from unittest                                            import TestCase
+from osbot_aws.aws.s3.S3__DB_Base                        import ENV_NAME__USE_MINIO_AS_S3
 from osbot_aws.testing.Temp__Random__AWS_Credentials     import Temp__Random__AWS_Credentials
 from osbot_utils.helpers.Random_Guid                     import Random_Guid
 from osbot_llms.OSBot_LLMs__Server_Config                import osbot_llms__server_config
 from osbot_llms.OSBot_LLMs__Shared_Objects               import osbot_llms__shared_objects
-from osbot_llms.backend.s3_minio.S3_DB_Base              import ENV_NAME__USE_MINIO_AS_S3
 from osbot_llms.models.LLMs__Chat_Completion             import LLMs__Chat_Completion
 
 
