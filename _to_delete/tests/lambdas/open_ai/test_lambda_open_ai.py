@@ -1,7 +1,6 @@
 import pytest
 import requests
 from unittest                                   import TestCase
-from dotenv                                     import load_dotenv
 from osbot_utils.utils.Dev import pprint
 
 from osbot_llms.apis.open_ai.API_Open_AI        import API_Open_AI

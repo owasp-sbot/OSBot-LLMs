@@ -1,10 +1,10 @@
 from os import getenv
 
 import openai
-from dotenv import load_dotenv
 from openai import OpenAI
 from osbot_utils.decorators.methods.cache_on_self import cache_on_self
 from osbot_utils.utils.Dev import pprint
+from osbot_utils.utils.Env import load_dotenv
 
 OPEN_AI__API_KEY   = 'OPEN_AI__API_KEY'
 DEFAULT_MAX_TOKENS = 2048

@@ -1,6 +1,6 @@
 from unittest                                 import TestCase
-from dotenv                                   import load_dotenv
 from osbot_llms.llms.providers.groq.LLM__Groq import LLM__Groq, LLM_BASE_URL__GROQ
+from osbot_utils.utils.Env import load_dotenv
 
 
 class test_LLM__Groq(TestCase):
