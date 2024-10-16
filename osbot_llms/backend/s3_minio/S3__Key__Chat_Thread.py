@@ -1,5 +1,5 @@
-from osbot_utils.utils.Misc                         import random_guid
-from osbot_llms.backend.s3_minio.S3__Key_Generator  import S3__Key_Generator
+from cbr_shared.aws.s3.S3__Key_Generator import S3__Key_Generator
+from osbot_utils.utils.Misc              import random_guid
 
 VALUE__REQUEST_TYPE__UNKNOWN = 'unknown'
 
