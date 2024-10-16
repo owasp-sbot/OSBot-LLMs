@@ -13,13 +13,13 @@ files = [
 
 [[package]]
 name = "anyio"
-version = "4.6.0"
+version = "4.6.2.post1"
 description = "High level compatibility layer for multiple asynchronous event loop implementations"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "anyio-4.6.0-py3-none-any.whl", hash = "sha256:c7d2e9d63e31599eeb636c8c5c03a7e108d73b345f064f1c19fdc87b79036a9a"},
-    {file = "anyio-4.6.0.tar.gz", hash = "sha256:137b4559cbb034c477165047febb6ff83f390fc3b20bf181c1fc0a728cb8beeb"},
+    {file = "anyio-4.6.2.post1-py3-none-any.whl", hash = "sha256:6d170c36fba3bdd840c73d3868c1e777e33676a69c3a72cf0a0d5d6d8009b61d"},
+    {file = "anyio-4.6.2.post1.tar.gz", hash = "sha256:4c8bc31ccdb51c7f7bd251f51c609e038d63e34219b44aa86e47576389880b4c"},
 ]
 
 [package.dependencies]
@@ -28,22 +28,22 @@ sniffio = ">=1.1"
 
 [package.extras]
 doc = ["Sphinx (>=7.4,<8.0)", "packaging", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme"]
-test = ["anyio[trio]", "coverage[toml] (>=7)", "exceptiongroup (>=1.2.0)", "hypothesis (>=4.0)", "psutil (>=5.9)", "pytest (>=7.0)", "pytest-mock (>=3.6.1)", "trustme", "uvloop (>=0.21.0b1)"]
+test = ["anyio[trio]", "coverage[toml] (>=7)", "exceptiongroup (>=1.2.0)", "hypothesis (>=4.0)", "psutil (>=5.9)", "pytest (>=7.0)", "pytest-mock (>=3.6.1)", "trustme", "truststore (>=0.9.1)", "uvloop (>=0.21.0b1)"]
 trio = ["trio (>=0.26.1)"]
 
 [[package]]
 name = "boto3"
-version = "1.35.38"
+version = "1.35.40"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "boto3-1.35.38-py3-none-any.whl", hash = "sha256:234a475fe56b65e99b4f5cfff50adaac6b23d39558d6b55137bbf1e50dd0ef08"},
-    {file = "boto3-1.35.38.tar.gz", hash = "sha256:90c8cddc4a08c8040057ad44c7468ff82fea9fe8b6517db5ff01a9b2900299cc"},
+    {file = "boto3-1.35.40-py3-none-any.whl", hash = "sha256:9352f6d61f15c789231a5d608613f03425059072ed862c32e1ed102b17206abf"},
+    {file = "boto3-1.35.40.tar.gz", hash = "sha256:33c6a7aeab316f7e0b3ad8552afe95a4a10bfd58519d00741c4d4f3047da8382"},
 ]
 
 [package.dependencies]
-botocore = ">=1.35.38,<1.36.0"
+botocore = ">=1.35.40,<1.36.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.10.0,<0.11.0"
 
@@ -52,13 +52,13 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.35.38"
+version = "1.35.40"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "botocore-1.35.38-py3-none-any.whl", hash = "sha256:2eb17d32fa2d3bb5d475132a83564d28e3acc2161534f24b75a54418a1d51359"},
-    {file = "botocore-1.35.38.tar.gz", hash = "sha256:55d9305c44e5ba29476df456120fa4fb919f03f066afa82f2ae400485e7465f4"},
+    {file = "botocore-1.35.40-py3-none-any.whl", hash = "sha256:072cc47f29cb1de4fa77ce6632e4f0480af29b70816973ff415fbaa3f50bd1db"},
+    {file = "botocore-1.35.40.tar.gz", hash = "sha256:547e0a983856c7d7aeaa30fca2a283873c57c07366cd806d2d639856341b3c31"},
 ]
 
 [package.dependencies]
@@ -232,18 +232,18 @@ files = [
 
 [[package]]
 name = "fastapi"
-version = "0.115.0"
+version = "0.115.2"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "fastapi-0.115.0-py3-none-any.whl", hash = "sha256:17ea427674467486e997206a5ab25760f6b09e069f099b96f5b55a32fb6f1631"},
-    {file = "fastapi-0.115.0.tar.gz", hash = "sha256:f93b4ca3529a8ebc6fc3fcf710e5efa8de3df9b41570958abf1d97d843138004"},
+    {file = "fastapi-0.115.2-py3-none-any.whl", hash = "sha256:61704c71286579cc5a598763905928f24ee98bfcc07aabe84cfefb98812bbc86"},
+    {file = "fastapi-0.115.2.tar.gz", hash = "sha256:3995739e0b09fa12f984bce8fa9ae197b35d433750d3d312422d846e283697ee"},
 ]
 
 [package.dependencies]
 pydantic = ">=1.7.4,<1.8 || >1.8,<1.8.1 || >1.8.1,<2.0.0 || >2.0.0,<2.0.1 || >2.0.1,<2.1.0 || >2.1.0,<3.0.0"
-starlette = ">=0.37.2,<0.39.0"
+starlette = ">=0.37.2,<0.41.0"
 typing-extensions = ">=4.8.0"
 
 [package.extras]
@@ -551,13 +551,13 @@ datalib = ["numpy (>=1)", "pandas (>=1.2.3)", "pandas-stubs (>=1.1.0.11)"]
 
 [[package]]
 name = "osbot-aws"
-version = "2.36.4"
+version = "2.36.8"
 description = "OWASP Security Bot - AWS"
 optional = false
 python-versions = "<4.0,>=3.7"
 files = [
-    {file = "osbot_aws-2.36.4-py3-none-any.whl", hash = "sha256:d61e00949be9dd91b089747fb1f7b125d70436509e7d7ef615f65c8313f002f0"},
-    {file = "osbot_aws-2.36.4.tar.gz", hash = "sha256:08cca914b1e8dd8ba85da2063fac7898ee489450ad50caa16c1fed415852330d"},
+    {file = "osbot_aws-2.36.8-py3-none-any.whl", hash = "sha256:1f74a97472c7b981db2225687e8c402c88dcd2cac86754799f02ada986c1de7c"},
+    {file = "osbot_aws-2.36.8.tar.gz", hash = "sha256:351a57fd85b958a0635a59906dea41bf5d0315ac3dbdf774ace5da8315b16203"},
 ]
 
 [package.dependencies]
@@ -584,14 +584,28 @@ typer = "*"
 uvicorn = "*"
 
 [[package]]
+name = "osbot-prefect"
+version = "0.2.8"
+description = "OWASP Security Bot - Prefect"
+optional = false
+python-versions = "<4.0,>=3.7"
+files = [
+    {file = "osbot_prefect-0.2.8-py3-none-any.whl", hash = "sha256:850b10ee6abff7b2cec2b0cef519703c74eb3cc9ca4b9afd13b1cdd077d27689"},
+    {file = "osbot_prefect-0.2.8.tar.gz", hash = "sha256:83e936e4c09cb69e16a0cd44123c4e1e4d12685a1d4fcbdd17abc4b50c516e25"},
+]
+
+[package.dependencies]
+osbot-utils = "*"
+
+[[package]]
 name = "osbot-utils"
-version = "1.57.0"
+version = "1.60.0"
 description = "OWASP Security Bot - Utils"
 optional = false
 python-versions = "<4.0,>=3.7"
 files = [
-    {file = "osbot_utils-1.57.0-py3-none-any.whl", hash = "sha256:722d2a55724320702b590b310da72867e0b8ed1dbe16226dc9237fd8e6c7b9ef"},
-    {file = "osbot_utils-1.57.0.tar.gz", hash = "sha256:9cadcbc789d27ef84a9fc49c729626d8af367078ea14be9c20580d38dce73e3f"},
+    {file = "osbot_utils-1.60.0-py3-none-any.whl", hash = "sha256:8422d072b014a58adf906374df0cabb1d154ac7be6f3801216a80d8c201b784c"},
+    {file = "osbot_utils-1.60.0.tar.gz", hash = "sha256:f244c813b3daf9b2430c254a724ca4c3cc9e231c8a408d948f7e2cc122cee3ec"},
 ]
 
 [[package]]
@@ -851,13 +865,13 @@ files = [
 
 [[package]]
 name = "starlette"
-version = "0.38.6"
+version = "0.39.2"
 description = "The little ASGI library that shines."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "starlette-0.38.6-py3-none-any.whl", hash = "sha256:4517a1409e2e73ee4951214ba012052b9e16f60e90d73cfb06192c19203bbb05"},
-    {file = "starlette-0.38.6.tar.gz", hash = "sha256:863a1588f5574e70a821dadefb41e4881ea451a47a3cd1b4df359d4ffefe5ead"},
+    {file = "starlette-0.39.2-py3-none-any.whl", hash = "sha256:134dd6deb655a9775991d352312d53f1879775e5cc8a481f966e83416a2c3f71"},
+    {file = "starlette-0.39.2.tar.gz", hash = "sha256:caaa3b87ef8518ef913dac4f073dea44e85f73343ad2bdc17941931835b2a26a"},
 ]
 
 [package.dependencies]
@@ -952,4 +966,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "5390de4d3c4dcceabce5eac12ac0fb75cee1784ee77c08864ddcdd0b9b39586b"
+content-hash = "4233e3e90e9cd1cb57b098e28679272e1842f6a651ed08d5442f809bfa854761"

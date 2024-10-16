@@ -1,6 +1,6 @@
+from osbot_aws.aws.s3.S3__DB_Base                      import S3__DB_Base
 from osbot_utils.utils.Misc                            import timestamp_utc_now
 from osbot_utils.utils.Status                          import status_ok, status_error
-from osbot_llms.backend.s3_minio.S3_DB_Base            import S3_DB_Base
 from osbot_llms.backend.s3_minio.S3__Key__Chat_Thread  import S3__Key__Chat_Thread
 from osbot_llms.models.LLMs__Chat_Completion           import LLMs__Chat_Completion
 
@@ -10,7 +10,7 @@ CHAT__REQUEST_TYPE__USER_RESPONSE = 'user-response'
 CHAT__REQUEST_TYPE__LLM_REQUEST   = 'llm-request'
 CHAT__REQUEST_TYPE__LLM_RESPONSE  = 'llm-response'
 
-class S3_DB__Chat_Threads(S3_DB_Base):
+class S3_DB__Chat_Threads(S3__DB_Base):
     bucket_name__suffix   : str = S3_BUCKET_SUFFIX__CHAT_THREADS
     save_as_gz            : bool = True
     s3_key_generator      : S3__Key__Chat_Thread

@@ -12,6 +12,7 @@ class OSBot_LLMs__Shared_Objects(Type_Safe):
         kwargs      = dict(use_minio   = use_minio   ,
                            server_name =  server_name)
         with  S3_DB__Chat_Threads(**kwargs)  as _:
+            _.bucket_name__insert_account_id    = use_minio is False
             _.setup()                                                           # set up tasks, including creating target bucket if it doesn't exist
             _.s3_key_generator.use_request_path = False
             _.s3_key_generator.use_when         = True

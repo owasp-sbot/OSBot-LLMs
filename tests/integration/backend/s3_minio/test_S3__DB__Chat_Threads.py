@@ -1,7 +1,8 @@
-from osbot_aws.AWS_Config                                               import aws_config
+from osbot_aws.aws.s3.S3__DB_Base                                       import S3_DB_BASE__BUCKET_NAME__PREFIX, S3_DB_BASE__SERVER_NAME, S3_DB_BASE__BUCKET_NAME__SUFFIX
 from osbot_utils.helpers.Random_Guid                                    import Random_Guid
 from osbot_utils.utils.Misc                                             import random_text, is_guid
-from osbot_llms.backend.s3_minio.S3_DB_Base                             import S3_DB_BASE__BUCKET_NAME__PREFIX, S3_DB_BASE__BUCKET_NAME__SUFFIX, S3_DB_BASE__SERVER_NAME
+
+from osbot_llms.OSBot_LLMs__Server_Config import DEFAULT__SERVER_CONFIG__SERVER_NAME
 from osbot_llms.backend.s3_minio.S3_DB__Chat_Threads                    import S3_DB__Chat_Threads, S3_BUCKET_SUFFIX__CHAT_THREADS
 from osbot_llms.backend.s3_minio.S3__Key__Chat_Thread                   import S3__Key__Chat_Thread
 from osbot_llms.models.LLMs__Chat_Completion                            import LLMs__Chat_Completion
@@ -37,21 +38,21 @@ class test_S3_DB__Chat_Threads(TestCase__S3_Minio__Temp_Chat_Threads):
     def test__check_setup(self):
         with self.s3_db_chat_threads as _:
             assert _.bucket_exists() is True
-            assert _.s3_bucket() == f'{S3_DB_BASE__BUCKET_NAME__PREFIX}-{aws_config.account_id()}-chat-threads'
-            assert _.json() == { 'bucket_name__insert_account_id': True,
-                                 'bucket_name__prefix'           : S3_DB_BASE__BUCKET_NAME__PREFIX,
-                                 'bucket_name__suffix'           : S3_BUCKET_SUFFIX__CHAT_THREADS ,
+            assert _.s3_bucket() == f'{S3_DB_BASE__BUCKET_NAME__PREFIX}-chat-threads'
+            assert _.json() == { 'bucket_name__insert_account_id': False                                ,
+                                 'bucket_name__prefix'           : S3_DB_BASE__BUCKET_NAME__PREFIX      ,
+                                 'bucket_name__suffix'           : S3_BUCKET_SUFFIX__CHAT_THREADS       ,
                                  's3_key_generator'              : {'root_folder'       : 'chat-threads',
                                                                     's3_path_block_size': 5,
                                                                     'save_as_gz'        : True,
-                                                                    'server_name'       : S3_DB_BASE__BUCKET_NAME__SUFFIX,
+                                                                    'server_name'       : DEFAULT__SERVER_CONFIG__SERVER_NAME,
                                                                     'use_date'          : True,
                                                                     'use_hours'         : True,
                                                                     'use_minutes'       : False,
                                                                     'use_request_path'  : False,
                                                                     'use_when'          : True},
                                  'save_as_gz'                     : True,
-                                 'server_name'                    : S3_DB_BASE__BUCKET_NAME__SUFFIX,
+                                 'server_name'                    : DEFAULT__SERVER_CONFIG__SERVER_NAME,
                                  'session_kwargs__s3'             : { 'aws_access_key_id'    : None ,
                                                                       'aws_secret_access_key': None ,
                                                                       'endpoint_url'         : None ,
@@ -68,7 +69,7 @@ class test_S3_DB__Chat_Threads(TestCase__S3_Minio__Temp_Chat_Threads):
 
             assert is_guid(chat_thread_id) is True
             assert is_guid(llm_request_id) is True
-            assert s3_key                  == f'chat-threads/{S3_DB_BASE__BUCKET_NAME__SUFFIX}/{when_str}/{chat_thread_id}/{llm_request_id}/unknown.json.gz'
+            assert s3_key                  == f'chat-threads/{DEFAULT__SERVER_CONFIG__SERVER_NAME}/{when_str}/{chat_thread_id}/{llm_request_id}/unknown.json.gz'
 
 
     def test_save_chat_completion__user_request(self):
@@ -84,7 +85,7 @@ class test_S3_DB__Chat_Threads(TestCase__S3_Minio__Temp_Chat_Threads):
             file_data           = _.s3_file_data(s3_key)
             when_str            = _.s3_key_generator.path__for_date_time__now_utc()
             assert status     == 'ok'
-            assert s3_key     == f'chat-threads/{S3_DB_BASE__BUCKET_NAME__SUFFIX}/{when_str}/{chat_thread_id}/{llm_request_id}/user-request.json.gz'
+            assert s3_key     == f'chat-threads/{DEFAULT__SERVER_CONFIG__SERVER_NAME}/{when_str}/{chat_thread_id}/{llm_request_id}/user-request.json.gz'
             assert file_data  == { "chat_thread_id"     : chat_thread_id                       ,
                                    "llm_chat_completion": { 'chat_thread_id'  : chat_thread_id,
                                                             'histories'       : None          ,
