@@ -1,4 +1,4 @@
-from cbr_shared.aws.s3.S3__Key_Generator import S3__Key_Generator
+from osbot_aws.aws.s3.S3__Key_Generator import S3__Key_Generator
 from osbot_utils.utils.Misc              import random_guid
 
 VALUE__REQUEST_TYPE__UNKNOWN = 'unknown'
