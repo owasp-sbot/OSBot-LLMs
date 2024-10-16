@@ -33,17 +33,17 @@ trio = ["trio (>=0.26.1)"]
 
 [[package]]
 name = "boto3"
-version = "1.35.40"
+version = "1.35.41"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "boto3-1.35.40-py3-none-any.whl", hash = "sha256:9352f6d61f15c789231a5d608613f03425059072ed862c32e1ed102b17206abf"},
-    {file = "boto3-1.35.40.tar.gz", hash = "sha256:33c6a7aeab316f7e0b3ad8552afe95a4a10bfd58519d00741c4d4f3047da8382"},
+    {file = "boto3-1.35.41-py3-none-any.whl", hash = "sha256:2bf7e7f376aee52155fc4ae4487f29333a6bcdf3a05c3bc4fede10b972d951a6"},
+    {file = "boto3-1.35.41.tar.gz", hash = "sha256:e74bc6d69c04ca611b7f58afe08e2ded6cb6504a4a80557b656abeefee395f88"},
 ]
 
 [package.dependencies]
-botocore = ">=1.35.40,<1.36.0"
+botocore = ">=1.35.41,<1.36.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.10.0,<0.11.0"
 
@@ -52,13 +52,13 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.35.40"
+version = "1.35.41"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "botocore-1.35.40-py3-none-any.whl", hash = "sha256:072cc47f29cb1de4fa77ce6632e4f0480af29b70816973ff415fbaa3f50bd1db"},
-    {file = "botocore-1.35.40.tar.gz", hash = "sha256:547e0a983856c7d7aeaa30fca2a283873c57c07366cd806d2d639856341b3c31"},
+    {file = "botocore-1.35.41-py3-none-any.whl", hash = "sha256:915c4d81e3a0be3b793c1e2efdf19af1d0a9cd4a2d8de08ee18216c14d67764b"},
+    {file = "botocore-1.35.41.tar.gz", hash = "sha256:8a09a32136df8768190a6c92f0240cd59c30deb99c89026563efadbbed41fa00"},
 ]
 
 [package.dependencies]
@@ -551,19 +551,18 @@ datalib = ["numpy (>=1)", "pandas (>=1.2.3)", "pandas-stubs (>=1.1.0.11)"]
 
 [[package]]
 name = "osbot-aws"
-version = "2.36.8"
+version = "2.36.13"
 description = "OWASP Security Bot - AWS"
 optional = false
 python-versions = "<4.0,>=3.7"
 files = [
-    {file = "osbot_aws-2.36.8-py3-none-any.whl", hash = "sha256:1f74a97472c7b981db2225687e8c402c88dcd2cac86754799f02ada986c1de7c"},
-    {file = "osbot_aws-2.36.8.tar.gz", hash = "sha256:351a57fd85b958a0635a59906dea41bf5d0315ac3dbdf774ace5da8315b16203"},
+    {file = "osbot_aws-2.36.13-py3-none-any.whl", hash = "sha256:e14f52569cb8d54d5acf31fd08251c8d58f272b16a44729c63a642fa0c29c240"},
+    {file = "osbot_aws-2.36.13.tar.gz", hash = "sha256:7ccdd410145a1aa7aec28cd1f66c600da174a0910bba72894196ce31962445d5"},
 ]
 
 [package.dependencies]
 boto3 = "*"
 osbot-utils = "*"
-python-dotenv = "*"
 
 [[package]]
 name = "osbot-fast-api"
@@ -584,28 +583,14 @@ typer = "*"
 uvicorn = "*"
 
 [[package]]
-name = "osbot-prefect"
-version = "0.2.8"
-description = "OWASP Security Bot - Prefect"
-optional = false
-python-versions = "<4.0,>=3.7"
-files = [
-    {file = "osbot_prefect-0.2.8-py3-none-any.whl", hash = "sha256:850b10ee6abff7b2cec2b0cef519703c74eb3cc9ca4b9afd13b1cdd077d27689"},
-    {file = "osbot_prefect-0.2.8.tar.gz", hash = "sha256:83e936e4c09cb69e16a0cd44123c4e1e4d12685a1d4fcbdd17abc4b50c516e25"},
-]
-
-[package.dependencies]
-osbot-utils = "*"
-
-[[package]]
 name = "osbot-utils"
-version = "1.60.0"
+version = "1.62.0"
 description = "OWASP Security Bot - Utils"
 optional = false
 python-versions = "<4.0,>=3.7"
 files = [
-    {file = "osbot_utils-1.60.0-py3-none-any.whl", hash = "sha256:8422d072b014a58adf906374df0cabb1d154ac7be6f3801216a80d8c201b784c"},
-    {file = "osbot_utils-1.60.0.tar.gz", hash = "sha256:f244c813b3daf9b2430c254a724ca4c3cc9e231c8a408d948f7e2cc122cee3ec"},
+    {file = "osbot_utils-1.62.0-py3-none-any.whl", hash = "sha256:1a64a4aefeed4f9182b0ed8326f7785ce72db515acf2c634996d5308c7f88638"},
+    {file = "osbot_utils-1.62.0.tar.gz", hash = "sha256:af265c7b0a9500ec0af01a587840f8b50ae25f7b79467f39cae1697675878aeb"},
 ]
 
 [[package]]
@@ -761,20 +746,6 @@ files = [
 six = ">=1.5"
 
 [[package]]
-name = "python-dotenv"
-version = "1.0.1"
-description = "Read key-value pairs from a .env file and set them as environment variables"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "python-dotenv-1.0.1.tar.gz", hash = "sha256:e324ee90a023d808f1959c46bcbc04446a10ced277783dc6ee09987c37ec10ca"},
-    {file = "python_dotenv-1.0.1-py3-none-any.whl", hash = "sha256:f7b63ef50f1b690dddf550d03497b66d609393b40b564ed0d674909a68ebf16a"},
-]
-
-[package.extras]
-cli = ["click (>=5.0)"]
-
-[[package]]
 name = "requests"
 version = "2.32.3"
 description = "Python HTTP for Humans."
@@ -865,13 +836,13 @@ files = [
 
 [[package]]
 name = "starlette"
-version = "0.39.2"
+version = "0.40.0"
 description = "The little ASGI library that shines."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "starlette-0.39.2-py3-none-any.whl", hash = "sha256:134dd6deb655a9775991d352312d53f1879775e5cc8a481f966e83416a2c3f71"},
-    {file = "starlette-0.39.2.tar.gz", hash = "sha256:caaa3b87ef8518ef913dac4f073dea44e85f73343ad2bdc17941931835b2a26a"},
+    {file = "starlette-0.40.0-py3-none-any.whl", hash = "sha256:c494a22fae73805376ea6bf88439783ecfba9aac88a43911b48c653437e784c4"},
+    {file = "starlette-0.40.0.tar.gz", hash = "sha256:1a3139688fb298ce5e2d661d37046a66ad996ce94be4d4983be019a23a04ea35"},
 ]
 
 [package.dependencies]
@@ -947,13 +918,13 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "uvicorn"
-version = "0.31.1"
+version = "0.32.0"
 description = "The lightning-fast ASGI server."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "uvicorn-0.31.1-py3-none-any.whl", hash = "sha256:adc42d9cac80cf3e51af97c1851648066841e7cfb6993a4ca8de29ac1548ed41"},
-    {file = "uvicorn-0.31.1.tar.gz", hash = "sha256:f5167919867b161b7bcaf32646c6a94cdbd4c3aa2eb5c17d36bb9aa5cfd8c493"},
+    {file = "uvicorn-0.32.0-py3-none-any.whl", hash = "sha256:60b8f3a5ac027dcd31448f411ced12b5ef452c646f76f02f8cc3f25d8d26fd82"},
+    {file = "uvicorn-0.32.0.tar.gz", hash = "sha256:f78b36b143c16f54ccdb8190d0a26b5f1901fe5a3c777e1ab29f26391af8551e"},
 ]
 
 [package.dependencies]
@@ -966,4 +937,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "4233e3e90e9cd1cb57b098e28679272e1842f6a651ed08d5442f809bfa854761"
+content-hash = "5390de4d3c4dcceabce5eac12ac0fb75cee1784ee77c08864ddcdd0b9b39586b"

@@ -2,13 +2,10 @@ import asyncio
 import traceback
 
 from fastapi                                                                import Request
-from fastapi.params import Header, Body
-from osbot_prefect.flows.Flow_Events__To__Prefect_Server import Flow_Events__To__Prefect_Server
-from osbot_utils.helpers.Random_Guid import Random_Guid
-from osbot_utils.helpers.flows.Flow import Flow
-from osbot_utils.helpers.flows.decorators.flow import flow
-from osbot_utils.helpers.flows.models.Flow__Config import Flow__Config
-from osbot_utils.utils.Dev import pprint
+from fastapi.params                                                         import Header
+from osbot_utils.helpers.flows.Flow                                         import Flow
+from osbot_utils.helpers.flows.decorators.flow                              import flow
+from osbot_utils.helpers.flows.models.Flow_Run__Config                      import Flow_Run__Config
 from starlette.responses                                                    import StreamingResponse
 from osbot_fast_api.api.Fast_API_Routes                                     import Fast_API_Routes
 from osbot_utils.context_managers.capture_duration                          import capture_duration
@@ -16,7 +13,7 @@ from osbot_llms.OSBot_LLMs__Shared_Objects                                  impo
 from osbot_llms.fast_api.routes.Routes__OpenAI                              import Routes__OpenAI
 from osbot_llms.llms.chats.LLM__Chat_Completion__Resolve_Engine             import LLM__Chat_Completion__Resolve_Engine
 from osbot_llms.llms.storage.Chats_Storage__S3_Minio                        import Chats_Storage__S3_Minio
-from osbot_llms.models.LLMs__Chat_Completion import LLMs__Chat_Completion, SWAGGER_EXAMPLE__LLMs__Chat_Completion
+from osbot_llms.models.LLMs__Chat_Completion                                import LLMs__Chat_Completion, SWAGGER_EXAMPLE__LLMs__Chat_Completion
 
 ROUTES_PATHS__CONFIG        = ['/config/status', '/config/version']
 HEADER_NAME__CHAT_ID        = 'osbot-llms-chat-id'
@@ -36,7 +33,7 @@ class Routes__Chat(Fast_API_Routes):
         return 'no engine'
 
     async def handle_other_llms(self, llm_chat_completion: LLMs__Chat_Completion, request: Request, request_id: str):
-        @flow(flow_config=Flow__Config(log_to_console=True))
+        @flow(flow_config=Flow_Run__Config(log_to_console=True))
         def handle_other_llms__streamer() -> Flow:
             print("in handle_other_llms__streamer")
             print(llm_chat_completion.json())
@@ -44,30 +41,27 @@ class Routes__Chat(Fast_API_Routes):
 
         stream = llm_chat_completion.stream
         if stream:
-            with Flow_Events__To__Prefect_Server():
-                with handle_other_llms__streamer() as _:
-                    _.execute_flow()
-                    return _.flow_return_value
+            with handle_other_llms__streamer() as _:
+                _.execute_flow()
+                return _.flow_return_value
         else:
             return await self.handle_other_llms__no_stream(llm_chat_completion, request, request_id)
 
     async def handle_other_llms__no_stream(self, llm_chat_completion: LLMs__Chat_Completion, request: Request, request_id: str):
-        @flow(flow_config=Flow__Config(log_to_console=True))
+        @flow(flow_config=Flow_Run__Config(log_to_console=True))
         def flow_handle_other_llms__no_stream() -> Flow:
             print("in handle_other_llms__streamer")
             print(llm_chat_completion.json())
             complete_answer =  self.execute_llm_request(llm_chat_completion)
             try:
-                #request_headers = {key: value for key, value in request.headers.items()}
                 llm_chat_completion.llm_answer = complete_answer
             except:
                 pass
             return complete_answer
 
-        with Flow_Events__To__Prefect_Server() :
-            with flow_handle_other_llms__no_stream() as _:
-                _.execute_flow()
-                return _.flow_return_value
+        with flow_handle_other_llms__no_stream() as _:
+            _.execute_flow()
+            return _.flow_return_value
 
 
     async def handle_other_llms__streamer(self, llm_chat_completion: LLMs__Chat_Completion, request: Request,  request_id: str):
