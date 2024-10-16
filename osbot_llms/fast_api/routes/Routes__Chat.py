@@ -3,9 +3,6 @@ import traceback
 
 from fastapi                                                                import Request
 from fastapi.params                                                         import Header
-from osbot_utils.helpers.flows.Flow                                         import Flow
-from osbot_utils.helpers.flows.decorators.flow                              import flow
-from osbot_utils.helpers.flows.models.Flow_Run__Config                      import Flow_Run__Config
 from starlette.responses                                                    import StreamingResponse
 from osbot_fast_api.api.Fast_API_Routes                                     import Fast_API_Routes
 from osbot_utils.context_managers.capture_duration                          import capture_duration
@@ -33,35 +30,26 @@ class Routes__Chat(Fast_API_Routes):
         return 'no engine'
 
     async def handle_other_llms(self, llm_chat_completion: LLMs__Chat_Completion, request: Request, request_id: str):
-        @flow(flow_config=Flow_Run__Config(log_to_console=True))
-        def handle_other_llms__streamer() -> Flow:
+        def handle_other_llms__streamer():
             print("in handle_other_llms__streamer")
             print(llm_chat_completion.json())
             return StreamingResponse(self.handle_other_llms__streamer(llm_chat_completion, request, request_id),media_type='text/event-stream"; charset=utf-8')
 
         stream = llm_chat_completion.stream
         if stream:
-            with handle_other_llms__streamer() as _:
-                _.execute_flow()
-                return _.flow_return_value
+            return handle_other_llms__streamer()
         else:
             return await self.handle_other_llms__no_stream(llm_chat_completion, request, request_id)
 
     async def handle_other_llms__no_stream(self, llm_chat_completion: LLMs__Chat_Completion, request: Request, request_id: str):
-        @flow(flow_config=Flow_Run__Config(log_to_console=True))
-        def flow_handle_other_llms__no_stream() -> Flow:
-            print("in handle_other_llms__streamer")
-            print(llm_chat_completion.json())
-            complete_answer =  self.execute_llm_request(llm_chat_completion)
-            try:
-                llm_chat_completion.llm_answer = complete_answer
-            except:
-                pass
-            return complete_answer
-
-        with flow_handle_other_llms__no_stream() as _:
-            _.execute_flow()
-            return _.flow_return_value
+        print("in handle_other_llms__streamer")
+        print(llm_chat_completion.json())
+        complete_answer =  self.execute_llm_request(llm_chat_completion)
+        try:
+            llm_chat_completion.llm_answer = complete_answer
+        except:
+            pass
+        return complete_answer
 
 
     async def handle_other_llms__streamer(self, llm_chat_completion: LLMs__Chat_Completion, request: Request,  request_id: str):
