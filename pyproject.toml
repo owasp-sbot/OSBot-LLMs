@@ -1,6 +1,6 @@
 [tool.poetry]
 name        = "osbot_llms"
-version     = "v0.2.14"
+version     = "v0.2.15"
 description = "OWASP Security Bot - LLM"
 authors     = ["Dinis Cruz <dinis.cruz@owasp.org>"]
 license     = "MIT"
