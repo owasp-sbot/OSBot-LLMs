@@ -34,7 +34,8 @@ class Deploy_Lambda__OSBot_LLMs(Type_Safe):
                          'GROQ_API_KEY'           : get_env('GROQ_API_KEY'       , ''),
                          'TOGETHER_AI_API_KEY'    : get_env('TOGETHER_AI_API_KEY', ''),
                          'MISTRAL_API_KEY'        : get_env('MISTRAL_API_KEY'    , ''),
-                         'SAMBANOVA_API_KEY'      : get_env('SAMBANOVA_API_KEY'  , '')}
+                         'SAMBANOVA_API_KEY'      : get_env('SAMBANOVA_API_KEY'  , ''),
+                         'AWS_LWA_INVOKE_MODE'    : 'response_stream'                 }
         self.deploy_lambda.set_env_variables(env_variables)
 
     def lambda_setup_post_update(self):
