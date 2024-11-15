@@ -1,13 +1,8 @@
-import pytest
-
 from osbot_aws.AWS_Config                                       import aws_config
-from osbot_aws.aws.s3.S3__DB_Base                               import S3__DB_Base, S3_DB_BASE__BUCKET_NAME__PREFIX, S3_DB_BASE__SERVER_NAME, \
-    S3_DB_BASE__BUCKET_NAME__SUFFIX
+from osbot_aws.aws.s3.S3__DB_Base                               import S3__DB_Base, S3_DB_BASE__BUCKET_NAME__PREFIX, S3_DB_BASE__SERVER_NAME, S3_DB_BASE__BUCKET_NAME__SUFFIX
 from osbot_aws.testing.TestCase__S3_Minio__Temp_S3_Bucket       import TestCase__S3_Minio__Temp_S3_Bucket
 from osbot_utils.utils.Env                                      import in_github_action
 from osbot_utils.utils.Misc                                     import list_set
-
-from osbot_llms.OSBot_LLMs__Server_Config import DEFAULT__SERVER_CONFIG__SERVER_NAME
 
 
 class test_TestCase__S3_Minio__Temp_Chat_Threads(TestCase__S3_Minio__Temp_S3_Bucket):
