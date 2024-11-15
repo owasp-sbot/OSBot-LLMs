@@ -5,7 +5,7 @@ from osbot_llms.llms.API_Perplexity import API_Perplexity
 from osbot_llms.models.GPT_History import GPT_History
 
 
-#@pytest.mark.skip("Re-enable when adding ofical support to TCB to the Perplexity API")
+@pytest.mark.skip("Re-enable when adding offical support to TCB to the Perplexity API")
 class test_API_Perplexity(TestCase):
 
     def setUp(self):

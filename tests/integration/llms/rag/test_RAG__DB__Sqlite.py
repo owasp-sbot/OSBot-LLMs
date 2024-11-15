@@ -7,6 +7,7 @@ from osbot_utils.utils.Files                                import file_exists, 
 from osbot_utils.utils.Http                                 import GET, GET_to_file, GET_bytes, GET_bytes_to_file
 from osbot_llms.llms.rag.RAG__DB__Sqlite import RAG__DB__Sqlite
 
+@pytest.mark.skip("Rag is not being used at the moment")
 class test_RAG__DB__Sqlite(TestCase):
 
     @classmethod
