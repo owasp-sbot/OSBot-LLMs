@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from osbot_utils.base_classes.Kwargs_To_Self import Kwargs_To_Self
 
-
+# todo: legacy replace with the new Fast_API_Routes
 class Fast_API__Routes(Kwargs_To_Self):
     router      : APIRouter
     path_prefix : str

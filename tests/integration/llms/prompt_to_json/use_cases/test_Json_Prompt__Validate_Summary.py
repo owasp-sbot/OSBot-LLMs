@@ -1,7 +1,6 @@
 from unittest                                                               import TestCase
 from osbot_llms.llms.prompt_to_json.Prompt_To_Json__Open_AI                 import Prompt_To_Json__Open_AI
-from osbot_llms.llms.prompt_to_json.use_cases.Json_Prompt__Validate_Summary import Json_Prompt__Validate_Summary, \
-    Model__Response_Format__Json_Prompt__Validate_Summary
+from osbot_llms.llms.prompt_to_json.use_cases.Json_Prompt__Validate_Summary import Json_Prompt__Validate_Summary, Model__Response_Format__Json_Prompt__Validate_Summary
 
 class test_Json_Prompt__Validate_Summary(TestCase):
 
@@ -20,10 +19,10 @@ class test_Json_Prompt__Validate_Summary(TestCase):
         with self.validate_summary as _:
             response = _.validate_summary(original_text, valid_summary)
             #pprint(response)
-            assert response['model'].is_valid == True
-            assert response['model'].confidence > 0.8
-            assert response['model'].quality > 0.7
-            assert len(response['model'].issues_found) == 0
+            assert response['response_parsed'].is_valid == True
+            assert response['response_parsed'].confidence > 0.8
+            assert response['response_parsed'].quality > 0.7
+            assert len(response['response_parsed'].issues_found) == 0
 
     def test_validate_summary__invalid(self):
         original_text = """A recent study of coral reefs in the Pacific Ocean has documented significant changes in biodiversity. Researchers observed a 15% decline in fish species and a 23% reduction in coral coverage over the past decade. The primary factors identified were rising water temperatures and increased ocean acidification."""
@@ -33,5 +32,5 @@ class test_Json_Prompt__Validate_Summary(TestCase):
         with self.validate_summary as _:
             response = _.validate_summary(original_text, invalid_summary)
             #pprint(response)
-            assert response['model'].is_valid == False
-            assert len(response['model'].issues_found) > 0
+            assert response['response_parsed'].is_valid == False
+            assert len(response['response_parsed'].issues_found) > 0

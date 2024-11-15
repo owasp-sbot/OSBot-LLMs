@@ -29,6 +29,12 @@ class test_Prompt_To_Json__Open_AI(TestCase):
                                  'date'        : 'Friday'      ,
                                  'name'        : 'Science Fair',
                                  'participants': ['Alice', 'Bob']}
-            assert response == dict(content  = expected_content                 ,
-                                    model    = CalendarEvent(**expected_content),
-                                    tokens   = 124                              )
+            assert response == dict(duration      = response.get('duration')           ,
+                                    llm_model     = 'gpt-4o-mini'                     ,
+                                    response_json       = expected_content                 ,
+                                    response_parsed = CalendarEvent(**expected_content),
+                                    response_schema = 'CalendarEvent'                    ,
+                                    seed = 0,
+                                    temperature = 0.0 ,
+                                    timestamp   = response.get('timestamp')           ,
+                                    tokens    = 124                              )

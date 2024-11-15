@@ -1,12 +1,7 @@
-from unittest import TestCase
-
-from pydantic._internal._model_construction import ModelMetaclass
-
-from osbot_llms.llms.prompt_to_json.Prompt_To_Json__Open_AI import Prompt_To_Json__Open_AI
-from osbot_llms.llms.prompt_to_json.use_cases.Json_Prompt__Create_Summary import Json_Prompt__Create_Summary, \
-    Model__Response_Format__Json_Prompt__Create_Summary
-from osbot_utils.utils.Dev import pprint
-
+from unittest                                                               import TestCase
+from pydantic._internal._model_construction                                 import ModelMetaclass
+from osbot_llms.llms.prompt_to_json.Prompt_To_Json__Open_AI                 import Prompt_To_Json__Open_AI
+from osbot_llms.llms.prompt_to_json.use_cases.Json_Prompt__Create_Summary   import Json_Prompt__Create_Summary, Model__Response_Format__Json_Prompt__Create_Summary
 
 class test_Json_Prompt__Create_Summary(TestCase):
 
@@ -23,8 +18,8 @@ class test_Json_Prompt__Create_Summary(TestCase):
     def test_create_summary(self):
         with self.create_summary as _:
             response = _.create_summary(TEST_CONTENT__GDPR__SMALL)
-            assert 'GDPR' in response.get('model').keywords
-            assert 'GDPR' in response.get('model').summary
+            assert 'GDPR' in response.get('response_parsed').keywords
+            assert 'GDPR' in response.get('response_parsed').summary
             #pprint(response)
 
 

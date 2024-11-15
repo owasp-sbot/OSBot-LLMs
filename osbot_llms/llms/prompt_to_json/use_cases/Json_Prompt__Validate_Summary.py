@@ -1,6 +1,6 @@
-from pydantic import BaseModel
+from pydantic                                               import BaseModel
 from osbot_llms.llms.prompt_to_json.Prompt_To_Json__Open_AI import Prompt_To_Json__Open_AI
-from osbot_utils.base_classes.Type_Safe import Type_Safe
+from osbot_utils.base_classes.Type_Safe                     import Type_Safe
 
 class Model__Response_Format__Json_Prompt__Validate_Summary(BaseModel):
     is_valid     : bool
