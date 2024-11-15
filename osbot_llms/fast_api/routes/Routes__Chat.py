@@ -85,7 +85,7 @@ class Routes__Chat(Fast_API_Routes):
         request_id       = self.request_id(request)
         chat_save_result = self.chats_storage_s3_minio.save_user_request(llm_chat_completion, request_id)
 
-        routes_open_ai   = Routes__OpenAI()
+        routes_open_ai   = Routes__OpenAI()                                         # todo: fix this mess of having to use a new instance of Routes__OpenAI
         user_data        = llm_chat_completion.user_data
         if user_data is None:
             user_data = dict(selected_platform = llm_chat_completion.llm_platform ,

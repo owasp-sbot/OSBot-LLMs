@@ -35,6 +35,9 @@ class API_Open_AI:
         load_dotenv()
         return getenv(OPEN_AI__API_KEY)
 
+    def client(self):
+        return OpenAI(api_key=self.api_key())
+
     def embeddings(self, input, model='text-embedding-3-small', dimensions=None):
         url       = 'https://api.openai.com/v1/embeddings'
         headers   = { "Content-Type" : "application/json"        ,
@@ -52,6 +55,7 @@ class API_Open_AI:
                                model           = model          ,
                                total_tokens     = total_tokens  )
         return result
+
 
     def open_ai_available(self):
         if self.api_key():
