@@ -29,7 +29,8 @@ class Json_Prompt__Document_Improver(Type_Safe):
 
     def improve_document(self, current_content: str, improvement_request: str):
         with self.prompt_to_json as _:
-            _.set_model__gpt_4o_mini()
+            #_.set_model__gpt_4o_mini()
+            _.set_model__gpt_4o()
             _.set_response_format(self.response_format)
             _.add_message__system(self.system_prompt())
             _.add_message__user(f"""\

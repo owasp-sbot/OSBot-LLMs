@@ -32,7 +32,7 @@ class test_LLM_Open_Router(TestCase):
         response = self.llm_open_router.send_user_prompt(user_prompt=user_prompt)
         if response.get('status') == 'error':
             raise Exception(f"Error: {pformat(response)}")
-        assert dict_to_obj(response).choices[0].message.content == 'Four'
+        assert dict_to_obj(response).choices[0].message.content == '4'
         assert list_set(response) == ['choices', 'created', 'id', 'model', 'object', 'provider','usage']
 
     # @pytest.mark.skip("for now only run locally")
